@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+
+<meta name="description" content="Free mortgage calculator — calculate monthly payments, total interest, and full amortization schedule instantly.">
+<link rel="canonical" href="https://calquto.com/tools/mortgage-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mortgage Calculator — Calquto">
+<meta property="og:description" content="Free mortgage calculator — calculate monthly payments, total interest, and full amortization schedule instantly.">
+<meta property="og:url" content="https://calquto.com/tools/mortgage-calculator.html">
+<meta property="og:site_name" content="Calquto">
+<meta property="og:image" content="https://calquto.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Mortgage Calculator — Calquto">
+<meta name="twitter:description" content="Free mortgage calculator — calculate monthly payments, total interest, and full amortization schedule instantly.">
+<meta name="twitter:image" content="https://calquto.com/og-image.png">
+<title>Mortgage Calculator — Calquto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/shared-tools.css">
+<style>
+  :root {
+    --blue-900:#0a1628;--blue-800:#0f2346;--blue-600:#1e4fa3;--blue-500:#2563eb;--blue-400:#3b82f6;--blue-300:#93c5fd;--blue-100:#dbeafe;--blue-50:#eff6ff;
+    --gray-900:#0f172a;--gray-700:#334155;--gray-500:#64748b;--gray-300:#cbd5e1;--gray-100:#f1f5f9;--gray-50:#f8fafc;--white:#ffffff;
+    --radius:12px;--radius-sm:8px;--gray-200:#e2e8f0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-900);line-height:1.6;display:flex;flex-direction:column;min-height:100vh}}
+  .page-hero{background:var(--blue-900);padding:0 0 2rem;text-align:center}
+  .page-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(24px,4vw,36px);font-weight:800;color:#fff;letter-spacing:-0.5px}
+  .page-hero p{color:var(--blue-300);font-size:15px;margin-top:6px}
+  main{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:640px){main{grid-template-columns:1fr}}
+  .card{background:#fff;border:1px solid var(--gray-300);border-radius:var(--radius);padding:1.5rem}
+  .card h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:700;color:var(--gray-900);margin-bottom:1.25rem}
+  .field{margin-bottom:1rem}
+  label{display:block;font-size:13px;font-weight:500;color:var(--gray-700);margin-bottom:5px}
+  .input-wrap{position:relative}
+  .input-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--gray-500);font-weight:500}
+  .input-suffix{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--gray-500)}
+  input[type=number],input[type=range]{width:100%}
+  input[type=number]{border:1px solid var(--gray-300);border-radius:var(--radius-sm);padding:10px 12px 10px 28px;font-size:15px;font-family:'Inter',sans-serif;color:var(--gray-900);outline:none;transition:border-color 0.15s}
+  input[type=number]:focus{border-color:var(--blue-400)}
+  input.no-prefix{padding-left:12px}
+  .range-wrap{display:flex;align-items:center;gap:10px;margin-top:6px}
+  input[type=range]{accent-color:var(--blue-500)}
+  .range-val{font-size:13px;font-weight:600;color:var(--blue-600);min-width:40px;text-align:right}
+  .calc-btn{width:100%;background:var(--blue-500);color:#fff;border:none;border-radius:var(--radius-sm);padding:13px;font-size:15px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;margin-top:0.5rem;transition:background 0.15s}
+  .calc-btn:hover{background:var(--blue-600)}
+  .results{display:flex;flex-direction:column;gap:12px}
+  .result-big{background:var(--blue-50);border:1px solid var(--blue-100);border-radius:var(--radius);padding:1.25rem;text-align:center}
+  .result-big-label{font-size:13px;color:var(--blue-600);font-weight:500;margin-bottom:4px}
+  .result-big-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:36px;font-weight:800;color:var(--blue-600)}
+  .result-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gray-100);font-size:14px}
+  .result-row:last-child{border-bottom:none}
+  .result-row .lbl{color:var(--gray-500)}
+  .result-row .val{font-weight:600;color:var(--gray-900)}
+  .breakdown-bar{height:10px;border-radius:99px;background:var(--gray-100);overflow:hidden;margin:0.75rem 0}
+  .bar-fill{height:100%;background:var(--blue-500);border-radius:99px;transition:width 0.4s ease}
+  .bar-legend{display:flex;gap:1rem;font-size:12px;color:var(--gray-500)}
+  .legend-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px}
+  .amort-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:0.75rem}
+  .amort-table th{text-align:left;padding:8px 6px;color:var(--gray-500);font-weight:500;border-bottom:1px solid var(--gray-200)}
+  .amort-table td{padding:7px 6px;border-bottom:1px solid var(--gray-100)}
+  .amort-table tr:last-child td{border-bottom:none}
+  .amort-scroll{max-height:240px;overflow-y:auto;border:1px solid var(--gray-200);border-radius:var(--radius-sm)}
+  .full-width{grid-column:1/-1}
+  .guide{grid-column:1/-1;background:#fff;border:1px solid var(--gray-300);border-radius:var(--radius);padding:1.75rem;margin-top:.5rem}
+  .guide h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:700;color:var(--gray-900);margin-bottom:.75rem}
+  .guide h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:var(--gray-900);margin:1.25rem 0 .5rem}
+  .guide p{font-size:13.5px;color:var(--gray-700);margin-bottom:.75rem;line-height:1.75}
+  .guide ul{margin:0 0 .75rem 1.1rem;font-size:13.5px;color:var(--gray-700);line-height:1.8}
+  .formula-box{background:var(--gray-50);border:1px solid var(--gray-300);border-radius:var(--radius-sm);padding:1rem 1.25rem;margin:.75rem 0;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--blue-600);overflow-x:auto}
+  .example-box{background:var(--blue-50);border:1px solid var(--blue-100);border-radius:var(--radius-sm);padding:1rem 1.25rem;margin:.75rem 0}
+  .example-box .ex-label{font-size:11px;font-weight:700;color:var(--blue-600);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+  .faq-item{border-bottom:1px solid var(--gray-100);padding:12px 0}
+  .faq-item:last-child{border-bottom:none}
+  .faq-q{font-size:14px;font-weight:600;color:var(--gray-900);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .faq-a{font-size:13.5px;color:var(--gray-700);margin-top:8px;line-height:1.75;display:none}
+  .faq-item.open .faq-a{display:block}
+  .faq-arrow{transition:transform .2s;color:var(--gray-500);flex-shrink:0}
+  .faq-item.open .faq-arrow{transform:rotate(180deg)}
+  .related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:.5rem}
+  .related-link{display:block;background:var(--gray-50);border-radius:var(--radius-sm);padding:.75rem 1rem;text-decoration:none;color:var(--gray-900);font-size:13px;font-weight:600;border:1px solid var(--gray-300);transition:border-color .15s}
+  .related-link:hover{border-color:var(--blue-400)}
+  .related-link span{display:block;font-size:11.5px;color:var(--gray-500);font-weight:400;margin-top:2px}
+  footer a{color:var(--blue-400);text-decoration:none}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much down payment do I actually need?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Conventional loans typically require 20% down to avoid PMI, but many programs allow much less — FHA loans accept as little as 3.5% down, and some conventional loans allow 3%. The trade-off is that anything below 20% down usually requires paying for private mortgage insurance until you reach 20% equity in the home."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is most of my early payment going to interest?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This is how amortized loans are structured — interest is calculated on your remaining balance, which is highest at the start of the loan. As you pay down principal over time, the interest portion of each payment shrinks and the principal portion grows, even though your total monthly payment stays the same on a fixed-rate loan."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I choose a 15-year or 30-year mortgage?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A 15-year mortgage has a higher monthly payment but a significantly lower interest rate and far less total interest paid over the life of the loan — often 50% or more savings. A 30-year mortgage offers lower, more manageable monthly payments, giving you flexibility to invest the difference or handle other expenses. The right choice depends on your monthly budget and financial goals."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's included in PMI and when does it go away?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Private mortgage insurance protects the lender if you default on the loan — it does not protect you. It's required when your down payment is under 20%, typically costing 0.5-1.5% of the loan annually. PMI is automatically removed once your loan balance drops to 78% of the original home value, or you can request removal at 80%."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Mortgage Calculator",
+  "url": "https://calquto.com/tools/mortgage-calculator.html",
+  "description": "Free mortgage calculator — calculate monthly payments, total interest, and full amortization schedule instantly.",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any (Web Browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Calquto",
+    "url": "https://calquto.com/"
+  }
+}
+</script>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">Calqu<span>to</span></a>
+  <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">&#9776;</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="../finance.html">Finance</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/mortgage-calculator.html" class="cur">Mortgage Calculator</a>
+          <a href="../tools/loan-calculator.html">Loan Calculator</a>
+          <a href="../tools/refinance-calculator.html">Mortgage Refinance Calculator</a>
+          <a href="../tools/home-affordability.html">Home Affordability Calculator</a>
+          <a href="../tools/home-equity-heloc.html">Home Equity &amp; HELOC Calculator</a>
+          <a href="../tools/rent-vs-buy.html">Rent vs Buy Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/closing-costs.html">Closing Costs Calculator</a>
+          <a href="../tools/property-tax-estimator.html">Property Tax Estimator</a>
+          <a href="../tools/renovation-roi.html">Home Renovation ROI Calculator</a>
+          <a href="../tools/car-loan-calculator.html">Car Loan Calculator</a>
+          <a href="../tools/car-lease-vs-buy.html">Car Lease vs Buy Calculator</a>
+          <a href="../tools/car-depreciation.html">Car Depreciation Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/compound-interest.html">Compound Interest Calculator</a>
+          <a href="../tools/retirement-calculator.html">Retirement Calculator</a>
+          <a href="../tools/401k-calculator.html">401(k) Contribution Calculator</a>
+          <a href="../tools/roth-ira-vs-traditional.html">Roth IRA vs Traditional IRA</a>
+          <a href="../tools/social-security-calculator.html">Social Security Benefits Estimator</a>
+          <a href="../tools/credit-card-payoff.html">Credit Card Payoff Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/savings-goal-calculator.html">Savings Goal Calculator</a>
+          <a href="../tools/break-even-calculator.html">Break-Even Calculator</a>
+          <a href="../tools/discount-calculator.html">Discount Calculator</a>
+          <a href="../tools/percentage-calculator.html">Percentage Calculator</a>
+          <a href="../tools/tip-calculator.html">Tip Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../finance.html">View all Finance tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../tax.html">Tax</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/federal-tax-bracket.html">Federal Tax Bracket Calculator</a>
+          <a href="../tools/capital-gains-tax.html">Capital Gains Tax Calculator</a>
+          <a href="../tools/child-tax-credit.html">Child Tax Credit Calculator</a>
+          <a href="../tools/w2-vs-1099-calculator.html">W-2 vs 1099 Tax Comparison</a>
+          <a href="../tools/llc-vs-scorp.html">LLC vs S-Corp Tax Savings</a>
+          <a href="../tools/freelancer-tax-estimator.html">Freelancer Tax Estimator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../tax.html">View all Tax tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../work-career.html">Work &amp; Career</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/salary-calculator.html">Salary &amp; Paycheck Calculator</a>
+          <a href="../tools/job-offer-comparison.html">Job Offer Comparison Calculator</a>
+          <a href="../tools/freelance-rate-calculator.html">Freelance Rate Calculator</a>
+          <a href="../tools/severance-pay-estimator.html">Severance Pay Estimator</a>
+          <a href="../tools/employee-cost.html">Employee Cost Calculator</a>
+          <a href="../tools/work-hours-calculator.html">Work Hours Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/wfh-savings-calculator.html">Work From Home Savings Calculator</a>
+          <a href="../tools/invoice-generator.html">Invoice Generator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../work-career.html">View all Work &amp; Career tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../benefits-insurance.html">Benefits</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/hsa-calculator.html">HSA Contribution Calculator</a>
+          <a href="../tools/fsa-vs-hsa.html">FSA vs HSA Comparison Tool</a>
+          <a href="../tools/cobra-calculator.html">COBRA Insurance Cost Estimator</a>
+          <a href="../tools/life-insurance-calculator.html">Life Insurance Needs Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../benefits-insurance.html">View all Benefits tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../education.html">Education</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/college-529-calculator.html">529 College Savings Calculator</a>
+          <a href="../tools/fafsa-efc.html">FAFSA EFC / SAI Estimator</a>
+          <a href="../tools/student-loan-payoff.html">Student Loan Payoff Calculator</a>
+          <a href="../tools/gpa-calculator.html">GPA to 4.0 Scale Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../education.html">View all Education tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../converters.html">Converters</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/length-converter.html">Unit Converter (Length/Weight/Temp/Speed/Area)</a>
+          <a href="../tools/timezone-converter.html">Time Zone Converter</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../converters.html">View all Converters tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../date-time-tools.html">Date/Time</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/countdown-timer.html">Countdown Timer</a>
+          <a href="../tools/date-difference.html">Date Difference Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../date-time-tools.html">View all Date/Time tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../developer-tools.html">Developer</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/json-formatter.html">JSON Formatter</a>
+          <a href="../tools/color-picker.html">Color Picker</a>
+          <a href="../tools/base64-tool.html">Base64 Encoder/Decoder</a>
+          <a href="../tools/regex-tester.html">Regex Tester</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../developer-tools.html">View all Developer tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../seo-text-tools.html">SEO/Text</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/word-counter.html">Word Counter</a>
+          <a href="../tools/character-counter.html">Character Counter</a>
+          <a href="../tools/case-converter.html">Case Converter</a>
+          <a href="../tools/lorem-ipsum.html">Lorem Ipsum Generator</a>
+          <a href="../tools/meta-tag-generator.html">Meta Tag Generator</a>
+          <a href="../tools/slug-generator.html">Slug Generator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/readability-checker.html">Readability Checker</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../seo-text-tools.html">View all SEO/Text tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../health.html">Health</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/bmi-calculator.html">BMI Calculator</a>
+          <a href="../tools/calorie-calculator.html">Calorie Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../health.html">View all Health tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../everyday-tools.html">Everyday</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/qr-generator.html">QR Code Generator</a>
+          <a href="../tools/password-generator.html">Password Generator</a>
+          <a href="../tools/age-calculator.html">Age Calculator</a>
+          <a href="../tools/gas-cost-calculator.html">Gas Cost Calculator</a>
+          <a href="../tools/moving-cost-calculator.html">True Cost of Moving Calculator</a>
+          <a href="../tools/solar-savings-calculator.html">Solar Panel Savings Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../everyday-tools.html">View all Everyday tools &rarr;</a>
+      </div>
+    </li>
+    <li class="nav-all"><a href="../index.html">All Tools</a></li>
+  </ul>
+</nav>
+
+
+<div class="page-hero">
+  <div class="breadcrumb"><a href="../index.html">Calquto</a><span class="bc-sep">›</span><a href="../finance.html">Finance</a><span class="bc-sep">›</span><span class="bc-current">Mortgage Calculator</span></div>
+  <h1>🏠 Mortgage Calculator</h1>
+  <p>Calculate your monthly payment, total interest, and full amortization schedule</p>
+</div>
+
+<main>
+  <!-- INPUT CARD -->
+  <div class="card">
+    <h2>Loan Details</h2>
+
+    <div class="field">
+      <label>Home Price</label>
+      <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="homePrice" value="350000" oninput="calculate()"></div>
+    </div>
+    <div class="field">
+      <label>Down Payment</label>
+      <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="downPayment" value="70000" oninput="calculate()"></div>
+      <div class="range-wrap"><input type="range" id="downRange" min="0" max="100" value="20" step="1" oninput="updateDown(this.value)"><span class="range-val" id="downPct">20%</span></div>
+    </div>
+    <div class="field">
+      <label>Loan Term</label>
+      <div class="range-wrap">
+        <input type="range" id="termRange" min="5" max="30" value="30" step="5" oninput="updateTerm(this.value)" style="flex:1">
+        <span class="range-val" id="termVal">30 yrs</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>Interest Rate (Annual)</label>
+      <div class="input-wrap"><input type="number" id="rate" class="no-prefix" value="6.8" step="0.1" oninput="calculate()"><span class="input-suffix">%</span></div>
+    </div>
+    <div class="field">
+      <label>Property Tax (Annual)</label>
+      <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="tax" value="4200" oninput="calculate()"></div>
+    </div>
+    <div class="field">
+      <label>Home Insurance (Annual)</label>
+      <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="insurance" value="1200" oninput="calculate()"></div>
+    </div>
+    <button class="calc-btn" onclick="calculate()">Calculate Payment</button>
+  </div>
+
+  <!-- RESULTS CARD -->
+  <div class="card results">
+    <h2>Your Results</h2>
+    <div class="result-big">
+      <div class="result-big-label">Monthly Payment</div>
+      <div class="result-big-num" id="monthlyPayment">$2,286</div>
+    </div>
+    <div>
+      <div class="result-row"><span class="lbl">Principal & Interest</span><span class="val" id="pi">—</span></div>
+      <div class="result-row"><span class="lbl">Property Tax</span><span class="val" id="taxMonth">—</span></div>
+      <div class="result-row"><span class="lbl">Home Insurance</span><span class="val" id="insMonth">—</span></div>
+      <div class="result-row"><span class="lbl">Loan Amount</span><span class="val" id="loanAmt">—</span></div>
+      <div class="result-row"><span class="lbl">Total Interest Paid</span><span class="val" id="totalInterest">—</span></div>
+      <div class="result-row"><span class="lbl">Total Cost of Home</span><span class="val" id="totalCost">—</span></div>
+    </div>
+    <div>
+      <div style="font-size:13px;font-weight:500;color:var(--gray-700);margin-bottom:4px">Principal vs Interest breakdown</div>
+      <div class="breakdown-bar"><div class="bar-fill" id="barFill" style="width:50%"></div></div>
+      <div class="bar-legend">
+        <span><span class="legend-dot" style="background:var(--blue-500)"></span>Principal</span>
+        <span><span class="legend-dot" style="background:var(--gray-300)"></span>Interest</span>
+      </div>
+      <div style="font-size:12px;color:var(--gray-500);margin-top:4px" id="barLabel"></div>
+    </div>
+  </div>
+
+  <!-- AMORTIZATION TABLE -->
+  <div class="card full-width">
+    <h2>Amortization Schedule (first 24 months)</h2>
+    <div class="amort-scroll">
+      <table class="amort-table">
+        <thead><tr><th>Month</th><th>Payment</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead>
+        <tbody id="amortBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- GUIDE SECTION -->
+  <div class="guide">
+    <h2>Understanding Your Mortgage Payment</h2>
+    <p>A mortgage payment is made up of four components, often abbreviated as <strong>PITI</strong>: Principal, Interest, Taxes, and Insurance. The principal is the actual amount you borrowed and are paying back. The interest is the lender's charge for lending you that money, calculated as a percentage of your remaining loan balance. Property taxes and homeowners insurance are usually collected monthly and held in an escrow account, then paid on your behalf when they're due annually.</p>
+    <p>Early in a 30-year loan, the majority of each payment goes toward interest rather than principal — this is normal and is how amortized loans work. As the loan balance decreases over time, more of each payment shifts toward paying down principal. This calculator's amortization table above shows exactly how that split changes month by month.</p>
+
+    <h3>The Monthly Payment Formula</h3>
+    <p>Your principal and interest payment is calculated using the standard amortization formula:</p>
+    <div class="formula-box">M = P × [r(1+r)^n] / [(1+r)^n − 1]<br><br>M = monthly payment<br>P = loan principal (home price − down payment)<br>r = monthly interest rate (annual rate ÷ 12)<br>n = total number of payments (years × 12)</div>
+    <p>Property tax and insurance are then added on top of this principal and interest figure to get your total monthly payment.</p>
+
+    <h3>Worked Example</h3>
+    <div class="example-box">
+      <div class="ex-label">Example</div>
+      <p style="margin-bottom:0">A $350,000 home with a 20% down payment ($70,000) leaves a $280,000 loan. At a 6.8% interest rate over 30 years, the principal and interest payment is approximately $1,827/month. Adding $350/month in property tax and $100/month in homeowners insurance brings the total monthly payment to roughly $2,277. Over the full 30-year term, total interest paid comes to about $377,800 — more than the original loan amount, which is why even a small rate reduction or extra payment can save tens of thousands of dollars.</p>
+    </div>
+
+    <h3>Tips to Reduce Your Total Interest</h3>
+    <ul>
+      <li><strong>Make a larger down payment</strong> — putting down 20% or more avoids private mortgage insurance (PMI) entirely, which can save $100–300/month.</li>
+      <li><strong>Choose a 15-year term over 30-year</strong> — the monthly payment is higher, but total interest paid is typically 50-60% lower.</li>
+      <li><strong>Make extra principal payments</strong> — even an extra $100-200/month can cut years off your loan and save tens of thousands in interest.</li>
+      <li><strong>Switch to biweekly payments</strong> — paying half your monthly payment every two weeks results in one extra full payment per year, accelerating payoff.</li>
+      <li><strong>Shop multiple lenders</strong> — even a 0.25% rate difference on a $300,000 loan changes total interest by over $15,000 across 30 years.</li>
+    </ul>
+
+    <h3>Frequently Asked Questions</h3>
+    <div class="faq-item open">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How much down payment do I actually need? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Conventional loans typically require 20% down to avoid PMI, but many programs allow much less — FHA loans accept as little as 3.5% down, and some conventional loans allow 3%. The trade-off is that anything below 20% down usually requires paying for private mortgage insurance until you reach 20% equity in the home.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Why is most of my early payment going to interest? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">This is how amortized loans are structured — interest is calculated on your remaining balance, which is highest at the start of the loan. As you pay down principal over time, the interest portion of each payment shrinks and the principal portion grows, even though your total monthly payment stays the same on a fixed-rate loan.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Should I choose a 15-year or 30-year mortgage? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">A 15-year mortgage has a higher monthly payment but a significantly lower interest rate and far less total interest paid over the life of the loan — often 50% or more savings. A 30-year mortgage offers lower, more manageable monthly payments, giving you flexibility to invest the difference or handle other expenses. The right choice depends on your monthly budget and financial goals.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What's included in PMI and when does it go away? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Private mortgage insurance protects the lender if you default on the loan — it does not protect you. It's required when your down payment is under 20%, typically costing 0.5-1.5% of the loan annually. PMI is automatically removed once your loan balance drops to 78% of the original home value, or you can request removal at 80%.</div>
+    </div>
+
+    <h3>Related Calculators</h3>
+    <div class="related-grid">
+      <a class="related-link" href="loan-calculator.html">Loan Calculator<span>For auto, personal & student loans</span></a>
+      <a class="related-link" href="retirement-calculator.html">Retirement Calculator<span>Plan your long-term savings</span></a>
+      <a class="related-link" href="credit-card-payoff.html">Credit Card Payoff<span>Compare payoff strategies</span></a>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-top">
+    <a class="footer-logo" href="../index.html">Calqu<span>to</span></a>
+    <p class="footer-tagline">Free, fast, browser-based calculators and tools. No signup, nothing stored.</p>
+  </div>
+  <div class="footer-cols">
+    <div class="footer-col">
+      <h4>Finance &amp; Tax</h4>
+      <a href="../tools/mortgage-calculator.html">Mortgage Calculator</a>
+      <a href="../tools/loan-calculator.html">Loan Calculator</a>
+      <a href="../tools/refinance-calculator.html">Mortgage Refinance Calculator</a>
+      <a href="../tools/home-affordability.html">Home Affordability Calculator</a>
+      <a href="../tools/home-equity-heloc.html">Home Equity &amp; HELOC Calculator</a>
+      <a href="../tools/rent-vs-buy.html">Rent vs Buy Calculator</a>
+      <a href="../tools/closing-costs.html">Closing Costs Calculator</a>
+      <a href="../tools/property-tax-estimator.html">Property Tax Estimator</a>
+      <a href="../tools/renovation-roi.html">Home Renovation ROI Calculator</a>
+      <a href="../tools/car-loan-calculator.html">Car Loan Calculator</a>
+      <a href="../tools/car-lease-vs-buy.html">Car Lease vs Buy Calculator</a>
+      <a href="../tools/car-depreciation.html">Car Depreciation Calculator</a>
+      <a href="../tools/compound-interest.html">Compound Interest Calculator</a>
+      <a href="../tools/retirement-calculator.html">Retirement Calculator</a>
+      <a href="../tools/401k-calculator.html">401(k) Contribution Calculator</a>
+      <a href="../tools/roth-ira-vs-traditional.html">Roth IRA vs Traditional IRA</a>
+      <a href="../tools/social-security-calculator.html">Social Security Benefits Estimator</a>
+      <a href="../tools/credit-card-payoff.html">Credit Card Payoff Calculator</a>
+      <a href="../tools/savings-goal-calculator.html">Savings Goal Calculator</a>
+      <a href="../tools/break-even-calculator.html">Break-Even Calculator</a>
+      <a href="../tools/discount-calculator.html">Discount Calculator</a>
+      <a href="../tools/percentage-calculator.html">Percentage Calculator</a>
+      <a href="../tools/tip-calculator.html">Tip Calculator</a>
+      <a href="../tools/federal-tax-bracket.html">Federal Tax Bracket Calculator</a>
+      <a href="../tools/capital-gains-tax.html">Capital Gains Tax Calculator</a>
+      <a href="../tools/child-tax-credit.html">Child Tax Credit Calculator</a>
+      <a href="../tools/w2-vs-1099-calculator.html">W-2 vs 1099 Tax Comparison</a>
+      <a href="../tools/llc-vs-scorp.html">LLC vs S-Corp Tax Savings</a>
+      <a href="../tools/freelancer-tax-estimator.html">Freelancer Tax Estimator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Work, Benefits &amp; Education</h4>
+      <a href="../tools/salary-calculator.html">Salary &amp; Paycheck Calculator</a>
+      <a href="../tools/job-offer-comparison.html">Job Offer Comparison Calculator</a>
+      <a href="../tools/freelance-rate-calculator.html">Freelance Rate Calculator</a>
+      <a href="../tools/severance-pay-estimator.html">Severance Pay Estimator</a>
+      <a href="../tools/employee-cost.html">Employee Cost Calculator</a>
+      <a href="../tools/work-hours-calculator.html">Work Hours Calculator</a>
+      <a href="../tools/wfh-savings-calculator.html">Work From Home Savings Calculator</a>
+      <a href="../tools/invoice-generator.html">Invoice Generator</a>
+      <a href="../tools/hsa-calculator.html">HSA Contribution Calculator</a>
+      <a href="../tools/fsa-vs-hsa.html">FSA vs HSA Comparison Tool</a>
+      <a href="../tools/cobra-calculator.html">COBRA Insurance Cost Estimator</a>
+      <a href="../tools/life-insurance-calculator.html">Life Insurance Needs Calculator</a>
+      <a href="../tools/college-529-calculator.html">529 College Savings Calculator</a>
+      <a href="../tools/fafsa-efc.html">FAFSA EFC / SAI Estimator</a>
+      <a href="../tools/student-loan-payoff.html">Student Loan Payoff Calculator</a>
+      <a href="../tools/gpa-calculator.html">GPA to 4.0 Scale Calculator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Converters &amp; Everyday</h4>
+      <a href="../tools/length-converter.html">Unit Converter (Length/Weight/Temp/Speed/Area)</a>
+      <a href="../tools/timezone-converter.html">Time Zone Converter</a>
+      <a href="../tools/countdown-timer.html">Countdown Timer</a>
+      <a href="../tools/date-difference.html">Date Difference Calculator</a>
+      <a href="../tools/json-formatter.html">JSON Formatter</a>
+      <a href="../tools/color-picker.html">Color Picker</a>
+      <a href="../tools/base64-tool.html">Base64 Encoder/Decoder</a>
+      <a href="../tools/regex-tester.html">Regex Tester</a>
+      <a href="../tools/word-counter.html">Word Counter</a>
+      <a href="../tools/character-counter.html">Character Counter</a>
+      <a href="../tools/case-converter.html">Case Converter</a>
+      <a href="../tools/lorem-ipsum.html">Lorem Ipsum Generator</a>
+      <a href="../tools/meta-tag-generator.html">Meta Tag Generator</a>
+      <a href="../tools/slug-generator.html">Slug Generator</a>
+      <a href="../tools/readability-checker.html">Readability Checker</a>
+      <a href="../tools/bmi-calculator.html">BMI Calculator</a>
+      <a href="../tools/calorie-calculator.html">Calorie Calculator</a>
+      <a href="../tools/qr-generator.html">QR Code Generator</a>
+      <a href="../tools/password-generator.html">Password Generator</a>
+      <a href="../tools/age-calculator.html">Age Calculator</a>
+      <a href="../tools/gas-cost-calculator.html">Gas Cost Calculator</a>
+      <a href="../tools/moving-cost-calculator.html">True Cost of Moving Calculator</a>
+      <a href="../tools/solar-savings-calculator.html">Solar Panel Savings Calculator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="../index.html">All Tools</a>
+      <a href="../about.html">About</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../privacy-policy.html">Privacy Policy</a>
+      <a href="../terms.html">Terms of Service</a>
+      <a href="../disclaimer.html">Disclaimer</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Calquto &middot; Free mortgage calculator · No signup required</span>
+  </div>
+</footer>
+
+<script>
+const fmt = n => '$' + Math.round(n).toLocaleString();
+const fmtD = n => '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+function updateDown(pct) {
+  document.getElementById('downPct').textContent = pct + '%';
+  const price = parseFloat(document.getElementById('homePrice').value) || 0;
+  document.getElementById('downPayment').value = Math.round(price * pct / 100);
+  calculate();
+}
+
+function updateTerm(val) {
+  document.getElementById('termVal').textContent = val + ' yrs';
+  calculate();
+}
+
+function calculate() {
+  const price = parseFloat(document.getElementById('homePrice').value) || 0;
+  const down = parseFloat(document.getElementById('downPayment').value) || 0;
+  const rateAnn = parseFloat(document.getElementById('rate').value) || 0;
+  const years = parseInt(document.getElementById('termRange').value) || 30;
+  const tax = parseFloat(document.getElementById('tax').value) || 0;
+  const ins = parseFloat(document.getElementById('insurance').value) || 0;
+
+  const loan = price - down;
+  const r = rateAnn / 100 / 12;
+  const n = years * 12;
+  const piPayment = r === 0 ? loan / n : loan * r * Math.pow(1+r,n) / (Math.pow(1+r,n)-1);
+  const taxMonth = tax / 12;
+  const insMonth = ins / 12;
+  const total = piPayment + taxMonth + insMonth;
+  const totalInterest = piPayment * n - loan;
+  const totalCost = price + totalInterest + tax * years + ins * years;
+  const principalPct = Math.round(loan / (loan + totalInterest) * 100);
+
+  document.getElementById('monthlyPayment').textContent = fmt(total);
+  document.getElementById('pi').textContent = fmt(piPayment);
+  document.getElementById('taxMonth').textContent = fmt(taxMonth);
+  document.getElementById('insMonth').textContent = fmt(insMonth);
+  document.getElementById('loanAmt').textContent = fmt(loan);
+  document.getElementById('totalInterest').textContent = fmt(totalInterest);
+  document.getElementById('totalCost').textContent = fmt(totalCost);
+  document.getElementById('barFill').style.width = principalPct + '%';
+  document.getElementById('barLabel').textContent = principalPct + '% principal · ' + (100-principalPct) + '% interest over ' + years + ' years';
+
+  // Amortization table (first 24 months)
+  let bal = loan;
+  let rows = '';
+  for (let i = 1; i <= Math.min(24, n); i++) {
+    const intPart = bal * r;
+    const prinPart = piPayment - intPart;
+    bal = bal - prinPart;
+    rows += `<tr><td>${i}</td><td>${fmtD(piPayment)}</td><td>${fmtD(prinPart)}</td><td>${fmtD(intPart)}</td><td>${fmtD(Math.max(0,bal))}</td></tr>`;
+  }
+  document.getElementById('amortBody').innerHTML = rows;
+}
+
+// Sync down payment slider with price
+document.getElementById('homePrice').addEventListener('input', function() {
+  const price = parseFloat(this.value) || 0;
+  const pct = parseInt(document.getElementById('downRange').value);
+  document.getElementById('downPayment').value = Math.round(price * pct / 100);
+  calculate();
+});
+
+calculate();
+</script>
+</body>
+</html>

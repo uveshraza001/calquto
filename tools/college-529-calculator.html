@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+
+<meta name="description" content="Free 529 college savings calculator. Find out how much to save monthly to reach your college savings goal with tax-free investment growth.">
+<link rel="canonical" href="https://calquto.com/tools/college-529-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="529 College Savings Calculator — Calquto">
+<meta property="og:description" content="Free 529 college savings calculator. Find out how much to save monthly to reach your college savings goal with tax-free investment growth.">
+<meta property="og:url" content="https://calquto.com/tools/college-529-calculator.html">
+<meta property="og:site_name" content="Calquto">
+<meta property="og:image" content="https://calquto.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="529 College Savings Calculator — Calquto">
+<meta name="twitter:description" content="Free 529 college savings calculator. Find out how much to save monthly to reach your college savings goal with tax-free investment growth.">
+<meta name="twitter:image" content="https://calquto.com/og-image.png">
+<title>529 College Savings Calculator — Calquto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/shared-tools.css">
+<style>
+  :root{--blue-900:#0a1628;--blue-600:#1e4fa3;--blue-500:#2563eb;--blue-400:#3b82f6;--blue-300:#93c5fd;--blue-100:#dbeafe;--blue-50:#eff6ff;--green-600:#16a34a;--green-100:#dcfce7;--green-50:#f0fdf4;--orange-600:#ea580c;--orange-100:#ffedd5;--gray-900:#0f172a;--gray-700:#334155;--gray-500:#64748b;--gray-300:#cbd5e1;--gray-100:#f1f5f9;--gray-50:#f8fafc;--radius:12px;--radius-sm:8px}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-900);line-height:1.6;display:flex;flex-direction:column;min-height:100vh}}
+  .page-hero{background:var(--blue-900);padding:0 0 2rem;text-align:center}
+  .page-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(24px,4vw,36px);font-weight:800;color:#fff;letter-spacing:-0.5px}
+  .page-hero p{color:var(--blue-300);font-size:15px;margin-top:6px}
+  main{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:640px){main{grid-template-columns:1fr}}
+  .card{background:#fff;border:1px solid var(--gray-300);border-radius:var(--radius);padding:1.5rem}
+  .card h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:700;color:var(--gray-900);margin-bottom:1.25rem}
+  .field{margin-bottom:1rem}
+  label{display:block;font-size:13px;font-weight:500;color:var(--gray-700);margin-bottom:5px}
+  .input-wrap{position:relative}
+  .input-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--gray-500)}
+  .input-suffix{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--gray-500)}
+  input[type=number]{width:100%;border:1px solid var(--gray-300);border-radius:var(--radius-sm);padding:10px 12px 10px 28px;font-size:15px;font-family:'Inter',sans-serif;color:var(--gray-900);outline:none;transition:border-color 0.15s}
+  input[type=number]:focus{border-color:var(--blue-400)}
+  input.no-prefix{padding-left:12px}
+  select{width:100%;border:1px solid var(--gray-300);border-radius:var(--radius-sm);padding:10px 12px;font-size:15px;font-family:'Inter',sans-serif;color:var(--gray-900);outline:none;background:#fff}
+  .result-big{background:var(--blue-50);border:1px solid var(--blue-100);border-radius:var(--radius);padding:1.25rem;text-align:center;margin-bottom:12px}
+  .result-big-label{font-size:13px;color:var(--blue-600);font-weight:500;margin-bottom:4px}
+  .result-big-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:36px;font-weight:800;color:var(--blue-600)}
+  .result-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--gray-100);font-size:14px}
+  .result-row:last-child{border-bottom:none}
+  .result-row .lbl{color:var(--gray-500)}.result-row .val{font-weight:600;color:var(--gray-900)}
+  .green{color:var(--green-600)}.highlight{color:var(--blue-600)}
+  .info-box{background:var(--blue-50);border:1px solid var(--blue-100);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--blue-600);font-weight:500;margin-top:12px}
+  .warn-box{background:var(--orange-100);border:1px solid #fed7aa;border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--orange-600);font-weight:500;margin-top:12px}
+  .full-width{grid-column:1/-1}
+  .guide{grid-column:1/-1;background:#fff;border:1px solid var(--gray-300);border-radius:var(--radius);padding:1.75rem}
+  .guide h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:700;margin-bottom:.75rem}
+  .guide h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;margin:1.25rem 0 .5rem}
+  .guide p{font-size:13.5px;color:var(--gray-700);margin-bottom:.75rem;line-height:1.75}
+  .guide ul{margin:0 0 .75rem 1.1rem;font-size:13.5px;color:var(--gray-700);line-height:1.8}
+  .faq-item{border-bottom:1px solid var(--gray-100);padding:12px 0}.faq-item:last-child{border-bottom:none}
+  .faq-q{font-size:14px;font-weight:600;color:var(--gray-900);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .faq-a{font-size:13.5px;color:var(--gray-700);margin-top:8px;line-height:1.75;display:none}
+  .faq-item.open .faq-a{display:block}
+  .faq-arrow{transition:transform .2s;color:var(--gray-500);flex-shrink:0}
+  .faq-item.open .faq-arrow{transform:rotate(180deg)}
+  .related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:.5rem}
+  .related-link{display:block;background:var(--gray-50);border-radius:var(--radius-sm);padding:.75rem 1rem;text-decoration:none;color:var(--gray-900);font-size:13px;font-weight:600;border:1px solid var(--gray-300);transition:border-color .15s}
+  .related-link:hover{border-color:var(--blue-400)}
+  .related-link span{display:block;font-size:11.5px;color:var(--gray-500);font-weight:400;margin-top:2px}
+  footer a{color:var(--blue-400);text-decoration:none}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What happens to the 529 if my child doesn't go to college?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You have several options: change the beneficiary to another family member (sibling, cousin, even yourself), keep it for graduate school, use it for trade school or vocational programs, or starting in 2026, roll up to $35,000 into a Roth IRA (subject to the account being at least 15 years old). Non-qualified withdrawals face income tax plus a 10% penalty on earnings — but your contributions are always returned tax and penalty free."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does a 529 plan affect financial aid?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "529 plans owned by a parent are assessed at a maximum 5.64% rate on the FAFSA — much less than student-owned assets (20% rate). For 529s owned by grandparents, the SECURE 2.0 Act eliminated the negative FAFSA impact starting with the 2026–25 FAFSA. A 529 is generally the most financially aid-friendly way to save for college."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "529 College Savings Calculator",
+  "url": "https://calquto.com/tools/college-529-calculator.html",
+  "description": "Free 529 college savings calculator. Find out how much to save monthly to reach your college savings goal with tax-free investment growth.",
+  "applicationCategory": "EducationApplication",
+  "operatingSystem": "Any (Web Browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Calquto",
+    "url": "https://calquto.com/"
+  }
+}
+</script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Calqu<span>to</span></a>
+  <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">&#9776;</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="../finance.html">Finance</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/mortgage-calculator.html">Mortgage Calculator</a>
+          <a href="../tools/loan-calculator.html">Loan Calculator</a>
+          <a href="../tools/refinance-calculator.html">Mortgage Refinance Calculator</a>
+          <a href="../tools/home-affordability.html">Home Affordability Calculator</a>
+          <a href="../tools/home-equity-heloc.html">Home Equity &amp; HELOC Calculator</a>
+          <a href="../tools/rent-vs-buy.html">Rent vs Buy Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/closing-costs.html">Closing Costs Calculator</a>
+          <a href="../tools/property-tax-estimator.html">Property Tax Estimator</a>
+          <a href="../tools/renovation-roi.html">Home Renovation ROI Calculator</a>
+          <a href="../tools/car-loan-calculator.html">Car Loan Calculator</a>
+          <a href="../tools/car-lease-vs-buy.html">Car Lease vs Buy Calculator</a>
+          <a href="../tools/car-depreciation.html">Car Depreciation Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/compound-interest.html">Compound Interest Calculator</a>
+          <a href="../tools/retirement-calculator.html">Retirement Calculator</a>
+          <a href="../tools/401k-calculator.html">401(k) Contribution Calculator</a>
+          <a href="../tools/roth-ira-vs-traditional.html">Roth IRA vs Traditional IRA</a>
+          <a href="../tools/social-security-calculator.html">Social Security Benefits Estimator</a>
+          <a href="../tools/credit-card-payoff.html">Credit Card Payoff Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/savings-goal-calculator.html">Savings Goal Calculator</a>
+          <a href="../tools/break-even-calculator.html">Break-Even Calculator</a>
+          <a href="../tools/discount-calculator.html">Discount Calculator</a>
+          <a href="../tools/percentage-calculator.html">Percentage Calculator</a>
+          <a href="../tools/tip-calculator.html">Tip Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../finance.html">View all Finance tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../tax.html">Tax</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/federal-tax-bracket.html">Federal Tax Bracket Calculator</a>
+          <a href="../tools/capital-gains-tax.html">Capital Gains Tax Calculator</a>
+          <a href="../tools/child-tax-credit.html">Child Tax Credit Calculator</a>
+          <a href="../tools/w2-vs-1099-calculator.html">W-2 vs 1099 Tax Comparison</a>
+          <a href="../tools/llc-vs-scorp.html">LLC vs S-Corp Tax Savings</a>
+          <a href="../tools/freelancer-tax-estimator.html">Freelancer Tax Estimator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../tax.html">View all Tax tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../work-career.html">Work &amp; Career</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/salary-calculator.html">Salary &amp; Paycheck Calculator</a>
+          <a href="../tools/job-offer-comparison.html">Job Offer Comparison Calculator</a>
+          <a href="../tools/freelance-rate-calculator.html">Freelance Rate Calculator</a>
+          <a href="../tools/severance-pay-estimator.html">Severance Pay Estimator</a>
+          <a href="../tools/employee-cost.html">Employee Cost Calculator</a>
+          <a href="../tools/work-hours-calculator.html">Work Hours Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/wfh-savings-calculator.html">Work From Home Savings Calculator</a>
+          <a href="../tools/invoice-generator.html">Invoice Generator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../work-career.html">View all Work &amp; Career tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../benefits-insurance.html">Benefits</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/hsa-calculator.html">HSA Contribution Calculator</a>
+          <a href="../tools/fsa-vs-hsa.html">FSA vs HSA Comparison Tool</a>
+          <a href="../tools/cobra-calculator.html">COBRA Insurance Cost Estimator</a>
+          <a href="../tools/life-insurance-calculator.html">Life Insurance Needs Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../benefits-insurance.html">View all Benefits tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../education.html">Education</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/college-529-calculator.html" class="cur">529 College Savings Calculator</a>
+          <a href="../tools/fafsa-efc.html">FAFSA EFC / SAI Estimator</a>
+          <a href="../tools/student-loan-payoff.html">Student Loan Payoff Calculator</a>
+          <a href="../tools/gpa-calculator.html">GPA to 4.0 Scale Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../education.html">View all Education tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../converters.html">Converters</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/length-converter.html">Unit Converter (Length/Weight/Temp/Speed/Area)</a>
+          <a href="../tools/timezone-converter.html">Time Zone Converter</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../converters.html">View all Converters tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../date-time-tools.html">Date/Time</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/countdown-timer.html">Countdown Timer</a>
+          <a href="../tools/date-difference.html">Date Difference Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../date-time-tools.html">View all Date/Time tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../developer-tools.html">Developer</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/json-formatter.html">JSON Formatter</a>
+          <a href="../tools/color-picker.html">Color Picker</a>
+          <a href="../tools/base64-tool.html">Base64 Encoder/Decoder</a>
+          <a href="../tools/regex-tester.html">Regex Tester</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../developer-tools.html">View all Developer tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../seo-text-tools.html">SEO/Text</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/word-counter.html">Word Counter</a>
+          <a href="../tools/character-counter.html">Character Counter</a>
+          <a href="../tools/case-converter.html">Case Converter</a>
+          <a href="../tools/lorem-ipsum.html">Lorem Ipsum Generator</a>
+          <a href="../tools/meta-tag-generator.html">Meta Tag Generator</a>
+          <a href="../tools/slug-generator.html">Slug Generator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/readability-checker.html">Readability Checker</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../seo-text-tools.html">View all SEO/Text tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../health.html">Health</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/bmi-calculator.html">BMI Calculator</a>
+          <a href="../tools/calorie-calculator.html">Calorie Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../health.html">View all Health tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../everyday-tools.html">Everyday</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/qr-generator.html">QR Code Generator</a>
+          <a href="../tools/password-generator.html">Password Generator</a>
+          <a href="../tools/age-calculator.html">Age Calculator</a>
+          <a href="../tools/gas-cost-calculator.html">Gas Cost Calculator</a>
+          <a href="../tools/moving-cost-calculator.html">True Cost of Moving Calculator</a>
+          <a href="../tools/solar-savings-calculator.html">Solar Panel Savings Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../everyday-tools.html">View all Everyday tools &rarr;</a>
+      </div>
+    </li>
+    <li class="nav-all"><a href="../index.html">All Tools</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero"><h1>🎓 529 College Savings Calculator</h1><p>Calculate how much to save monthly to fund a 529 college savings plan</p></div>
+<main><div class="card">
+  <h2>College Savings Details</h2>
+  <div class="field"><label>Child's Current Age</label><div class="input-wrap"><input type="number" id="childAge" class="no-prefix" value="5" oninput="calculate()"></div></div>
+  <div class="field"><label>College Start Age</label><div class="input-wrap"><input type="number" id="startAge" class="no-prefix" value="18" oninput="calculate()"></div></div>
+  <div class="field"><label>Annual College Cost (today's dollars)</label><div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="annualCost" value="35000" oninput="calculate()"></div></div>
+  <div class="field"><label>Years of College</label><div class="input-wrap"><input type="number" id="collegeYears" class="no-prefix" value="4" oninput="calculate()"></div></div>
+  <div class="field"><label>Expected College Cost Inflation</label><div class="input-wrap"><input type="number" id="inflation" class="no-prefix" value="5" step="0.1" oninput="calculate()"><span class="input-suffix">%</span></div></div>
+  <div class="field"><label>Expected Investment Return</label><div class="input-wrap"><input type="number" id="returnRate" class="no-prefix" value="7" step="0.1" oninput="calculate()"><span class="input-suffix">%</span></div></div>
+  <div class="field"><label>Current 529 Balance</label><div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="current" value="0" oninput="calculate()"></div></div>
+</div>
+<div class="card">
+  <h2>Savings Plan Results</h2>
+  <div class="result-big"><div class="result-big-label">Monthly Savings Needed</div><div class="result-big-num" id="monthly">—</div></div>
+  <div class="result-row"><span class="lbl">Years Until College</span><span class="val" id="years">—</span></div>
+  <div class="result-row"><span class="lbl">Total College Cost (future $)</span><span class="val" id="totalCost">—</span></div>
+  <div class="result-row"><span class="lbl">Current Balance Growth</span><span class="val green" id="currentGrowth">—</span></div>
+  <div class="result-row"><span class="lbl">Amount Still to Save</span><span class="val" id="toSave">—</span></div>
+  <div class="result-row"><span class="lbl">Total Contributions</span><span class="val" id="totalContrib">—</span></div>
+  <div class="result-row"><span class="lbl">Investment Growth in 529</span><span class="val green" id="growth">—</span></div>
+  <div class="info-box" id="infoBox"></div>
+</div>
+<div class="guide">
+  <h2>How 529 Plans Work</h2>
+  <p>A 529 plan is a tax-advantaged savings account designed for education expenses. Contributions are made with after-tax dollars, but the money grows tax-free and withdrawals for qualified education expenses — tuition, room and board, books, computers — are completely tax-free. Many states also offer a state income tax deduction for contributions.</p>
+  <h3>Key Facts</h3>
+  <ul>
+    <li><strong>Contribution limits:</strong> No annual federal limit — but contributions above $18,000/year ($36,000 for married) per beneficiary count against gift tax exclusion</li>
+    <li><strong>Superfunding:</strong> You can front-load 5 years of contributions ($90,000 single, $180,000 married) in one year using 5-year gift tax averaging</li>
+    <li><strong>SECURE 2.0 provision:</strong> Unused 529 funds can be rolled into a Roth IRA (up to $35,000 lifetime, subject to annual limits) — no more "what if they don't go to college" worry</li>
+    <li><strong>K-12 use:</strong> Up to $10,000/year can be used for K-12 tuition at private schools</li>
+  </ul>
+  <h3>Investment Strategy by Age</h3>
+  <p>Most 529 plans offer age-based portfolios that automatically shift from aggressive (stocks) to conservative (bonds) as college approaches. When the child is young, 90–100% stocks maximizes growth. By the time they're 15–16, shifting to 50–60% bonds reduces the risk of a market crash wiping out savings right before they're needed.</p>
+  <h3>Frequently Asked Questions</h3>
+  <div class="faq-item open"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What happens to the 529 if my child doesn't go to college? <span class="faq-arrow">▼</span></div><div class="faq-a">You have several options: change the beneficiary to another family member (sibling, cousin, even yourself), keep it for graduate school, use it for trade school or vocational programs, or roll up to $35,000 into a Roth IRA under SECURE 2.0 (subject to the account being at least 15 years old). Non-qualified withdrawals face income tax plus a 10% penalty on earnings — but your contributions are always returned tax and penalty free.</div></div>
+  <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Does a 529 plan affect financial aid? <span class="faq-arrow">▼</span></div><div class="faq-a">529 plans owned by a parent are assessed at a maximum 5.64% rate on the FAFSA — much less than student-owned assets (20% rate). For 529s owned by grandparents, the SECURE 2.0 Act eliminated the negative FAFSA impact starting with the 2024–25 FAFSA. A 529 is generally the most financially aid-friendly way to save for college.</div></div>
+  <h3>Related Calculators</h3>
+  <div class="related-grid">
+    <a class="related-link" href="fafsa-efc.html">FAFSA EFC Estimator<span>Estimate your financial aid</span></a>
+    <a class="related-link" href="compound-interest.html">Compound Interest<span>Investment growth calculator</span></a>
+    <a class="related-link" href="life-insurance-calculator.html">Life Insurance Needs<span>Protect your family's future</span></a>
+    <a class="related-link" href="savings-goal-calculator.html">Savings Goal Calculator<span>Plan any savings milestone</span></a>
+  </div>
+</div>
+<script>
+const fmt=n=>'$'+Math.round(n).toLocaleString();
+function calculate(){
+  const childAge=parseInt(document.getElementById('childAge').value)||5;
+  const startAge=parseInt(document.getElementById('startAge').value)||18;
+  const annualCost=parseFloat(document.getElementById('annualCost').value)||0;
+  const collegeYears=parseInt(document.getElementById('collegeYears').value)||4;
+  const inflation=(parseFloat(document.getElementById('inflation').value)||5)/100;
+  const r=(parseFloat(document.getElementById('returnRate').value)||7)/100;
+  const current=parseFloat(document.getElementById('current').value)||0;
+  const years=Math.max(0,startAge-childAge);
+  // Future value of college costs
+  let totalCollegeCost=0;
+  for(let y=0;y<collegeYears;y++){
+    totalCollegeCost+=annualCost*Math.pow(1+inflation,years+y);
+  }
+  // Current balance grown
+  const currentGrowth=current*Math.pow(1+r,years);
+  const stillNeeded=Math.max(0,totalCollegeCost-currentGrowth);
+  // Monthly savings needed
+  const mr=r/12,months=years*12;
+  const monthly=mr>0?stillNeeded*mr/(Math.pow(1+mr,months)-1):stillNeeded/months;
+  const totalContrib=monthly*months;
+  const growth=stillNeeded-totalContrib;
+  document.getElementById('monthly').textContent=fmt(monthly)+'/mo';
+  document.getElementById('years').textContent=years+' years';
+  document.getElementById('totalCost').textContent=fmt(totalCollegeCost);
+  document.getElementById('currentGrowth').textContent=fmt(currentGrowth);
+  document.getElementById('toSave').textContent=fmt(stillNeeded);
+  document.getElementById('totalContrib').textContent=fmt(totalContrib);
+  document.getElementById('growth').textContent=fmt(Math.max(0,growth));
+  document.getElementById('infoBox').textContent=years>0?`Start saving ${fmt(monthly)}/month now to cover ${fmt(totalCollegeCost)} in future college costs`:`College starts soon — begin saving immediately`;
+}
+calculate();
+</script></main>
+<footer class="site-footer">
+  <div class="footer-top">
+    <a class="footer-logo" href="../index.html">Calqu<span>to</span></a>
+    <p class="footer-tagline">Free, fast, browser-based calculators and tools. No signup, nothing stored.</p>
+  </div>
+  <div class="footer-cols">
+    <div class="footer-col">
+      <h4>Finance &amp; Tax</h4>
+      <a href="../tools/mortgage-calculator.html">Mortgage Calculator</a>
+      <a href="../tools/loan-calculator.html">Loan Calculator</a>
+      <a href="../tools/refinance-calculator.html">Mortgage Refinance Calculator</a>
+      <a href="../tools/home-affordability.html">Home Affordability Calculator</a>
+      <a href="../tools/home-equity-heloc.html">Home Equity &amp; HELOC Calculator</a>
+      <a href="../tools/rent-vs-buy.html">Rent vs Buy Calculator</a>
+      <a href="../tools/closing-costs.html">Closing Costs Calculator</a>
+      <a href="../tools/property-tax-estimator.html">Property Tax Estimator</a>
+      <a href="../tools/renovation-roi.html">Home Renovation ROI Calculator</a>
+      <a href="../tools/car-loan-calculator.html">Car Loan Calculator</a>
+      <a href="../tools/car-lease-vs-buy.html">Car Lease vs Buy Calculator</a>
+      <a href="../tools/car-depreciation.html">Car Depreciation Calculator</a>
+      <a href="../tools/compound-interest.html">Compound Interest Calculator</a>
+      <a href="../tools/retirement-calculator.html">Retirement Calculator</a>
+      <a href="../tools/401k-calculator.html">401(k) Contribution Calculator</a>
+      <a href="../tools/roth-ira-vs-traditional.html">Roth IRA vs Traditional IRA</a>
+      <a href="../tools/social-security-calculator.html">Social Security Benefits Estimator</a>
+      <a href="../tools/credit-card-payoff.html">Credit Card Payoff Calculator</a>
+      <a href="../tools/savings-goal-calculator.html">Savings Goal Calculator</a>
+      <a href="../tools/break-even-calculator.html">Break-Even Calculator</a>
+      <a href="../tools/discount-calculator.html">Discount Calculator</a>
+      <a href="../tools/percentage-calculator.html">Percentage Calculator</a>
+      <a href="../tools/tip-calculator.html">Tip Calculator</a>
+      <a href="../tools/federal-tax-bracket.html">Federal Tax Bracket Calculator</a>
+      <a href="../tools/capital-gains-tax.html">Capital Gains Tax Calculator</a>
+      <a href="../tools/child-tax-credit.html">Child Tax Credit Calculator</a>
+      <a href="../tools/w2-vs-1099-calculator.html">W-2 vs 1099 Tax Comparison</a>
+      <a href="../tools/llc-vs-scorp.html">LLC vs S-Corp Tax Savings</a>
+      <a href="../tools/freelancer-tax-estimator.html">Freelancer Tax Estimator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Work, Benefits &amp; Education</h4>
+      <a href="../tools/salary-calculator.html">Salary &amp; Paycheck Calculator</a>
+      <a href="../tools/job-offer-comparison.html">Job Offer Comparison Calculator</a>
+      <a href="../tools/freelance-rate-calculator.html">Freelance Rate Calculator</a>
+      <a href="../tools/severance-pay-estimator.html">Severance Pay Estimator</a>
+      <a href="../tools/employee-cost.html">Employee Cost Calculator</a>
+      <a href="../tools/work-hours-calculator.html">Work Hours Calculator</a>
+      <a href="../tools/wfh-savings-calculator.html">Work From Home Savings Calculator</a>
+      <a href="../tools/invoice-generator.html">Invoice Generator</a>
+      <a href="../tools/hsa-calculator.html">HSA Contribution Calculator</a>
+      <a href="../tools/fsa-vs-hsa.html">FSA vs HSA Comparison Tool</a>
+      <a href="../tools/cobra-calculator.html">COBRA Insurance Cost Estimator</a>
+      <a href="../tools/life-insurance-calculator.html">Life Insurance Needs Calculator</a>
+      <a href="../tools/college-529-calculator.html">529 College Savings Calculator</a>
+      <a href="../tools/fafsa-efc.html">FAFSA EFC / SAI Estimator</a>
+      <a href="../tools/student-loan-payoff.html">Student Loan Payoff Calculator</a>
+      <a href="../tools/gpa-calculator.html">GPA to 4.0 Scale Calculator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Converters &amp; Everyday</h4>
+      <a href="../tools/length-converter.html">Unit Converter (Length/Weight/Temp/Speed/Area)</a>
+      <a href="../tools/timezone-converter.html">Time Zone Converter</a>
+      <a href="../tools/countdown-timer.html">Countdown Timer</a>
+      <a href="../tools/date-difference.html">Date Difference Calculator</a>
+      <a href="../tools/json-formatter.html">JSON Formatter</a>
+      <a href="../tools/color-picker.html">Color Picker</a>
+      <a href="../tools/base64-tool.html">Base64 Encoder/Decoder</a>
+      <a href="../tools/regex-tester.html">Regex Tester</a>
+      <a href="../tools/word-counter.html">Word Counter</a>
+      <a href="../tools/character-counter.html">Character Counter</a>
+      <a href="../tools/case-converter.html">Case Converter</a>
+      <a href="../tools/lorem-ipsum.html">Lorem Ipsum Generator</a>
+      <a href="../tools/meta-tag-generator.html">Meta Tag Generator</a>
+      <a href="../tools/slug-generator.html">Slug Generator</a>
+      <a href="../tools/readability-checker.html">Readability Checker</a>
+      <a href="../tools/bmi-calculator.html">BMI Calculator</a>
+      <a href="../tools/calorie-calculator.html">Calorie Calculator</a>
+      <a href="../tools/qr-generator.html">QR Code Generator</a>
+      <a href="../tools/password-generator.html">Password Generator</a>
+      <a href="../tools/age-calculator.html">Age Calculator</a>
+      <a href="../tools/gas-cost-calculator.html">Gas Cost Calculator</a>
+      <a href="../tools/moving-cost-calculator.html">True Cost of Moving Calculator</a>
+      <a href="../tools/solar-savings-calculator.html">Solar Panel Savings Calculator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="../index.html">All Tools</a>
+      <a href="../about.html">About</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../privacy-policy.html">Privacy Policy</a>
+      <a href="../terms.html">Terms of Service</a>
+      <a href="../disclaimer.html">Disclaimer</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Calquto &middot; Free 529 college savings calculator · No signup required</span>
+  </div>
+</footer>
+</body></html>

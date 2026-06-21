@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+
+<meta name="description" content="Free solar panel savings calculator — find out how much you'd save switching to solar based on your electric bill, location and roof size.">
+<link rel="canonical" href="https://calquto.com/tools/solar-savings-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Solar Panel Savings Calculator — Calquto">
+<meta property="og:description" content="Free solar panel savings calculator — find out how much you'd save switching to solar based on your electric bill, location and roof size.">
+<meta property="og:url" content="https://calquto.com/tools/solar-savings-calculator.html">
+<meta property="og:site_name" content="Calquto">
+<meta property="og:image" content="https://calquto.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Solar Panel Savings Calculator — Calquto">
+<meta name="twitter:description" content="Free solar panel savings calculator — find out how much you'd save switching to solar based on your electric bill, location and roof size.">
+<meta name="twitter:image" content="https://calquto.com/og-image.png">
+<title>Solar Panel Savings Calculator — Calquto</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--b9:#0a1628;--b5:#2563eb;--b4:#3b82f6;--b3:#93c5fd;--b1:#dbeafe;--b0:#eff6ff;--b6:#1e4fa3;--g9:#0f172a;--g7:#334155;--g5:#64748b;--g3:#cbd5e1;--g1:#f1f5f9;--g0:#f8fafc;--r:12px;--rs:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{{font-family:'Inter',sans-serif;background:var(--g0);color:var(--g9);line-height:1.6;display:flex;flex-direction:column;min-height:100vh}}
+.hero{background:var(--b9);padding:0 0 2rem;text-align:center}
+.hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(24px,4vw,36px);font-weight:800;color:#fff;letter-spacing:-0.5px}
+.hero p{color:var(--b3);font-size:15px;margin-top:6px}
+main{max-width:920px;margin:0 auto;padding:2rem 1.5rem 4rem;display:grid;grid-template-columns:340px 1fr;gap:24px}
+@media(max-width:700px){main{grid-template-columns:1fr}}
+.card{background:#fff;border:1px solid var(--g3);border-radius:var(--r);padding:1.5rem}
+.card h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:700;margin-bottom:1.25rem}
+.field{margin-bottom:1rem}
+label{display:block;font-size:13px;font-weight:500;color:var(--g7);margin-bottom:5px}
+.iw{position:relative}
+.ip{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--g5)}
+.is{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--g5)}
+input[type=number]{width:100%;border:1px solid var(--g3);border-radius:var(--rs);padding:10px 12px 10px 28px;font-size:15px;font-family:'Inter',sans-serif;color:var(--g9);outline:none;transition:border-color .15s}
+input[type=number].np{padding-left:12px}
+input[type=number]:focus{border-color:var(--b4)}
+select{width:100%;border:1px solid var(--g3);border-radius:var(--rs);padding:10px 12px;font-size:14px;font-family:'Inter',sans-serif;color:var(--g9);outline:none;background:#fff}
+.res-big{background:linear-gradient(135deg,#f59e0b,#ea580c);border-radius:var(--r);padding:1.25rem;text-align:center;margin-bottom:1rem}
+.res-big-lbl{font-size:13px;color:rgba(255,255,255,.85);font-weight:500;margin-bottom:4px}
+.res-big-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:34px;font-weight:800;color:#fff}
+.res-big-sub{font-size:12px;color:rgba(255,255,255,.85);margin-top:2px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem}
+.stat{background:var(--g0);border-radius:var(--rs);padding:.9rem;text-align:center}
+.stat-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:18px;font-weight:800;color:var(--b6)}
+.stat-lbl{font-size:11px;color:var(--g5);margin-top:2px}
+.chart-wrap{height:220px;margin-top:1rem}
+.note{font-size:11px;color:var(--g5);margin-top:1rem;line-height:1.6;background:var(--g0);padding:.75rem;border-radius:8px}
+.payback-badge{display:inline-block;background:#fef3c7;color:#92400e;font-size:13px;font-weight:600;padding:6px 14px;border-radius:99px;margin-top:8px}
+footer a{color:var(--b4);text-decoration:none}
+.content-block{background:#fff;border:1px solid var(--g3);border-radius:var(--r);padding:1.5rem;margin-top:1.25rem;grid-column:1/-1}
+.content-block h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;margin-bottom:.75rem}
+.content-block p{font-size:13px;color:var(--g7);margin-bottom:.75rem}
+.guide{background:#fff;border:1px solid var(--g3);border-radius:var(--r);padding:1.75rem;margin-top:1.25rem}
+.guide h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:700;color:var(--g9);margin-bottom:.75rem}
+.guide h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:var(--g9);margin:1.25rem 0 .5rem}
+.guide p{font-size:13.5px;color:var(--g7);margin-bottom:.75rem;line-height:1.75}
+.guide ul{margin:0 0 .75rem 1.1rem;font-size:13.5px;color:var(--g7);line-height:1.8}
+.formula-box{background:var(--g0);border:1px solid var(--g3);border-radius:var(--rs);padding:1rem 1.25rem;margin:.75rem 0;font-family:monospace;font-size:13px;color:var(--b6);overflow-x:auto}
+.example-box{background:var(--b0);border:1px solid var(--b1);border-radius:var(--rs);padding:1rem 1.25rem;margin:.75rem 0}
+.example-box .ex-label{font-size:11px;font-weight:700;color:var(--b6);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.faq-item{border-bottom:1px solid var(--g1);padding:12px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:14px;font-weight:600;color:var(--g9);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.faq-a{font-size:13.5px;color:var(--g7);margin-top:8px;line-height:1.75;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-arrow{transition:transform .2s;color:var(--g5);flex-shrink:0}
+.faq-item.open .faq-arrow{transform:rotate(180deg)}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:.5rem}
+.related-link{display:block;background:var(--g0);border-radius:var(--rs);padding:.75rem 1rem;text-decoration:none;color:var(--g9);font-size:13px;font-weight:600;border:1px solid var(--g3);transition:border-color .15s}
+.related-link:hover{border-color:var(--b4)}
+.related-link span{display:block;font-size:11.5px;color:var(--g5);font-weight:400;margin-top:2px}
+.guide-wrap{max-width:900px;margin:0 auto;padding:0 1.5rem 1rem}
+nav{background:var(--b9);padding:0 1.25rem 0 2rem;height:60px;display:flex;align-items:center;gap:1.5rem;position:sticky;top:0;z-index:300;border-bottom:1px solid rgba(255,255,255,.06)}
+.logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:#fff;text-decoration:none;flex-shrink:0}.logo span{color:var(--b4)}
+.nav-toggle{display:none;margin-left:auto;background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:4px 6px;line-height:1}
+.nav-links{display:flex;align-items:center;gap:.25rem;list-style:none;flex:1;min-width:0}
+.nav-links li{position:relative}
+.nav-links>li>a{display:block;color:var(--b3);text-decoration:none;font-size:13.5px;font-weight:500;padding:10px;border-radius:6px;transition:color .15s,background .15s;white-space:nowrap}
+.nav-links>li>a:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-links li.nav-all{margin-left:auto}
+.nav-links li.nav-all>a{color:#fff;background:var(--b5);font-weight:600}
+.nav-links li.nav-all>a:hover{background:var(--b6)}
+
+/* mega-menu panel */
+.nav-dd{display:none;position:absolute;top:100%;left:0;margin-top:0;background:#fff;border:1px solid var(--g3);border-radius:var(--rs);box-shadow:0 12px 32px rgba(10,22,40,.18);padding:1.1rem;z-index:300}
+.nav-links li:hover .nav-dd,.nav-links li:focus-within .nav-dd{display:block}
+.mega-grid{display:flex;gap:1.75rem}
+.mega-col{display:flex;flex-direction:column;gap:2px;min-width:200px}
+.mega-col a{display:block;padding:6px 8px;border-radius:6px;font-size:13px;font-weight:500;color:var(--g7);text-decoration:none;white-space:nowrap}
+.mega-col a:hover{background:var(--g0);color:var(--b5)}
+.mega-col a.cur{color:var(--b5);background:var(--b0)}
+.mega-viewall{display:block;margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--g1);font-size:12.5px;font-weight:600;color:var(--b5);text-decoration:none}
+.mega-viewall:hover{color:var(--b6)}
+
+@media (max-width:980px){
+  .nav-links{display:none;position:fixed;top:60px;left:0;right:0;bottom:0;background:var(--b9);flex-direction:column;align-items:stretch;overflow-y:auto;padding:.5rem 1rem 2rem;gap:0}
+  .nav-links.open{display:flex}
+  .nav-links>li>a{color:#fff;padding:13px 6px;border-bottom:1px solid rgba(255,255,255,.06)}
+  .nav-links li.nav-all{margin-left:0;order:-1}
+  .nav-links li.nav-all>a{text-align:center;margin:.5rem 0 .75rem;border-bottom:none}
+  .nav-dd{position:static;display:block;box-shadow:none;border:none;border-radius:0;background:rgba(255,255,255,.03);padding:.25rem .5rem .75rem}
+  .mega-grid{flex-direction:column;gap:0}
+  .mega-col{min-width:0}
+  .mega-col a{color:var(--b3);padding:9px 10px}
+  .mega-col a:hover{background:rgba(255,255,255,.08);color:#fff}
+  .mega-viewall{color:var(--b4);border-top-color:rgba(255,255,255,.1)}
+  .nav-toggle{display:block}
+}
+
+/* footer */
+.site-footer{background:var(--b9);color:var(--b3);padding:3rem 1.5rem 1.5rem;margin-top:auto}
+.footer-top{max-width:1100px;margin:0 auto;padding-bottom:1.75rem;border-bottom:1px solid rgba(255,255,255,.08)}
+.footer-logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:#fff;text-decoration:none}
+.footer-logo span{color:var(--b4)}
+.footer-tagline{font-size:13px;color:var(--b3);margin-top:.5rem;max-width:420px;line-height:1.6}
+.footer-cols{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;padding:1.75rem 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.footer-col h4{font-family:'Plus Jakarta Sans',sans-serif;color:#fff;font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.85rem}
+.footer-col a{display:block;color:var(--b3);text-decoration:none;font-size:13px;margin-bottom:.55rem;line-height:1.4}
+.footer-col a:hover{color:#fff}
+.footer-bottom{max-width:1100px;margin:0 auto;padding-top:1.25rem;font-size:12.5px;color:var(--b3)}
+
+@media (max-width:860px){
+  .footer-cols{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:560px){
+  .footer-cols{grid-template-columns:1fr;gap:1.75rem}
+}
+.breadcrumb{max-width:1000px;margin:0 auto;padding:1.1rem 1.5rem 0;font-size:12px}
+.breadcrumb a{color:#60a5fa;text-decoration:none;transition:color .15s}
+.breadcrumb a:hover{color:#93c5fd}
+.breadcrumb .bc-sep{color:rgba(147,197,253,0.35);margin:0 5px}
+.breadcrumb .bc-current{color:rgba(255,255,255,0.55)}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is the federal solar tax credit still available?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "As of current law, the Residential Clean Energy Credit offers 30% of system cost as a tax credit through 2032, after which it steps down before expiring. Always verify current details with the IRS or a tax professional, since solar incentive legislation can change."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do solar panels work during a power outage?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Standard grid-tied solar systems (without battery storage) automatically shut off during a grid outage for safety reasons, even on a sunny day. A battery storage system or backup generator is required for power during outages — this adds cost beyond the base solar installation."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long do solar panels actually last?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most solar panels carry a 25-year performance warranty, guaranteeing at least 80-85% of original output by year 25. Many panels continue producing meaningful power well beyond that warranty period, often 30+ years, though efficiency gradually declines over time."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Solar Panel Savings Calculator",
+  "url": "https://calquto.com/tools/solar-savings-calculator.html",
+  "description": "Free solar panel savings calculator — find out how much you'd save switching to solar based on your electric bill, location and roof size.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (Web Browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Calquto",
+    "url": "https://calquto.com/"
+  }
+}
+</script>
+</head>
+<body>
+<nav>
+  <a class="logo" href="../index.html">Calqu<span>to</span></a>
+  <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">&#9776;</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="../finance.html">Finance</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/mortgage-calculator.html">Mortgage Calculator</a>
+          <a href="../tools/loan-calculator.html">Loan Calculator</a>
+          <a href="../tools/refinance-calculator.html">Mortgage Refinance Calculator</a>
+          <a href="../tools/home-affordability.html">Home Affordability Calculator</a>
+          <a href="../tools/home-equity-heloc.html">Home Equity &amp; HELOC Calculator</a>
+          <a href="../tools/rent-vs-buy.html">Rent vs Buy Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/closing-costs.html">Closing Costs Calculator</a>
+          <a href="../tools/property-tax-estimator.html">Property Tax Estimator</a>
+          <a href="../tools/renovation-roi.html">Home Renovation ROI Calculator</a>
+          <a href="../tools/car-loan-calculator.html">Car Loan Calculator</a>
+          <a href="../tools/car-lease-vs-buy.html">Car Lease vs Buy Calculator</a>
+          <a href="../tools/car-depreciation.html">Car Depreciation Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/compound-interest.html">Compound Interest Calculator</a>
+          <a href="../tools/retirement-calculator.html">Retirement Calculator</a>
+          <a href="../tools/401k-calculator.html">401(k) Contribution Calculator</a>
+          <a href="../tools/roth-ira-vs-traditional.html">Roth IRA vs Traditional IRA</a>
+          <a href="../tools/social-security-calculator.html">Social Security Benefits Estimator</a>
+          <a href="../tools/credit-card-payoff.html">Credit Card Payoff Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/savings-goal-calculator.html">Savings Goal Calculator</a>
+          <a href="../tools/break-even-calculator.html">Break-Even Calculator</a>
+          <a href="../tools/discount-calculator.html">Discount Calculator</a>
+          <a href="../tools/percentage-calculator.html">Percentage Calculator</a>
+          <a href="../tools/tip-calculator.html">Tip Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../finance.html">View all Finance tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../tax.html">Tax</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/federal-tax-bracket.html">Federal Tax Bracket Calculator</a>
+          <a href="../tools/capital-gains-tax.html">Capital Gains Tax Calculator</a>
+          <a href="../tools/child-tax-credit.html">Child Tax Credit Calculator</a>
+          <a href="../tools/w2-vs-1099-calculator.html">W-2 vs 1099 Tax Comparison</a>
+          <a href="../tools/llc-vs-scorp.html">LLC vs S-Corp Tax Savings</a>
+          <a href="../tools/freelancer-tax-estimator.html">Freelancer Tax Estimator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../tax.html">View all Tax tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../work-career.html">Work &amp; Career</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/salary-calculator.html">Salary &amp; Paycheck Calculator</a>
+          <a href="../tools/job-offer-comparison.html">Job Offer Comparison Calculator</a>
+          <a href="../tools/freelance-rate-calculator.html">Freelance Rate Calculator</a>
+          <a href="../tools/severance-pay-estimator.html">Severance Pay Estimator</a>
+          <a href="../tools/employee-cost.html">Employee Cost Calculator</a>
+          <a href="../tools/work-hours-calculator.html">Work Hours Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/wfh-savings-calculator.html">Work From Home Savings Calculator</a>
+          <a href="../tools/invoice-generator.html">Invoice Generator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../work-career.html">View all Work &amp; Career tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../benefits-insurance.html">Benefits</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/hsa-calculator.html">HSA Contribution Calculator</a>
+          <a href="../tools/fsa-vs-hsa.html">FSA vs HSA Comparison Tool</a>
+          <a href="../tools/cobra-calculator.html">COBRA Insurance Cost Estimator</a>
+          <a href="../tools/life-insurance-calculator.html">Life Insurance Needs Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../benefits-insurance.html">View all Benefits tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../education.html">Education</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/college-529-calculator.html">529 College Savings Calculator</a>
+          <a href="../tools/fafsa-efc.html">FAFSA EFC / SAI Estimator</a>
+          <a href="../tools/student-loan-payoff.html">Student Loan Payoff Calculator</a>
+          <a href="../tools/gpa-calculator.html">GPA to 4.0 Scale Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../education.html">View all Education tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../converters.html">Converters</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/length-converter.html">Unit Converter (Length/Weight/Temp/Speed/Area)</a>
+          <a href="../tools/timezone-converter.html">Time Zone Converter</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../converters.html">View all Converters tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../date-time-tools.html">Date/Time</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/countdown-timer.html">Countdown Timer</a>
+          <a href="../tools/date-difference.html">Date Difference Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../date-time-tools.html">View all Date/Time tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../developer-tools.html">Developer</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/json-formatter.html">JSON Formatter</a>
+          <a href="../tools/color-picker.html">Color Picker</a>
+          <a href="../tools/base64-tool.html">Base64 Encoder/Decoder</a>
+          <a href="../tools/regex-tester.html">Regex Tester</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../developer-tools.html">View all Developer tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../seo-text-tools.html">SEO/Text</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/word-counter.html">Word Counter</a>
+          <a href="../tools/character-counter.html">Character Counter</a>
+          <a href="../tools/case-converter.html">Case Converter</a>
+          <a href="../tools/lorem-ipsum.html">Lorem Ipsum Generator</a>
+          <a href="../tools/meta-tag-generator.html">Meta Tag Generator</a>
+          <a href="../tools/slug-generator.html">Slug Generator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/readability-checker.html">Readability Checker</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../seo-text-tools.html">View all SEO/Text tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../health.html">Health</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/bmi-calculator.html">BMI Calculator</a>
+          <a href="../tools/calorie-calculator.html">Calorie Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../health.html">View all Health tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../everyday-tools.html">Everyday</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/qr-generator.html">QR Code Generator</a>
+          <a href="../tools/password-generator.html">Password Generator</a>
+          <a href="../tools/age-calculator.html">Age Calculator</a>
+          <a href="../tools/gas-cost-calculator.html">Gas Cost Calculator</a>
+          <a href="../tools/moving-cost-calculator.html">True Cost of Moving Calculator</a>
+          <a href="../tools/solar-savings-calculator.html" class="cur">Solar Panel Savings Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../everyday-tools.html">View all Everyday tools &rarr;</a>
+      </div>
+    </li>
+    <li class="nav-all"><a href="../index.html">All Tools</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="breadcrumb"><a href="../index.html">Calquto</a><span class="bc-sep">›</span><a href="../everyday-tools.html">Everyday Tools</a><span class="bc-sep">›</span><span class="bc-current">️ Solar Panel Savings Calculator</span></div><h1>☀️ Solar Panel Savings Calculator</h1><p>Find out how much you could save switching to solar — based on your real electric bill</p></div>
+<main>
+<div class="card">
+  <h2>Your Home Details</h2>
+  <div class="field"><label>Average Monthly Electric Bill</label><div class="iw"><span class="ip">$</span><input type="number" id="bill" value="150" oninput="calc()"></div></div>
+  <div class="field"><label>State / Region</label>
+    <select id="state" onchange="calc()">
+      <option value="0.14" data-sun="5.0">California</option>
+      <option value="0.13" data-sun="5.5" selected>Texas</option>
+      <option value="0.12" data-sun="4.2">Florida</option>
+      <option value="0.22" data-sun="3.8">New York</option>
+      <option value="0.11" data-sun="4.0">Arizona</option>
+      <option value="0.16" data-sun="3.5">New Jersey</option>
+      <option value="0.10" data-sun="4.5">North Carolina</option>
+      <option value="0.13" data-sun="3.2">Illinois</option>
+      <option value="0.10" data-sun="3.0">Washington</option>
+      <option value="0.13" data-sun="4.0">Other / US Average</option>
+    </select>
+  </div>
+  <div class="field"><label>Roof Sun Exposure</label>
+    <select id="exposure" onchange="calc()">
+      <option value="1.0">Full sun (no shade)</option>
+      <option value="0.85" selected>Mostly sunny (light shade)</option>
+      <option value="0.65">Partial shade</option>
+    </select>
+  </div>
+  <div class="field"><label>System Cost (before incentives)</label><div class="iw"><span class="ip">$</span><input type="number" id="systemCost" value="20000" oninput="calc()"></div></div>
+  <div class="field"><label>Federal Tax Credit</label><div class="iw"><input type="number" id="taxCredit" class="np" value="30" oninput="calc()"><span class="is">%</span></div></div>
+</div>
+<div class="card">
+  <h2>Your Solar Savings</h2>
+  <div class="res-big">
+    <div class="res-big-lbl">Estimated Savings Over 25 Years</div>
+    <div class="res-big-num" id="lifetimeSavings">—</div>
+    <div class="res-big-sub">after accounting for system cost</div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-num" id="netCost">—</div><div class="stat-lbl">Net cost after tax credit</div></div>
+    <div class="stat"><div class="stat-num" id="monthlySavings">—</div><div class="stat-lbl">Monthly bill savings</div></div>
+    <div class="stat"><div class="stat-num" id="paybackYears">—</div><div class="stat-lbl">Payback period</div></div>
+    <div class="stat"><div class="stat-num" id="systemSize">—</div><div class="stat-lbl">Recommended system size</div></div>
+  </div>
+  <div style="text-align:center"><span class="payback-badge" id="verdictBadge">—</span></div>
+  <div class="chart-wrap"><canvas id="chart"></canvas></div>
+  <div class="note">⚠️ Estimates only — actual savings depend on local utility rates, panel efficiency, financing terms, and state-specific incentives beyond the federal credit. Get quotes from 2-3 installers to compare real numbers.</div>
+</div>
+<div class="guide" style="grid-column:1/-1">
+  <h2>How Solar Savings Are Calculated</h2>
+  <p>Your savings depend on three things: how much electricity you currently use (shown by your bill), how much sun your roof gets, and your local electricity rate. Solar panels offset your utility bill by generating your own power, and in many states, excess power can be sold back to the grid through net metering.</p>
+  <p>The federal solar tax credit (Residential Clean Energy Credit) lets you deduct a percentage of your system cost from your federal taxes — currently 30% through 2032 for most homeowners. This is applied after you account for any state or utility rebates.</p>
+  <p>Payback period is the number of years it takes for your accumulated bill savings to equal what you paid for the system. Most US homeowners see payback between 6-10 years, with the system continuing to produce savings for 15-20+ years afterward.</p>
+
+  <h3>Factors That Affect Your Real Savings</h3>
+  <ul>
+    <li><strong>Roof orientation and shade</strong> — south-facing roofs with no shade produce significantly more energy than partially shaded or north-facing installations.</li>
+    <li><strong>Local utility rate structure</strong> — states with high electricity rates (California, Massachusetts) see faster payback than states with cheap power (some parts of the Pacific Northwest).</li>
+    <li><strong>Net metering policy</strong> — some utilities pay full retail rate for excess solar power sent back to the grid; others pay significantly less, which changes your effective savings.</li>
+    <li><strong>Financing method</strong> — paying cash maximizes savings, while solar loans or leases reduce upfront cost but also reduce total long-term savings.</li>
+  </ul>
+
+  <h3>Frequently Asked Questions</h3>
+  <div class="faq-item open">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is the federal solar tax credit still available? <span class="faq-arrow">▼</span></div>
+    <div class="faq-a">As of current law, the Residential Clean Energy Credit offers 30% of system cost as a tax credit through 2032, after which it steps down before expiring. Always verify current details with the IRS or a tax professional, since solar incentive legislation can change.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Do solar panels work during a power outage? <span class="faq-arrow">▼</span></div>
+    <div class="faq-a">Standard grid-tied solar systems (without battery storage) automatically shut off during a grid outage for safety reasons, even on a sunny day. A battery storage system or backup generator is required for power during outages — this adds cost beyond the base solar installation.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How long do solar panels actually last? <span class="faq-arrow">▼</span></div>
+    <div class="faq-a">Most solar panels carry a 25-year performance warranty, guaranteeing at least 80-85% of original output by year 25. Many panels continue producing meaningful power well beyond that warranty period, often 30+ years, though efficiency gradually declines over time.</div>
+  </div>
+
+  <h3>Related Calculators</h3>
+  <div class="related-grid">
+    <a class="related-link" href="mortgage-calculator.html">Mortgage Calculator<span>Plan your home costs</span></a>
+    <a class="related-link" href="compound-interest.html">Compound Interest<span>See how savings grow</span></a>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="footer-top">
+    <a class="footer-logo" href="../index.html">Calqu<span>to</span></a>
+    <p class="footer-tagline">Free, fast, browser-based calculators and tools. No signup, nothing stored.</p>
+  </div>
+  <div class="footer-cols">
+    <div class="footer-col">
+      <h4>Finance &amp; Tax</h4>
+      <a href="../tools/mortgage-calculator.html">Mortgage Calculator</a>
+      <a href="../tools/loan-calculator.html">Loan Calculator</a>
+      <a href="../tools/refinance-calculator.html">Mortgage Refinance Calculator</a>
+      <a href="../tools/home-affordability.html">Home Affordability Calculator</a>
+      <a href="../tools/home-equity-heloc.html">Home Equity &amp; HELOC Calculator</a>
+      <a href="../tools/rent-vs-buy.html">Rent vs Buy Calculator</a>
+      <a href="../tools/closing-costs.html">Closing Costs Calculator</a>
+      <a href="../tools/property-tax-estimator.html">Property Tax Estimator</a>
+      <a href="../tools/renovation-roi.html">Home Renovation ROI Calculator</a>
+      <a href="../tools/car-loan-calculator.html">Car Loan Calculator</a>
+      <a href="../tools/car-lease-vs-buy.html">Car Lease vs Buy Calculator</a>
+      <a href="../tools/car-depreciation.html">Car Depreciation Calculator</a>
+      <a href="../tools/compound-interest.html">Compound Interest Calculator</a>
+      <a href="../tools/retirement-calculator.html">Retirement Calculator</a>
+      <a href="../tools/401k-calculator.html">401(k) Contribution Calculator</a>
+      <a href="../tools/roth-ira-vs-traditional.html">Roth IRA vs Traditional IRA</a>
+      <a href="../tools/social-security-calculator.html">Social Security Benefits Estimator</a>
+      <a href="../tools/credit-card-payoff.html">Credit Card Payoff Calculator</a>
+      <a href="../tools/savings-goal-calculator.html">Savings Goal Calculator</a>
+      <a href="../tools/break-even-calculator.html">Break-Even Calculator</a>
+      <a href="../tools/discount-calculator.html">Discount Calculator</a>
+      <a href="../tools/percentage-calculator.html">Percentage Calculator</a>
+      <a href="../tools/tip-calculator.html">Tip Calculator</a>
+      <a href="../tools/federal-tax-bracket.html">Federal Tax Bracket Calculator</a>
+      <a href="../tools/capital-gains-tax.html">Capital Gains Tax Calculator</a>
+      <a href="../tools/child-tax-credit.html">Child Tax Credit Calculator</a>
+      <a href="../tools/w2-vs-1099-calculator.html">W-2 vs 1099 Tax Comparison</a>
+      <a href="../tools/llc-vs-scorp.html">LLC vs S-Corp Tax Savings</a>
+      <a href="../tools/freelancer-tax-estimator.html">Freelancer Tax Estimator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Work, Benefits &amp; Education</h4>
+      <a href="../tools/salary-calculator.html">Salary &amp; Paycheck Calculator</a>
+      <a href="../tools/job-offer-comparison.html">Job Offer Comparison Calculator</a>
+      <a href="../tools/freelance-rate-calculator.html">Freelance Rate Calculator</a>
+      <a href="../tools/severance-pay-estimator.html">Severance Pay Estimator</a>
+      <a href="../tools/employee-cost.html">Employee Cost Calculator</a>
+      <a href="../tools/work-hours-calculator.html">Work Hours Calculator</a>
+      <a href="../tools/wfh-savings-calculator.html">Work From Home Savings Calculator</a>
+      <a href="../tools/invoice-generator.html">Invoice Generator</a>
+      <a href="../tools/hsa-calculator.html">HSA Contribution Calculator</a>
+      <a href="../tools/fsa-vs-hsa.html">FSA vs HSA Comparison Tool</a>
+      <a href="../tools/cobra-calculator.html">COBRA Insurance Cost Estimator</a>
+      <a href="../tools/life-insurance-calculator.html">Life Insurance Needs Calculator</a>
+      <a href="../tools/college-529-calculator.html">529 College Savings Calculator</a>
+      <a href="../tools/fafsa-efc.html">FAFSA EFC / SAI Estimator</a>
+      <a href="../tools/student-loan-payoff.html">Student Loan Payoff Calculator</a>
+      <a href="../tools/gpa-calculator.html">GPA to 4.0 Scale Calculator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Converters &amp; Everyday</h4>
+      <a href="../tools/length-converter.html">Unit Converter (Length/Weight/Temp/Speed/Area)</a>
+      <a href="../tools/timezone-converter.html">Time Zone Converter</a>
+      <a href="../tools/countdown-timer.html">Countdown Timer</a>
+      <a href="../tools/date-difference.html">Date Difference Calculator</a>
+      <a href="../tools/json-formatter.html">JSON Formatter</a>
+      <a href="../tools/color-picker.html">Color Picker</a>
+      <a href="../tools/base64-tool.html">Base64 Encoder/Decoder</a>
+      <a href="../tools/regex-tester.html">Regex Tester</a>
+      <a href="../tools/word-counter.html">Word Counter</a>
+      <a href="../tools/character-counter.html">Character Counter</a>
+      <a href="../tools/case-converter.html">Case Converter</a>
+      <a href="../tools/lorem-ipsum.html">Lorem Ipsum Generator</a>
+      <a href="../tools/meta-tag-generator.html">Meta Tag Generator</a>
+      <a href="../tools/slug-generator.html">Slug Generator</a>
+      <a href="../tools/readability-checker.html">Readability Checker</a>
+      <a href="../tools/bmi-calculator.html">BMI Calculator</a>
+      <a href="../tools/calorie-calculator.html">Calorie Calculator</a>
+      <a href="../tools/qr-generator.html">QR Code Generator</a>
+      <a href="../tools/password-generator.html">Password Generator</a>
+      <a href="../tools/age-calculator.html">Age Calculator</a>
+      <a href="../tools/gas-cost-calculator.html">Gas Cost Calculator</a>
+      <a href="../tools/moving-cost-calculator.html">True Cost of Moving Calculator</a>
+      <a href="../tools/solar-savings-calculator.html">Solar Panel Savings Calculator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="../index.html">All Tools</a>
+      <a href="../about.html">About</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../privacy-policy.html">Privacy Policy</a>
+      <a href="../terms.html">Terms of Service</a>
+      <a href="../disclaimer.html">Disclaimer</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Calquto &middot; Free solar savings calculator · Estimates only, not a quote</span>
+  </div>
+</footer>
+<script>
+let chartInst=null;
+function calc(){
+  const bill=parseFloat(document.getElementById('bill').value)||0;
+  const stateSel=document.getElementById('state');
+  const rate=parseFloat(stateSel.value);
+  const sunHours=parseFloat(stateSel.selectedOptions[0].dataset.sun);
+  const exposure=parseFloat(document.getElementById('exposure').value);
+  const systemCost=parseFloat(document.getElementById('systemCost').value)||0;
+  const creditPct=parseFloat(document.getElementById('taxCredit').value)||0;
+
+  const monthlyKwh=bill/rate;
+  const annualKwh=monthlyKwh*12;
+  const systemSizeKw=annualKwh/(sunHours*365*0.8); // 0.8 system efficiency factor
+  const offsetPct=Math.min(0.95,exposure);
+  const monthlySavings=bill*offsetPct;
+  const annualSavings=monthlySavings*12;
+  const netCost=systemCost*(1-creditPct/100);
+  const paybackYears=netCost/annualSavings;
+
+  // 25-year projection with 3% annual utility rate inflation
+  let totalSavings=0,labels=[],cumulative=[];
+  let yearlyBill=annualSavings;
+  for(let y=1;y<=25;y++){
+    totalSavings+=yearlyBill;
+    yearlyBill*=1.03;
+    labels.push('Yr '+y);
+    cumulative.push(Math.round(totalSavings-netCost));
+  }
+  const lifetimeNet=totalSavings-netCost;
+
+  document.getElementById('lifetimeSavings').textContent='$'+Math.round(lifetimeNet).toLocaleString();
+  document.getElementById('netCost').textContent='$'+Math.round(netCost).toLocaleString();
+  document.getElementById('monthlySavings').textContent='$'+Math.round(monthlySavings).toLocaleString();
+  document.getElementById('paybackYears').textContent=paybackYears.toFixed(1)+' yrs';
+  document.getElementById('systemSize').textContent=systemSizeKw.toFixed(1)+' kW';
+
+  const badge=document.getElementById('verdictBadge');
+  if(paybackYears<7){badge.textContent='🟢 Excellent payback period for your area';}
+  else if(paybackYears<12){badge.textContent='🟡 Good long-term investment';}
+  else{badge.textContent='🟠 Longer payback — compare more installer quotes';}
+
+  if(chartInst)chartInst.destroy();
+  chartInst=new Chart(document.getElementById('chart'),{type:'line',data:{labels,datasets:[{label:'Net Savings (cumulative)',data:cumulative,borderColor:'#ea580c',backgroundColor:'rgba(234,88,12,0.08)',fill:true,tension:0.3,pointRadius:0,borderWidth:2},{label:'Break-even',data:labels.map(()=>0),borderColor:'#94a3b8',borderDash:[4,4],pointRadius:0,borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:10}}},scales:{x:{grid:{display:false},ticks:{font:{size:9},maxTicksLimit:8}},y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:10},callback:v=>'$'+Math.round(v/1000)+'k'}}}}});
+}
+calc();
+</script>
+</body></html>

@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+
+<meta name="description" content="Free online invoice generator. Create professional invoices instantly, calculate totals, and print or save as PDF — no signup required.">
+<link rel="canonical" href="https://calquto.com/tools/invoice-generator.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Free Invoice Generator — Calquto">
+<meta property="og:description" content="Free online invoice generator. Create professional invoices instantly, calculate totals, and print or save as PDF — no signup required.">
+<meta property="og:url" content="https://calquto.com/tools/invoice-generator.html">
+<meta property="og:site_name" content="Calquto">
+<meta property="og:image" content="https://calquto.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free Invoice Generator — Calquto">
+<meta name="twitter:description" content="Free online invoice generator. Create professional invoices instantly, calculate totals, and print or save as PDF — no signup required.">
+<meta name="twitter:image" content="https://calquto.com/og-image.png">
+<title>Free Invoice Generator — Calquto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/shared-tools.css">
+<style>
+  :root{--blue-900:#0a1628;--blue-600:#1e4fa3;--blue-500:#2563eb;--blue-400:#3b82f6;--blue-300:#93c5fd;--blue-100:#dbeafe;--blue-50:#eff6ff;--green-600:#16a34a;--green-100:#dcfce7;--green-50:#f0fdf4;--gray-900:#0f172a;--gray-700:#334155;--gray-500:#64748b;--gray-300:#cbd5e1;--gray-100:#f1f5f9;--gray-50:#f8fafc;--radius:12px;--radius-sm:8px--gray-200:#e2e8f0;--gray-600:#475569;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-900);line-height:1.6;display:flex;flex-direction:column;min-height:100vh}}
+  .page-hero{background:var(--blue-900);padding:2rem 2rem 1.5rem;text-align:center}
+  .page-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(22px,4vw,32px);font-weight:800;color:#fff}
+  .page-hero p{color:var(--blue-300);font-size:15px;margin-top:6px}
+  .main-wrap{max-width:1100px;margin:0 auto;padding:2rem 1.5rem 4rem;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:800px){.main-wrap{grid-template-columns:1fr}}
+  .card{background:#fff;border:1px solid var(--gray-300);border-radius:var(--radius);padding:1.5rem}
+  .card h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;margin-bottom:1rem}
+  .field{margin-bottom:.85rem}
+  label{display:block;font-size:12.5px;font-weight:500;color:var(--gray-700);margin-bottom:4px}
+  input[type=text],input[type=number],input[type=date],textarea{width:100%;border:1px solid var(--gray-300);border-radius:var(--radius-sm);padding:9px 12px;font-size:14px;font-family:'Inter',sans-serif;color:var(--gray-900);outline:none;transition:border-color .15s}
+  input[type=text]:focus,input[type=number]:focus,input[type=date]:focus,textarea:focus{border-color:var(--blue-400)}
+  textarea{resize:vertical;min-height:60px}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .btn{padding:9px 18px;border:none;border-radius:var(--radius-sm);font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+  .btn-primary{background:var(--blue-500);color:#fff}.btn-primary:hover{background:var(--blue-600)}
+  .btn-green{background:var(--green-600);color:#fff}.btn-green:hover{background:#15803d}
+  .btn-sm{padding:6px 12px;font-size:12px}
+  .btn-del{background:#fee2e2;color:#dc2626;border:none;border-radius:var(--radius-sm);padding:6px 10px;cursor:pointer;font-size:12px;font-family:'Inter',sans-serif}
+  .item-row{display:grid;grid-template-columns:1fr 80px 100px 90px auto;gap:8px;align-items:center;margin-bottom:8px}
+  @media(max-width:600px){.item-row{grid-template-columns:1fr 70px 90px 80px auto}}
+  .item-header{display:grid;grid-template-columns:1fr 80px 100px 90px auto;gap:8px;font-size:11px;font-weight:600;color:var(--gray-500);text-transform:uppercase;margin-bottom:6px}
+  .full-width{grid-column:1/-1}
+  /* INVOICE PREVIEW */
+  .invoice-preview{background:#fff;border:1px solid var(--gray-300);border-radius:var(--radius);padding:2rem;font-size:13.5px}
+  .inv-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem}
+  .inv-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:var(--blue-900)}
+  .inv-meta{text-align:right;font-size:13px;color:var(--gray-700)}
+  .inv-meta strong{display:block;font-size:14px;color:var(--gray-900)}
+  .inv-parties{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--gray-200)}
+  .inv-party-label{font-size:11px;font-weight:700;color:var(--blue-600);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+  .inv-party-name{font-weight:700;font-size:14px;color:var(--gray-900)}
+  .inv-party-info{font-size:13px;color:var(--gray-600);white-space:pre-line}
+  .inv-table{width:100%;border-collapse:collapse;margin-bottom:1.5rem}
+  .inv-table th{text-align:left;padding:8px 10px;background:var(--blue-900);color:#fff;font-size:12px;font-weight:600}
+  .inv-table th:last-child,.inv-table td:last-child{text-align:right}
+  .inv-table td{padding:8px 10px;border-bottom:1px solid var(--gray-100);font-size:13px}
+  .inv-table tr:last-child td{border-bottom:none}
+  .inv-totals{margin-left:auto;width:260px}
+  .inv-total-row{display:flex;justify-content:space-between;padding:5px 0;font-size:13.5px;border-bottom:1px solid var(--gray-100)}
+  .inv-total-row:last-child{border-bottom:none;font-size:15px;font-weight:800;color:var(--blue-900);padding-top:8px}
+  .inv-notes{margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--gray-200);font-size:12.5px;color:var(--gray-600)}
+  .print-area{display:none}
+  @media print{
+    nav,.main-wrap,.page-hero{display:none!important}
+    .print-area{display:block!important;padding:0;margin:0}
+    .print-invoice{font-size:12px;padding:1cm}
+  }
+  .guide{grid-column:1/-1;background:#fff;border:1px solid var(--gray-300);border-radius:var(--radius);padding:1.75rem}
+  .guide h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:700;margin-bottom:.75rem}
+  .guide h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;margin:1.25rem 0 .5rem}
+  .guide p{font-size:13.5px;color:var(--gray-700);margin-bottom:.75rem;line-height:1.75}
+  .guide ul{margin:0 0 .75rem 1.1rem;font-size:13.5px;color:var(--gray-700);line-height:1.8}
+  .faq-item{border-bottom:1px solid var(--gray-100);padding:12px 0}.faq-item:last-child{border-bottom:none}
+  .faq-q{font-size:14px;font-weight:600;color:var(--gray-900);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .faq-a{font-size:13.5px;color:var(--gray-700);margin-top:8px;line-height:1.75;display:none}
+  .faq-item.open .faq-a{display:block}
+  .faq-arrow{transition:transform .2s;color:var(--gray-500);flex-shrink:0}
+  .faq-item.open .faq-arrow{transform:rotate(180deg)}
+  .related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:.5rem}
+  .related-link{display:block;background:var(--gray-50);border-radius:var(--radius-sm);padding:.75rem 1rem;text-decoration:none;color:var(--gray-900);font-size:13px;font-weight:600;border:1px solid var(--gray-300);transition:border-color .15s}
+  .related-link:hover{border-color:var(--blue-400)}
+  .related-link span{display:block;font-size:11.5px;color:var(--gray-500);font-weight:400;margin-top:2px}
+  footer a{color:var(--blue-400);text-decoration:none}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Do I need to include my SSN or EIN on invoices?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not on the invoice itself — clients request your SSN or EIN on Form W-9 separately for tax reporting purposes (when paying contractors $600+). Including it on every invoice is a security risk. Your business name and contact information are sufficient on the invoice. Provide your W-9 when the client requests it before or after payment."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I charge sales tax on my invoices?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sales tax requirements vary widely. Generally, you need to collect sales tax if you have \"nexus\" (business presence) in a state and you're selling taxable goods or services. Most pure services are not subject to sales tax in most states, but there are exceptions. Consulting a CPA about your specific state's rules is advisable. The general rule: if you're selling physical products, collect sales tax in your home state; for services, check your state's specific rules."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long should I keep invoice records?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The IRS generally recommends keeping business records for 3–7 years. Keep invoices for at least 3 years (the standard audit lookback period), or 6–7 years if you underreported income or have complex tax situations. For contracts with ongoing deliverables, keep records for the duration of the relationship plus 3–7 years. Digital backups in cloud storage make this effortless."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Free Invoice Generator",
+  "url": "https://calquto.com/tools/invoice-generator.html",
+  "description": "Free online invoice generator. Create professional invoices instantly, calculate totals, and print or save as PDF — no signup required.",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Any (Web Browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Calquto",
+    "url": "https://calquto.com/"
+  }
+}
+</script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Calqu<span>to</span></a>
+  <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">&#9776;</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="../finance.html">Finance</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/mortgage-calculator.html">Mortgage Calculator</a>
+          <a href="../tools/loan-calculator.html">Loan Calculator</a>
+          <a href="../tools/refinance-calculator.html">Mortgage Refinance Calculator</a>
+          <a href="../tools/home-affordability.html">Home Affordability Calculator</a>
+          <a href="../tools/home-equity-heloc.html">Home Equity &amp; HELOC Calculator</a>
+          <a href="../tools/rent-vs-buy.html">Rent vs Buy Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/closing-costs.html">Closing Costs Calculator</a>
+          <a href="../tools/property-tax-estimator.html">Property Tax Estimator</a>
+          <a href="../tools/renovation-roi.html">Home Renovation ROI Calculator</a>
+          <a href="../tools/car-loan-calculator.html">Car Loan Calculator</a>
+          <a href="../tools/car-lease-vs-buy.html">Car Lease vs Buy Calculator</a>
+          <a href="../tools/car-depreciation.html">Car Depreciation Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/compound-interest.html">Compound Interest Calculator</a>
+          <a href="../tools/retirement-calculator.html">Retirement Calculator</a>
+          <a href="../tools/401k-calculator.html">401(k) Contribution Calculator</a>
+          <a href="../tools/roth-ira-vs-traditional.html">Roth IRA vs Traditional IRA</a>
+          <a href="../tools/social-security-calculator.html">Social Security Benefits Estimator</a>
+          <a href="../tools/credit-card-payoff.html">Credit Card Payoff Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/savings-goal-calculator.html">Savings Goal Calculator</a>
+          <a href="../tools/break-even-calculator.html">Break-Even Calculator</a>
+          <a href="../tools/discount-calculator.html">Discount Calculator</a>
+          <a href="../tools/percentage-calculator.html">Percentage Calculator</a>
+          <a href="../tools/tip-calculator.html">Tip Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../finance.html">View all Finance tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../tax.html">Tax</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/federal-tax-bracket.html">Federal Tax Bracket Calculator</a>
+          <a href="../tools/capital-gains-tax.html">Capital Gains Tax Calculator</a>
+          <a href="../tools/child-tax-credit.html">Child Tax Credit Calculator</a>
+          <a href="../tools/w2-vs-1099-calculator.html">W-2 vs 1099 Tax Comparison</a>
+          <a href="../tools/llc-vs-scorp.html">LLC vs S-Corp Tax Savings</a>
+          <a href="../tools/freelancer-tax-estimator.html">Freelancer Tax Estimator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../tax.html">View all Tax tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../work-career.html">Work &amp; Career</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/salary-calculator.html">Salary &amp; Paycheck Calculator</a>
+          <a href="../tools/job-offer-comparison.html">Job Offer Comparison Calculator</a>
+          <a href="../tools/freelance-rate-calculator.html">Freelance Rate Calculator</a>
+          <a href="../tools/severance-pay-estimator.html">Severance Pay Estimator</a>
+          <a href="../tools/employee-cost.html">Employee Cost Calculator</a>
+          <a href="../tools/work-hours-calculator.html">Work Hours Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/wfh-savings-calculator.html">Work From Home Savings Calculator</a>
+          <a href="../tools/invoice-generator.html" class="cur">Invoice Generator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../work-career.html">View all Work &amp; Career tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../benefits-insurance.html">Benefits</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/hsa-calculator.html">HSA Contribution Calculator</a>
+          <a href="../tools/fsa-vs-hsa.html">FSA vs HSA Comparison Tool</a>
+          <a href="../tools/cobra-calculator.html">COBRA Insurance Cost Estimator</a>
+          <a href="../tools/life-insurance-calculator.html">Life Insurance Needs Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../benefits-insurance.html">View all Benefits tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../education.html">Education</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/college-529-calculator.html">529 College Savings Calculator</a>
+          <a href="../tools/fafsa-efc.html">FAFSA EFC / SAI Estimator</a>
+          <a href="../tools/student-loan-payoff.html">Student Loan Payoff Calculator</a>
+          <a href="../tools/gpa-calculator.html">GPA to 4.0 Scale Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../education.html">View all Education tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../converters.html">Converters</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/length-converter.html">Unit Converter (Length/Weight/Temp/Speed/Area)</a>
+          <a href="../tools/timezone-converter.html">Time Zone Converter</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../converters.html">View all Converters tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../date-time-tools.html">Date/Time</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/countdown-timer.html">Countdown Timer</a>
+          <a href="../tools/date-difference.html">Date Difference Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../date-time-tools.html">View all Date/Time tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../developer-tools.html">Developer</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/json-formatter.html">JSON Formatter</a>
+          <a href="../tools/color-picker.html">Color Picker</a>
+          <a href="../tools/base64-tool.html">Base64 Encoder/Decoder</a>
+          <a href="../tools/regex-tester.html">Regex Tester</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../developer-tools.html">View all Developer tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../seo-text-tools.html">SEO/Text</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/word-counter.html">Word Counter</a>
+          <a href="../tools/character-counter.html">Character Counter</a>
+          <a href="../tools/case-converter.html">Case Converter</a>
+          <a href="../tools/lorem-ipsum.html">Lorem Ipsum Generator</a>
+          <a href="../tools/meta-tag-generator.html">Meta Tag Generator</a>
+          <a href="../tools/slug-generator.html">Slug Generator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/readability-checker.html">Readability Checker</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../seo-text-tools.html">View all SEO/Text tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../health.html">Health</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/bmi-calculator.html">BMI Calculator</a>
+          <a href="../tools/calorie-calculator.html">Calorie Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../health.html">View all Health tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../everyday-tools.html">Everyday</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/qr-generator.html">QR Code Generator</a>
+          <a href="../tools/password-generator.html">Password Generator</a>
+          <a href="../tools/age-calculator.html">Age Calculator</a>
+          <a href="../tools/gas-cost-calculator.html">Gas Cost Calculator</a>
+          <a href="../tools/moving-cost-calculator.html">True Cost of Moving Calculator</a>
+          <a href="../tools/solar-savings-calculator.html">Solar Panel Savings Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../everyday-tools.html">View all Everyday tools &rarr;</a>
+      </div>
+    </li>
+    <li class="nav-all"><a href="../index.html">All Tools</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <div class="breadcrumb"><a href="../index.html">Calquto</a><span class="bc-sep">›</span><a href="../work-career.html">Work & Career</a><span class="bc-sep">›</span><span class="bc-current">Free Invoice Generator</span></div>
+  <h1>🧾 Free Invoice Generator</h1>
+  <p>Create professional invoices instantly — print or save as PDF, no signup required</p>
+</div>
+
+<div class="main-wrap">
+  <!-- LEFT: FORM -->
+  <div>
+    <div class="card" style="margin-bottom:16px">
+      <h2>From (Your Business)</h2>
+      <div class="field"><label>Business Name</label><input type="text" id="fromName" value="Your Business Name" oninput="updatePreview()"></div>
+      <div class="field"><label>Address / Email / Phone</label><textarea id="fromInfo" rows="3" oninput="updatePreview()">123 Main St, City, State 12345
+hello@yourbusiness.com | (555) 123-4567</textarea></div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <h2>Bill To (Client)</h2>
+      <div class="field"><label>Client Name / Company</label><input type="text" id="toName" value="Client Name" oninput="updatePreview()"></div>
+      <div class="field"><label>Client Address / Email</label><textarea id="toInfo" rows="3" oninput="updatePreview()">456 Client Ave, City, State 67890
+client@email.com</textarea></div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <h2>Invoice Details</h2>
+      <div class="grid-2">
+        <div class="field"><label>Invoice #</label><input type="text" id="invNum" value="INV-001" oninput="updatePreview()"></div>
+        <div class="field"><label>Invoice Date</label><input type="date" id="invDate" oninput="updatePreview()"></div>
+        <div class="field"><label>Due Date</label><input type="date" id="dueDate" oninput="updatePreview()"></div>
+        <div class="field"><label>Currency</label>
+          <select id="currency" onchange="updatePreview()" style="width:100%;border:1px solid var(--gray-300);border-radius:var(--radius-sm);padding:9px 12px;font-size:14px;font-family:'Inter',sans-serif;background:#fff">
+            <option value="$">USD ($)</option>
+            <option value="£">GBP (£)</option>
+            <option value="€">EUR (€)</option>
+            <option value="CA$">CAD (CA$)</option>
+            <option value="AU$">AUD (AU$)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <h2>Line Items</h2>
+      <div class="item-header">
+        <span>Description</span><span>Qty</span><span>Rate</span><span>Amount</span><span></span>
+      </div>
+      <div id="lineItems"></div>
+      <button class="btn btn-primary btn-sm" onclick="addItem()" style="margin-top:4px">+ Add Line</button>
+    </div>
+    <div class="card" style="margin-bottom:16px">
+      <h2>Taxes & Discounts</h2>
+      <div class="grid-2">
+        <div class="field"><label>Tax Rate</label>
+          <div style="position:relative"><input type="number" id="taxRate" value="0" step="0.1" min="0" max="100" oninput="updatePreview()" style="padding-right:28px"><span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--gray-500)">%</span></div>
+        </div>
+        <div class="field"><label>Discount</label>
+          <div style="position:relative"><input type="number" id="discount" value="0" step="0.01" min="0" oninput="updatePreview()" style="padding-right:28px"><span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--gray-500)">$</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Notes / Payment Terms</h2>
+      <div class="field"><textarea id="notes" rows="3" oninput="updatePreview()">Thank you for your business!
+Payment due within 30 days. Bank transfer preferred.</textarea></div>
+    </div>
+  </div>
+
+  <!-- RIGHT: PREVIEW -->
+  <div>
+    <div style="display:flex;gap:10px;margin-bottom:12px">
+      <button class="btn btn-green" onclick="printInvoice()" style="flex:1">🖨️ Print / Save PDF</button>
+      <button class="btn btn-primary" onclick="clearForm()" style="flex:0;white-space:nowrap">Reset</button>
+    </div>
+    <div class="invoice-preview" id="invoicePreview"></div>
+  </div>
+
+  <!-- GUIDE -->
+  <div class="guide">
+    <h2>How to Create a Professional Invoice</h2>
+    <p>A professional invoice establishes clear payment expectations, helps you get paid faster, and creates a paper trail for tax purposes. Every freelancer and small business owner should use consistent, professional invoices for every client engagement.</p>
+    <h3>Essential Invoice Elements</h3>
+    <ul>
+      <li><strong>Invoice number:</strong> Sequential numbering helps you track payments and reference invoices in correspondence</li>
+      <li><strong>Clear payment terms:</strong> "Net 30" means payment is due within 30 days. Net 15 is common for smaller amounts. Specify late payment fees if applicable.</li>
+      <li><strong>Your business information:</strong> Full legal name, address, and tax ID (EIN or SSN) for tax compliance</li>
+      <li><strong>Itemized line items:</strong> Detailed descriptions reduce disputes and look professional</li>
+      <li><strong>Payment methods accepted:</strong> Bank transfer, check, PayPal, Venmo, etc.</li>
+    </ul>
+    <h3>Getting Paid Faster</h3>
+    <ul>
+      <li>Send invoices immediately upon completing work — delays lead to payment delays</li>
+      <li>Include a late payment fee (1.5–2%/month) to incentivize prompt payment</li>
+      <li>Follow up with a polite reminder email 3 days before the due date</li>
+      <li>Accept multiple payment methods — bank transfer fees are often the best for large amounts</li>
+    </ul>
+    <h3>Frequently Asked Questions</h3>
+    <div class="faq-item open"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Do I need to include my SSN or EIN on invoices? <span class="faq-arrow">▼</span></div><div class="faq-a">Not on the invoice itself — clients request your SSN or EIN on Form W-9 separately for tax reporting purposes (when paying contractors $600+). Including it on every invoice is a security risk. Your business name and contact information are sufficient on the invoice. Provide your W-9 when the client requests it before or after payment.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Should I charge sales tax on my invoices? <span class="faq-arrow">▼</span></div><div class="faq-a">Sales tax requirements vary widely. Generally, you need to collect sales tax if you have "nexus" (business presence) in a state and you're selling taxable goods or services. Most pure services are not subject to sales tax in most states, but there are exceptions. Consulting a CPA about your specific state's rules is advisable. The general rule: if you're selling physical products, collect sales tax in your home state; for services, check your state's specific rules.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How long should I keep invoice records? <span class="faq-arrow">▼</span></div><div class="faq-a">The IRS generally recommends keeping business records for 3–7 years. Keep invoices for at least 3 years (the standard audit lookback period), or 6–7 years if you underreported income or have complex tax situations. For contracts with ongoing deliverables, keep records for the duration of the relationship plus 3–7 years. Digital backups in cloud storage make this effortless.</div></div>
+    <h3>Related Calculators</h3>
+    <div class="related-grid">
+      <a class="related-link" href="freelancer-tax-estimator.html">Freelancer Tax Estimator<span>Quarterly estimated taxes</span></a>
+      <a class="related-link" href="freelance-rate-calculator.html">Freelance Rate Calculator<span>Set your hourly rate</span></a>
+      <a class="related-link" href="w2-vs-1099-calculator.html">W-2 vs 1099<span>Employee vs contractor taxes</span></a>
+      <a class="related-link" href="break-even-calculator.html">Break-Even Calculator<span>Business profitability tool</span></a>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-top">
+    <a class="footer-logo" href="../index.html">Calqu<span>to</span></a>
+    <p class="footer-tagline">Free, fast, browser-based calculators and tools. No signup, nothing stored.</p>
+  </div>
+  <div class="footer-cols">
+    <div class="footer-col">
+      <h4>Finance &amp; Tax</h4>
+      <a href="../tools/mortgage-calculator.html">Mortgage Calculator</a>
+      <a href="../tools/loan-calculator.html">Loan Calculator</a>
+      <a href="../tools/refinance-calculator.html">Mortgage Refinance Calculator</a>
+      <a href="../tools/home-affordability.html">Home Affordability Calculator</a>
+      <a href="../tools/home-equity-heloc.html">Home Equity &amp; HELOC Calculator</a>
+      <a href="../tools/rent-vs-buy.html">Rent vs Buy Calculator</a>
+      <a href="../tools/closing-costs.html">Closing Costs Calculator</a>
+      <a href="../tools/property-tax-estimator.html">Property Tax Estimator</a>
+      <a href="../tools/renovation-roi.html">Home Renovation ROI Calculator</a>
+      <a href="../tools/car-loan-calculator.html">Car Loan Calculator</a>
+      <a href="../tools/car-lease-vs-buy.html">Car Lease vs Buy Calculator</a>
+      <a href="../tools/car-depreciation.html">Car Depreciation Calculator</a>
+      <a href="../tools/compound-interest.html">Compound Interest Calculator</a>
+      <a href="../tools/retirement-calculator.html">Retirement Calculator</a>
+      <a href="../tools/401k-calculator.html">401(k) Contribution Calculator</a>
+      <a href="../tools/roth-ira-vs-traditional.html">Roth IRA vs Traditional IRA</a>
+      <a href="../tools/social-security-calculator.html">Social Security Benefits Estimator</a>
+      <a href="../tools/credit-card-payoff.html">Credit Card Payoff Calculator</a>
+      <a href="../tools/savings-goal-calculator.html">Savings Goal Calculator</a>
+      <a href="../tools/break-even-calculator.html">Break-Even Calculator</a>
+      <a href="../tools/discount-calculator.html">Discount Calculator</a>
+      <a href="../tools/percentage-calculator.html">Percentage Calculator</a>
+      <a href="../tools/tip-calculator.html">Tip Calculator</a>
+      <a href="../tools/federal-tax-bracket.html">Federal Tax Bracket Calculator</a>
+      <a href="../tools/capital-gains-tax.html">Capital Gains Tax Calculator</a>
+      <a href="../tools/child-tax-credit.html">Child Tax Credit Calculator</a>
+      <a href="../tools/w2-vs-1099-calculator.html">W-2 vs 1099 Tax Comparison</a>
+      <a href="../tools/llc-vs-scorp.html">LLC vs S-Corp Tax Savings</a>
+      <a href="../tools/freelancer-tax-estimator.html">Freelancer Tax Estimator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Work, Benefits &amp; Education</h4>
+      <a href="../tools/salary-calculator.html">Salary &amp; Paycheck Calculator</a>
+      <a href="../tools/job-offer-comparison.html">Job Offer Comparison Calculator</a>
+      <a href="../tools/freelance-rate-calculator.html">Freelance Rate Calculator</a>
+      <a href="../tools/severance-pay-estimator.html">Severance Pay Estimator</a>
+      <a href="../tools/employee-cost.html">Employee Cost Calculator</a>
+      <a href="../tools/work-hours-calculator.html">Work Hours Calculator</a>
+      <a href="../tools/wfh-savings-calculator.html">Work From Home Savings Calculator</a>
+      <a href="../tools/invoice-generator.html">Invoice Generator</a>
+      <a href="../tools/hsa-calculator.html">HSA Contribution Calculator</a>
+      <a href="../tools/fsa-vs-hsa.html">FSA vs HSA Comparison Tool</a>
+      <a href="../tools/cobra-calculator.html">COBRA Insurance Cost Estimator</a>
+      <a href="../tools/life-insurance-calculator.html">Life Insurance Needs Calculator</a>
+      <a href="../tools/college-529-calculator.html">529 College Savings Calculator</a>
+      <a href="../tools/fafsa-efc.html">FAFSA EFC / SAI Estimator</a>
+      <a href="../tools/student-loan-payoff.html">Student Loan Payoff Calculator</a>
+      <a href="../tools/gpa-calculator.html">GPA to 4.0 Scale Calculator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Converters &amp; Everyday</h4>
+      <a href="../tools/length-converter.html">Unit Converter (Length/Weight/Temp/Speed/Area)</a>
+      <a href="../tools/timezone-converter.html">Time Zone Converter</a>
+      <a href="../tools/countdown-timer.html">Countdown Timer</a>
+      <a href="../tools/date-difference.html">Date Difference Calculator</a>
+      <a href="../tools/json-formatter.html">JSON Formatter</a>
+      <a href="../tools/color-picker.html">Color Picker</a>
+      <a href="../tools/base64-tool.html">Base64 Encoder/Decoder</a>
+      <a href="../tools/regex-tester.html">Regex Tester</a>
+      <a href="../tools/word-counter.html">Word Counter</a>
+      <a href="../tools/character-counter.html">Character Counter</a>
+      <a href="../tools/case-converter.html">Case Converter</a>
+      <a href="../tools/lorem-ipsum.html">Lorem Ipsum Generator</a>
+      <a href="../tools/meta-tag-generator.html">Meta Tag Generator</a>
+      <a href="../tools/slug-generator.html">Slug Generator</a>
+      <a href="../tools/readability-checker.html">Readability Checker</a>
+      <a href="../tools/bmi-calculator.html">BMI Calculator</a>
+      <a href="../tools/calorie-calculator.html">Calorie Calculator</a>
+      <a href="../tools/qr-generator.html">QR Code Generator</a>
+      <a href="../tools/password-generator.html">Password Generator</a>
+      <a href="../tools/age-calculator.html">Age Calculator</a>
+      <a href="../tools/gas-cost-calculator.html">Gas Cost Calculator</a>
+      <a href="../tools/moving-cost-calculator.html">True Cost of Moving Calculator</a>
+      <a href="../tools/solar-savings-calculator.html">Solar Panel Savings Calculator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="../index.html">All Tools</a>
+      <a href="../about.html">About</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../privacy-policy.html">Privacy Policy</a>
+      <a href="../terms.html">Terms of Service</a>
+      <a href="../disclaimer.html">Disclaimer</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Calquto &middot; Free invoice generator · No signup required</span>
+  </div>
+</footer>
+
+<script>
+let items = [
+  {desc:'Web Design Services',qty:1,rate:2500},
+  {desc:'SEO Optimization',qty:3,rate:150},
+];
+const fmt = (sym, n) => sym + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+function today(){const d=new Date();return d.toISOString().split('T')[0];}
+function addDays(days){const d=new Date();d.setDate(d.getDate()+days);return d.toISOString().split('T')[0];}
+
+document.getElementById('invDate').value = today();
+document.getElementById('dueDate').value = addDays(30);
+
+function renderItems(){
+  document.getElementById('lineItems').innerHTML = items.map((it,i)=>`
+    <div class="item-row">
+      <input type="text" value="${it.desc}" onchange="items[${i}].desc=this.value;updatePreview()" placeholder="Description">
+      <input type="number" value="${it.qty}" min="0" step="0.01" onchange="items[${i}].qty=parseFloat(this.value)||0;updatePreview()">
+      <input type="number" value="${it.rate}" min="0" step="0.01" onchange="items[${i}].rate=parseFloat(this.value)||0;updatePreview()">
+      <input type="text" value="" readonly style="background:var(--gray-50);cursor:default" id="amt${i}">
+      <button class="btn-del" onclick="items.splice(${i},1);renderItems();updatePreview()">✕</button>
+    </div>`).join('');
+  items.forEach((it,i)=>{
+    const el=document.getElementById('amt'+i);
+    const sym=document.getElementById('currency').value;
+    if(el) el.value=fmt(sym,it.qty*it.rate);
+  });
+}
+
+function addItem(){items.push({desc:'New Item',qty:1,rate:0});renderItems();updatePreview();}
+
+function updatePreview(){
+  renderItems();
+  const sym = document.getElementById('currency').value;
+  const subtotal = items.reduce((s,it)=>s+it.qty*it.rate,0);
+  const disc = parseFloat(document.getElementById('discount').value)||0;
+  const taxRate = (parseFloat(document.getElementById('taxRate').value)||0)/100;
+  const taxable = subtotal - disc;
+  const tax = taxable * taxRate;
+  const total = taxable + tax;
+  const fromName = document.getElementById('fromName').value;
+  const fromInfo = document.getElementById('fromInfo').value;
+  const toName = document.getElementById('toName').value;
+  const toInfo = document.getElementById('toInfo').value;
+  const invNum = document.getElementById('invNum').value;
+  const invDate = document.getElementById('invDate').value;
+  const dueDate = document.getElementById('dueDate').value;
+  const notes = document.getElementById('notes').value;
+  document.getElementById('invoicePreview').innerHTML = `
+    <div class="inv-header">
+      <div>
+        <div class="inv-title">INVOICE</div>
+        <div style="font-size:14px;font-weight:600;color:var(--gray-900);margin-top:4px">${fromName}</div>
+        <div style="font-size:12.5px;color:var(--gray-600);white-space:pre-line">${fromInfo}</div>
+      </div>
+      <div class="inv-meta">
+        <strong>#${invNum}</strong>
+        <span>Date: ${invDate}</span><br>
+        <span>Due: ${dueDate}</span>
+      </div>
+    </div>
+    <div class="inv-parties">
+      <div><div class="inv-party-label">From</div><div class="inv-party-name">${fromName}</div><div class="inv-party-info">${fromInfo}</div></div>
+      <div><div class="inv-party-label">Bill To</div><div class="inv-party-name">${toName}</div><div class="inv-party-info">${toInfo}</div></div>
+    </div>
+    <table class="inv-table">
+      <thead><tr><th>Description</th><th style="text-align:right">Qty</th><th style="text-align:right">Rate</th><th style="text-align:right">Amount</th></tr></thead>
+      <tbody>${items.map(it=>`<tr><td>${it.desc}</td><td style="text-align:right">${it.qty}</td><td style="text-align:right">${fmt(sym,it.rate)}</td><td style="text-align:right">${fmt(sym,it.qty*it.rate)}</td></tr>`).join('')}</tbody>
+    </table>
+    <div class="inv-totals">
+      <div class="inv-total-row"><span>Subtotal</span><span>${fmt(sym,subtotal)}</span></div>
+      ${disc>0?`<div class="inv-total-row"><span>Discount</span><span>−${fmt(sym,disc)}</span></div>`:''}
+      ${taxRate>0?`<div class="inv-total-row"><span>Tax (${(taxRate*100).toFixed(1)}%)</span><span>${fmt(sym,tax)}</span></div>`:''}
+      <div class="inv-total-row"><span>Total Due</span><span>${fmt(sym,total)}</span></div>
+    </div>
+    ${notes?`<div class="inv-notes"><strong>Notes:</strong><br>${notes}</div>`:''}`;
+}
+
+function printInvoice(){
+  const content = document.getElementById('invoicePreview').innerHTML;
+  const win = window.open('','_blank');
+  win.document.write(`<!DOCTYPE html><html><head><title>Invoice</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',sans-serif;color:#0f172a;padding:2cm;max-width:800px;margin:0 auto}
+  .inv-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2rem}
+  .inv-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:#0a1628}
+  .inv-meta{text-align:right;font-size:13px;color:#334155}
+  .inv-meta strong{display:block;font-size:14px;color:#0f172a}
+  .inv-parties{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid #cbd5e1}
+  .inv-party-label{font-size:11px;font-weight:700;color:#1e4fa3;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+  .inv-party-name{font-weight:700;font-size:14px}
+  .inv-party-info{font-size:13px;color:#475569;white-space:pre-line}
+  .inv-table{width:100%;border-collapse:collapse;margin-bottom:1.5rem}
+  .inv-table th{text-align:left;padding:8px 10px;background:#0a1628;color:#fff;font-size:12px;font-weight:600}
+  .inv-table th:last-child,.inv-table td:last-child{text-align:right}
+  .inv-table td{padding:8px 10px;border-bottom:1px solid #f1f5f9;font-size:13px}
+  .inv-totals{margin-left:auto;width:260px}
+  .inv-total-row{display:flex;justify-content:space-between;padding:5px 0;font-size:13.5px;border-bottom:1px solid #f1f5f9}
+  .inv-total-row:last-child{border-bottom:none;font-size:15px;font-weight:800;color:#0a1628;padding-top:8px}
+  .inv-notes{margin-top:1.5rem;padding-top:1rem;border-top:1px solid #e2e8f0;font-size:12.5px;color:#64748b}
+  </style></head><body>${content}</body></html>`);
+  win.document.close();
+  setTimeout(()=>win.print(),500);
+}
+
+function clearForm(){
+  document.getElementById('fromName').value='Your Business Name';
+  document.getElementById('fromInfo').value='123 Main St, City, State 12345\nhello@yourbusiness.com | (555) 123-4567';
+  document.getElementById('toName').value='Client Name';
+  document.getElementById('toInfo').value='456 Client Ave, City, State 67890\nclient@email.com';
+  document.getElementById('invNum').value='INV-001';
+  document.getElementById('invDate').value=today();
+  document.getElementById('dueDate').value=addDays(30);
+  document.getElementById('taxRate').value='0';
+  document.getElementById('discount').value='0';
+  document.getElementById('notes').value='Thank you for your business!\nPayment due within 30 days. Bank transfer preferred.';
+  items=[{desc:'Service Description',qty:1,rate:0}];
+  renderItems();updatePreview();
+}
+
+renderItems();
+updatePreview();
+</script>
+</body>
+</html>

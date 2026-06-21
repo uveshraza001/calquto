@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+
+<meta name="description" content="Free home affordability calculator. Calculate how much house you can afford based on income, debt-to-income ratio, and down payment in 2026.">
+<link rel="canonical" href="https://calquto.com/tools/home-affordability.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Home Affordability Calculator — Calquto">
+<meta property="og:description" content="Free home affordability calculator. Calculate how much house you can afford based on income, debt-to-income ratio, and down payment in 2026.">
+<meta property="og:url" content="https://calquto.com/tools/home-affordability.html">
+<meta property="og:site_name" content="Calquto">
+<meta property="og:image" content="https://calquto.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Home Affordability Calculator — Calquto">
+<meta name="twitter:description" content="Free home affordability calculator. Calculate how much house you can afford based on income, debt-to-income ratio, and down payment in 2026.">
+<meta name="twitter:image" content="https://calquto.com/og-image.png">
+<title>Home Affordability Calculator — Calquto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/shared-tools.css">
+<style>
+  :root{--blue-900:#0a1628;--blue-600:#1e4fa3;--blue-500:#2563eb;--blue-400:#3b82f6;--blue-300:#93c5fd;--blue-100:#dbeafe;--blue-50:#eff6ff;--green-600:#16a34a;--green-100:#dcfce7;--green-50:#f0fdf4;--orange-600:#ea580c;--orange-100:#ffedd5;--gray-900:#0f172a;--gray-700:#334155;--gray-500:#64748b;--gray-300:#cbd5e1;--gray-100:#f1f5f9;--gray-50:#f8fafc;--radius:12px;--radius-sm:8px}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-900);line-height:1.6;display:flex;flex-direction:column;min-height:100vh}}
+  .page-hero{background:var(--blue-900);padding:0 0 2rem;text-align:center}
+  .page-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(24px,4vw,36px);font-weight:800;color:#fff;letter-spacing:-0.5px}
+  .page-hero p{color:var(--blue-300);font-size:15px;margin-top:6px}
+  main{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:640px){main{grid-template-columns:1fr}}
+  .card{background:#fff;border:1px solid var(--gray-300);border-radius:var(--radius);padding:1.5rem}
+  .card h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:700;color:var(--gray-900);margin-bottom:1.25rem}
+  .field{margin-bottom:1rem}
+  label{display:block;font-size:13px;font-weight:500;color:var(--gray-700);margin-bottom:5px}
+  .input-wrap{position:relative}
+  .input-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--gray-500)}
+  .input-suffix{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--gray-500)}
+  input[type=number]{width:100%;border:1px solid var(--gray-300);border-radius:var(--radius-sm);padding:10px 12px 10px 28px;font-size:15px;font-family:'Inter',sans-serif;color:var(--gray-900);outline:none;transition:border-color 0.15s}
+  input[type=number]:focus{border-color:var(--blue-400)}
+  input.no-prefix{padding-left:12px}
+  input[type=range]{width:100%;accent-color:var(--blue-500)}
+  .range-wrap{display:flex;align-items:center;gap:10px;margin-top:6px}
+  .range-val{font-size:13px;font-weight:600;color:var(--blue-600);min-width:40px;text-align:right}
+  select{width:100%;border:1px solid var(--gray-300);border-radius:var(--radius-sm);padding:10px 12px;font-size:15px;font-family:'Inter',sans-serif;color:var(--gray-900);outline:none;background:#fff}
+  .result-big{background:var(--blue-50);border:1px solid var(--blue-100);border-radius:var(--radius);padding:1.25rem;text-align:center;margin-bottom:12px}
+  .result-big-label{font-size:13px;color:var(--blue-600);font-weight:500;margin-bottom:4px}
+  .result-big-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:36px;font-weight:800;color:var(--blue-600)}
+  .result-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--gray-100);font-size:14px}
+  .result-row:last-child{border-bottom:none}
+  .result-row .lbl{color:var(--gray-500)}.result-row .val{font-weight:600;color:var(--gray-900)}
+  .green{color:var(--green-600)}.highlight{color:var(--blue-600)}
+  .info-box{background:var(--blue-50);border:1px solid var(--blue-100);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--blue-600);font-weight:500;margin-top:12px}
+  .warn-box{background:var(--orange-100);border:1px solid #fed7aa;border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--orange-600);font-weight:500;margin-top:12px}
+  .full-width{grid-column:1/-1}
+  .guide{grid-column:1/-1;background:#fff;border:1px solid var(--gray-300);border-radius:var(--radius);padding:1.75rem}
+  .guide h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:700;margin-bottom:.75rem}
+  .guide h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;margin:1.25rem 0 .5rem}
+  .guide p{font-size:13.5px;color:var(--gray-700);margin-bottom:.75rem;line-height:1.75}
+  .guide ul{margin:0 0 .75rem 1.1rem;font-size:13.5px;color:var(--gray-700);line-height:1.8}
+  .example-box{background:var(--blue-50);border:1px solid var(--blue-100);border-radius:var(--radius-sm);padding:1rem 1.25rem;margin:.75rem 0}
+  .example-box .ex-label{font-size:11px;font-weight:700;color:var(--blue-600);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+  .faq-item{border-bottom:1px solid var(--gray-100);padding:12px 0}.faq-item:last-child{border-bottom:none}
+  .faq-q{font-size:14px;font-weight:600;color:var(--gray-900);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .faq-a{font-size:13.5px;color:var(--gray-700);margin-top:8px;line-height:1.75;display:none}
+  .faq-item.open .faq-a{display:block}
+  .faq-arrow{transition:transform .2s;color:var(--gray-500);flex-shrink:0}
+  .faq-item.open .faq-arrow{transform:rotate(180deg)}
+  .related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:.5rem}
+  .related-link{display:block;background:var(--gray-50);border-radius:var(--radius-sm);padding:.75rem 1rem;text-decoration:none;color:var(--gray-900);font-size:13px;font-weight:600;border:1px solid var(--gray-300);transition:border-color .15s}
+  .related-link:hover{border-color:var(--blue-400)}
+  .related-link span{display:block;font-size:11.5px;color:var(--gray-500);font-weight:400;margin-top:2px}
+  footer a{color:var(--blue-400);text-decoration:none}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much should I really spend on a house?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Just because a lender approves you for a certain amount doesn't mean you should spend it. A safer rule of thumb is to keep your total housing payment (PITI) at or below 25–28% of your gross monthly income, leaving room for retirement savings, emergencies, and lifestyle expenses. Many financial advisors recommend spending no more than 2–3× your annual income on a home purchase."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is PMI and when can I avoid it?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Private Mortgage Insurance (PMI) is required by most conventional lenders when your down payment is less than 20% of the home's price. It typically costs 0.5–1.5% of the loan amount annually, added to your monthly payment. PMI is automatically removed when your loan balance reaches 78% of the original purchase price, or you can request removal at 80%. Putting 20% down avoids PMI entirely."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does my credit score affect how much I can borrow?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, significantly. A higher credit score qualifies you for lower interest rates, which means a lower monthly payment for the same loan amount — effectively allowing you to borrow more. The difference between a 620 and 760 credit score on a $300,000 mortgage can mean 1–1.5% higher interest rates, adding $200–$300/month and over $70,000 in total interest over 30 years."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Home Affordability Calculator",
+  "url": "https://calquto.com/tools/home-affordability.html",
+  "description": "Free home affordability calculator. Calculate how much house you can afford based on income, debt-to-income ratio, and down payment in 2026.",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any (Web Browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Calquto",
+    "url": "https://calquto.com/"
+  }
+}
+</script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Calqu<span>to</span></a>
+  <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">&#9776;</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="../finance.html">Finance</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/mortgage-calculator.html">Mortgage Calculator</a>
+          <a href="../tools/loan-calculator.html">Loan Calculator</a>
+          <a href="../tools/refinance-calculator.html">Mortgage Refinance Calculator</a>
+          <a href="../tools/home-affordability.html" class="cur">Home Affordability Calculator</a>
+          <a href="../tools/home-equity-heloc.html">Home Equity &amp; HELOC Calculator</a>
+          <a href="../tools/rent-vs-buy.html">Rent vs Buy Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/closing-costs.html">Closing Costs Calculator</a>
+          <a href="../tools/property-tax-estimator.html">Property Tax Estimator</a>
+          <a href="../tools/renovation-roi.html">Home Renovation ROI Calculator</a>
+          <a href="../tools/car-loan-calculator.html">Car Loan Calculator</a>
+          <a href="../tools/car-lease-vs-buy.html">Car Lease vs Buy Calculator</a>
+          <a href="../tools/car-depreciation.html">Car Depreciation Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/compound-interest.html">Compound Interest Calculator</a>
+          <a href="../tools/retirement-calculator.html">Retirement Calculator</a>
+          <a href="../tools/401k-calculator.html">401(k) Contribution Calculator</a>
+          <a href="../tools/roth-ira-vs-traditional.html">Roth IRA vs Traditional IRA</a>
+          <a href="../tools/social-security-calculator.html">Social Security Benefits Estimator</a>
+          <a href="../tools/credit-card-payoff.html">Credit Card Payoff Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/savings-goal-calculator.html">Savings Goal Calculator</a>
+          <a href="../tools/break-even-calculator.html">Break-Even Calculator</a>
+          <a href="../tools/discount-calculator.html">Discount Calculator</a>
+          <a href="../tools/percentage-calculator.html">Percentage Calculator</a>
+          <a href="../tools/tip-calculator.html">Tip Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../finance.html">View all Finance tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../tax.html">Tax</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/federal-tax-bracket.html">Federal Tax Bracket Calculator</a>
+          <a href="../tools/capital-gains-tax.html">Capital Gains Tax Calculator</a>
+          <a href="../tools/child-tax-credit.html">Child Tax Credit Calculator</a>
+          <a href="../tools/w2-vs-1099-calculator.html">W-2 vs 1099 Tax Comparison</a>
+          <a href="../tools/llc-vs-scorp.html">LLC vs S-Corp Tax Savings</a>
+          <a href="../tools/freelancer-tax-estimator.html">Freelancer Tax Estimator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../tax.html">View all Tax tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../work-career.html">Work &amp; Career</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/salary-calculator.html">Salary &amp; Paycheck Calculator</a>
+          <a href="../tools/job-offer-comparison.html">Job Offer Comparison Calculator</a>
+          <a href="../tools/freelance-rate-calculator.html">Freelance Rate Calculator</a>
+          <a href="../tools/severance-pay-estimator.html">Severance Pay Estimator</a>
+          <a href="../tools/employee-cost.html">Employee Cost Calculator</a>
+          <a href="../tools/work-hours-calculator.html">Work Hours Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/wfh-savings-calculator.html">Work From Home Savings Calculator</a>
+          <a href="../tools/invoice-generator.html">Invoice Generator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../work-career.html">View all Work &amp; Career tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../benefits-insurance.html">Benefits</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/hsa-calculator.html">HSA Contribution Calculator</a>
+          <a href="../tools/fsa-vs-hsa.html">FSA vs HSA Comparison Tool</a>
+          <a href="../tools/cobra-calculator.html">COBRA Insurance Cost Estimator</a>
+          <a href="../tools/life-insurance-calculator.html">Life Insurance Needs Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../benefits-insurance.html">View all Benefits tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../education.html">Education</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/college-529-calculator.html">529 College Savings Calculator</a>
+          <a href="../tools/fafsa-efc.html">FAFSA EFC / SAI Estimator</a>
+          <a href="../tools/student-loan-payoff.html">Student Loan Payoff Calculator</a>
+          <a href="../tools/gpa-calculator.html">GPA to 4.0 Scale Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../education.html">View all Education tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../converters.html">Converters</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/length-converter.html">Unit Converter (Length/Weight/Temp/Speed/Area)</a>
+          <a href="../tools/timezone-converter.html">Time Zone Converter</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../converters.html">View all Converters tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../date-time-tools.html">Date/Time</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/countdown-timer.html">Countdown Timer</a>
+          <a href="../tools/date-difference.html">Date Difference Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../date-time-tools.html">View all Date/Time tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../developer-tools.html">Developer</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/json-formatter.html">JSON Formatter</a>
+          <a href="../tools/color-picker.html">Color Picker</a>
+          <a href="../tools/base64-tool.html">Base64 Encoder/Decoder</a>
+          <a href="../tools/regex-tester.html">Regex Tester</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../developer-tools.html">View all Developer tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../seo-text-tools.html">SEO/Text</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/word-counter.html">Word Counter</a>
+          <a href="../tools/character-counter.html">Character Counter</a>
+          <a href="../tools/case-converter.html">Case Converter</a>
+          <a href="../tools/lorem-ipsum.html">Lorem Ipsum Generator</a>
+          <a href="../tools/meta-tag-generator.html">Meta Tag Generator</a>
+          <a href="../tools/slug-generator.html">Slug Generator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/readability-checker.html">Readability Checker</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../seo-text-tools.html">View all SEO/Text tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../health.html">Health</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/bmi-calculator.html">BMI Calculator</a>
+          <a href="../tools/calorie-calculator.html">Calorie Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../health.html">View all Health tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../everyday-tools.html">Everyday</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/qr-generator.html">QR Code Generator</a>
+          <a href="../tools/password-generator.html">Password Generator</a>
+          <a href="../tools/age-calculator.html">Age Calculator</a>
+          <a href="../tools/gas-cost-calculator.html">Gas Cost Calculator</a>
+          <a href="../tools/moving-cost-calculator.html">True Cost of Moving Calculator</a>
+          <a href="../tools/solar-savings-calculator.html">Solar Panel Savings Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../everyday-tools.html">View all Everyday tools &rarr;</a>
+      </div>
+    </li>
+    <li class="nav-all"><a href="../index.html">All Tools</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <h1>🏡 Home Affordability Calculator</h1>
+  <p>Find out how much house you can afford based on income, debts, and down payment</p>
+</div>
+<main>
+  <div class="card">
+    <h2>Your Finances</h2>
+    <div class="field"><label>Annual Gross Income</label><div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="income" value="90000" oninput="calculate()"></div></div>
+    <div class="field"><label>Monthly Debt Payments (car, student loans, etc.)</label><div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="debts" value="400" oninput="calculate()"></div></div>
+    <div class="field"><label>Down Payment Available</label><div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="downPayment" value="60000" oninput="calculate()"></div></div>
+    <div class="field"><label>Annual Interest Rate</label><div class="input-wrap"><input type="number" id="rate" class="no-prefix" value="6.8" step="0.1" oninput="calculate()"><span class="input-suffix">%</span></div></div>
+    <div class="field"><label>Loan Term</label><select id="term" onchange="calculate()"><option value="30">30 years</option><option value="20">20 years</option><option value="15">15 years</option></select></div>
+    <div class="field"><label>Annual Property Tax Rate</label><div class="input-wrap"><input type="number" id="taxRate" class="no-prefix" value="1.1" step="0.1" oninput="calculate()"><span class="input-suffix">%</span></div></div>
+    <div class="field"><label>Monthly Home Insurance</label><div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="insurance" value="100" oninput="calculate()"></div></div>
+  </div>
+  <div class="card">
+    <h2>How Much House You Can Afford</h2>
+    <div class="result-big"><div class="result-big-label">Maximum Home Price</div><div class="result-big-num" id="maxPrice">—</div></div>
+    <div class="result-row"><span class="lbl">Maximum Loan Amount</span><span class="val" id="maxLoan">—</span></div>
+    <div class="result-row"><span class="lbl">Estimated Monthly Payment</span><span class="val" id="monthlyPayment">—</span></div>
+    <div class="result-row"><span class="lbl">Monthly Income</span><span class="val" id="monthlyIncome">—</span></div>
+    <div class="result-row"><span class="lbl">Front-End DTI (housing only)</span><span class="val" id="frontDTI">—</span></div>
+    <div class="result-row"><span class="lbl">Back-End DTI (all debts)</span><span class="val" id="backDTI">—</span></div>
+    <div class="info-box" id="infoBox"></div>
+  </div>
+  <div class="guide">
+    <h2>How Lenders Determine What You Can Afford</h2>
+    <p>Mortgage lenders use debt-to-income (DTI) ratios to determine how much they'll lend you. The two key ratios are front-end DTI (housing costs only) and back-end DTI (all monthly debt payments). Most conventional loans require a back-end DTI of 43% or less, though some programs allow up to 50%.</p>
+    <h3>The 28/36 Rule</h3>
+    <p>A common guideline is the 28/36 rule: spend no more than 28% of your gross monthly income on housing costs, and no more than 36% on total debt (housing + all other debts). This is more conservative than what lenders technically allow, which is why many homebuyers find themselves "house-poor" — approved for a mortgage that stretches them too thin.</p>
+    <h3>What Counts in Your DTI?</h3>
+    <ul>
+      <li><strong>Front-end (housing):</strong> Principal, interest, property taxes, insurance, HOA fees, PMI</li>
+      <li><strong>Back-end (all debts):</strong> All of the above + car loans, student loans, credit cards, personal loans</li>
+      <li><strong>Not included:</strong> Utilities, groceries, subscriptions, gas, or other living expenses</li>
+    </ul>
+    <h3>Frequently Asked Questions</h3>
+    <div class="faq-item open"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How much should I really spend on a house? <span class="faq-arrow">▼</span></div><div class="faq-a">Just because a lender approves you for a certain amount doesn't mean you should spend it. A safer rule of thumb is to keep your total housing payment (PITI) at or below 25–28% of your gross monthly income, leaving room for retirement savings, emergencies, and lifestyle expenses. Many financial advisors recommend spending no more than 2–3× your annual income on a home purchase.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What is PMI and when can I avoid it? <span class="faq-arrow">▼</span></div><div class="faq-a">Private Mortgage Insurance (PMI) is required by most conventional lenders when your down payment is less than 20% of the home's price. It typically costs 0.5–1.5% of the loan amount annually, added to your monthly payment. PMI is automatically removed when your loan balance reaches 78% of the original purchase price, or you can request removal at 80%. Putting 20% down avoids PMI entirely.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Does my credit score affect how much I can borrow? <span class="faq-arrow">▼</span></div><div class="faq-a">Yes, significantly. A higher credit score qualifies you for lower interest rates, which means a lower monthly payment for the same loan amount — effectively allowing you to borrow more. The difference between a 620 and 760 credit score on a $300,000 mortgage can mean 1–1.5% higher interest rates, adding $200–$300/month and over $70,000 in total interest over 30 years.</div></div>
+    <h3>Related Calculators</h3>
+    <div class="related-grid">
+      <a class="related-link" href="mortgage-calculator.html">Mortgage Calculator<span>Payment, interest & amortization</span></a>
+      <a class="related-link" href="rent-vs-buy.html">Rent vs Buy<span>Should you rent or buy a home?</span></a>
+      <a class="related-link" href="refinance-calculator.html">Refinance Calculator<span>Should you refinance your mortgage?</span></a>
+      <a class="related-link" href="closing-costs.html">Closing Costs Calculator<span>Estimate your upfront buying costs</span></a>
+    </div>
+  </div>
+<script>
+const fmt = n => '$' + Math.round(n).toLocaleString();
+const pct = n => (n*100).toFixed(1)+'%';
+function calculate(){
+  const income = parseFloat(document.getElementById('income').value)||0;
+  const debts = parseFloat(document.getElementById('debts').value)||0;
+  const down = parseFloat(document.getElementById('downPayment').value)||0;
+  const rate = (parseFloat(document.getElementById('rate').value)||6.8)/100/12;
+  const term = parseInt(document.getElementById('term').value)||30;
+  const taxRate = (parseFloat(document.getElementById('taxRate').value)||1.1)/100;
+  const insurance = parseFloat(document.getElementById('insurance').value)||100;
+  const monthlyIncome = income/12;
+  const maxBackDTI = 0.43;
+  const maxHousingPayment = monthlyIncome * maxBackDTI - debts;
+  const n = term*12;
+  // Solve for max loan: payment = L * r(1+r)^n / ((1+r)^n-1)
+  // Also housing includes tax+insurance per month which depends on home price
+  // Iterate: maxPrice = (maxHousingPayment - insurance - price*taxRate/12 - PMI) / piRate * ... approximate
+  // Simple: PI payment = maxHousingPayment - insurance
+  const piMax = maxHousingPayment - insurance;
+  const factor = rate > 0 ? rate*Math.pow(1+rate,n)/(Math.pow(1+rate,n)-1) : 1/n;
+  const maxLoan = piMax > 0 ? piMax/factor : 0;
+  const maxPrice = maxLoan + down;
+  const monthlyPayment = maxLoan*factor + insurance + maxPrice*taxRate/12;
+  const frontDTI = monthlyPayment/monthlyIncome;
+  const backDTI = (monthlyPayment+debts)/monthlyIncome;
+  document.getElementById('maxPrice').textContent = fmt(maxPrice);
+  document.getElementById('maxLoan').textContent = fmt(maxLoan);
+  document.getElementById('monthlyPayment').textContent = fmt(monthlyPayment)+'/mo';
+  document.getElementById('monthlyIncome').textContent = fmt(monthlyIncome)+'/mo';
+  document.getElementById('frontDTI').textContent = pct(frontDTI);
+  document.getElementById('backDTI').textContent = pct(backDTI);
+  const ib = document.getElementById('infoBox');
+  if(backDTI>0.43){ib.textContent='⚠️ DTI exceeds 43% — consider a lower price or paying off debts first';ib.className='warn-box';}
+  else if(frontDTI>0.28){ib.textContent='⚠️ Housing costs exceed 28% of income — consider a more conservative price';ib.className='warn-box';}
+  else{ib.textContent='✅ Your DTI ratios are within conventional lending guidelines';ib.className='info-box';}
+}
+calculate();
+</script>
+</main>
+<footer class="site-footer">
+  <div class="footer-top">
+    <a class="footer-logo" href="../index.html">Calqu<span>to</span></a>
+    <p class="footer-tagline">Free, fast, browser-based calculators and tools. No signup, nothing stored.</p>
+  </div>
+  <div class="footer-cols">
+    <div class="footer-col">
+      <h4>Finance &amp; Tax</h4>
+      <a href="../tools/mortgage-calculator.html">Mortgage Calculator</a>
+      <a href="../tools/loan-calculator.html">Loan Calculator</a>
+      <a href="../tools/refinance-calculator.html">Mortgage Refinance Calculator</a>
+      <a href="../tools/home-affordability.html">Home Affordability Calculator</a>
+      <a href="../tools/home-equity-heloc.html">Home Equity &amp; HELOC Calculator</a>
+      <a href="../tools/rent-vs-buy.html">Rent vs Buy Calculator</a>
+      <a href="../tools/closing-costs.html">Closing Costs Calculator</a>
+      <a href="../tools/property-tax-estimator.html">Property Tax Estimator</a>
+      <a href="../tools/renovation-roi.html">Home Renovation ROI Calculator</a>
+      <a href="../tools/car-loan-calculator.html">Car Loan Calculator</a>
+      <a href="../tools/car-lease-vs-buy.html">Car Lease vs Buy Calculator</a>
+      <a href="../tools/car-depreciation.html">Car Depreciation Calculator</a>
+      <a href="../tools/compound-interest.html">Compound Interest Calculator</a>
+      <a href="../tools/retirement-calculator.html">Retirement Calculator</a>
+      <a href="../tools/401k-calculator.html">401(k) Contribution Calculator</a>
+      <a href="../tools/roth-ira-vs-traditional.html">Roth IRA vs Traditional IRA</a>
+      <a href="../tools/social-security-calculator.html">Social Security Benefits Estimator</a>
+      <a href="../tools/credit-card-payoff.html">Credit Card Payoff Calculator</a>
+      <a href="../tools/savings-goal-calculator.html">Savings Goal Calculator</a>
+      <a href="../tools/break-even-calculator.html">Break-Even Calculator</a>
+      <a href="../tools/discount-calculator.html">Discount Calculator</a>
+      <a href="../tools/percentage-calculator.html">Percentage Calculator</a>
+      <a href="../tools/tip-calculator.html">Tip Calculator</a>
+      <a href="../tools/federal-tax-bracket.html">Federal Tax Bracket Calculator</a>
+      <a href="../tools/capital-gains-tax.html">Capital Gains Tax Calculator</a>
+      <a href="../tools/child-tax-credit.html">Child Tax Credit Calculator</a>
+      <a href="../tools/w2-vs-1099-calculator.html">W-2 vs 1099 Tax Comparison</a>
+      <a href="../tools/llc-vs-scorp.html">LLC vs S-Corp Tax Savings</a>
+      <a href="../tools/freelancer-tax-estimator.html">Freelancer Tax Estimator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Work, Benefits &amp; Education</h4>
+      <a href="../tools/salary-calculator.html">Salary &amp; Paycheck Calculator</a>
+      <a href="../tools/job-offer-comparison.html">Job Offer Comparison Calculator</a>
+      <a href="../tools/freelance-rate-calculator.html">Freelance Rate Calculator</a>
+      <a href="../tools/severance-pay-estimator.html">Severance Pay Estimator</a>
+      <a href="../tools/employee-cost.html">Employee Cost Calculator</a>
+      <a href="../tools/work-hours-calculator.html">Work Hours Calculator</a>
+      <a href="../tools/wfh-savings-calculator.html">Work From Home Savings Calculator</a>
+      <a href="../tools/invoice-generator.html">Invoice Generator</a>
+      <a href="../tools/hsa-calculator.html">HSA Contribution Calculator</a>
+      <a href="../tools/fsa-vs-hsa.html">FSA vs HSA Comparison Tool</a>
+      <a href="../tools/cobra-calculator.html">COBRA Insurance Cost Estimator</a>
+      <a href="../tools/life-insurance-calculator.html">Life Insurance Needs Calculator</a>
+      <a href="../tools/college-529-calculator.html">529 College Savings Calculator</a>
+      <a href="../tools/fafsa-efc.html">FAFSA EFC / SAI Estimator</a>
+      <a href="../tools/student-loan-payoff.html">Student Loan Payoff Calculator</a>
+      <a href="../tools/gpa-calculator.html">GPA to 4.0 Scale Calculator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Converters &amp; Everyday</h4>
+      <a href="../tools/length-converter.html">Unit Converter (Length/Weight/Temp/Speed/Area)</a>
+      <a href="../tools/timezone-converter.html">Time Zone Converter</a>
+      <a href="../tools/countdown-timer.html">Countdown Timer</a>
+      <a href="../tools/date-difference.html">Date Difference Calculator</a>
+      <a href="../tools/json-formatter.html">JSON Formatter</a>
+      <a href="../tools/color-picker.html">Color Picker</a>
+      <a href="../tools/base64-tool.html">Base64 Encoder/Decoder</a>
+      <a href="../tools/regex-tester.html">Regex Tester</a>
+      <a href="../tools/word-counter.html">Word Counter</a>
+      <a href="../tools/character-counter.html">Character Counter</a>
+      <a href="../tools/case-converter.html">Case Converter</a>
+      <a href="../tools/lorem-ipsum.html">Lorem Ipsum Generator</a>
+      <a href="../tools/meta-tag-generator.html">Meta Tag Generator</a>
+      <a href="../tools/slug-generator.html">Slug Generator</a>
+      <a href="../tools/readability-checker.html">Readability Checker</a>
+      <a href="../tools/bmi-calculator.html">BMI Calculator</a>
+      <a href="../tools/calorie-calculator.html">Calorie Calculator</a>
+      <a href="../tools/qr-generator.html">QR Code Generator</a>
+      <a href="../tools/password-generator.html">Password Generator</a>
+      <a href="../tools/age-calculator.html">Age Calculator</a>
+      <a href="../tools/gas-cost-calculator.html">Gas Cost Calculator</a>
+      <a href="../tools/moving-cost-calculator.html">True Cost of Moving Calculator</a>
+      <a href="../tools/solar-savings-calculator.html">Solar Panel Savings Calculator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="../index.html">All Tools</a>
+      <a href="../about.html">About</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../privacy-policy.html">Privacy Policy</a>
+      <a href="../terms.html">Terms of Service</a>
+      <a href="../disclaimer.html">Disclaimer</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Calquto &middot; Free home affordability calculator · No signup required</span>
+  </div>
+</footer>
+</body>
+</html>

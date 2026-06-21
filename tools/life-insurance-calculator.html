@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+
+<meta name="description" content="Free life insurance needs calculator. Find out exactly how much life insurance coverage your family needs based on income, debts, and dependents.">
+<link rel="canonical" href="https://calquto.com/tools/life-insurance-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Life Insurance Needs Calculator — Calquto">
+<meta property="og:description" content="Free life insurance needs calculator. Find out exactly how much life insurance coverage your family needs based on income, debts, and dependents.">
+<meta property="og:url" content="https://calquto.com/tools/life-insurance-calculator.html">
+<meta property="og:site_name" content="Calquto">
+<meta property="og:image" content="https://calquto.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Life Insurance Needs Calculator — Calquto">
+<meta name="twitter:description" content="Free life insurance needs calculator. Find out exactly how much life insurance coverage your family needs based on income, debts, and dependents.">
+<meta name="twitter:image" content="https://calquto.com/og-image.png">
+<title>Life Insurance Needs Calculator — Calquto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/shared-tools.css">
+<style>
+  :root{--blue-900:#0a1628;--blue-600:#1e4fa3;--blue-500:#2563eb;--blue-400:#3b82f6;--blue-300:#93c5fd;--blue-100:#dbeafe;--blue-50:#eff6ff;--green-600:#16a34a;--green-100:#dcfce7;--green-50:#f0fdf4;--orange-600:#ea580c;--orange-100:#ffedd5;--gray-900:#0f172a;--gray-700:#334155;--gray-500:#64748b;--gray-300:#cbd5e1;--gray-100:#f1f5f9;--gray-50:#f8fafc;--radius:12px;--radius-sm:8px}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-900);line-height:1.6;display:flex;flex-direction:column;min-height:100vh}}
+  .page-hero{background:var(--blue-900);padding:0 0 2rem;text-align:center}
+  .page-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(24px,4vw,36px);font-weight:800;color:#fff;letter-spacing:-0.5px}
+  .page-hero p{color:var(--blue-300);font-size:15px;margin-top:6px}
+  main{max-width:900px;margin:0 auto;padding:2rem 1.5rem 4rem;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:640px){main{grid-template-columns:1fr}}
+  .card{background:#fff;border:1px solid var(--gray-300);border-radius:var(--radius);padding:1.5rem}
+  .card h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:700;color:var(--gray-900);margin-bottom:1.25rem}
+  .field{margin-bottom:1rem}
+  label{display:block;font-size:13px;font-weight:500;color:var(--gray-700);margin-bottom:5px}
+  .input-wrap{position:relative}
+  .input-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--gray-500)}
+  .input-suffix{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--gray-500)}
+  input[type=number]{width:100%;border:1px solid var(--gray-300);border-radius:var(--radius-sm);padding:10px 12px 10px 28px;font-size:15px;font-family:'Inter',sans-serif;color:var(--gray-900);outline:none;transition:border-color 0.15s}
+  input[type=number]:focus{border-color:var(--blue-400)}
+  input.no-prefix{padding-left:12px}
+  select{width:100%;border:1px solid var(--gray-300);border-radius:var(--radius-sm);padding:10px 12px;font-size:15px;font-family:'Inter',sans-serif;color:var(--gray-900);outline:none;background:#fff}
+  .result-big{background:var(--blue-50);border:1px solid var(--blue-100);border-radius:var(--radius);padding:1.25rem;text-align:center;margin-bottom:12px}
+  .result-big-label{font-size:13px;color:var(--blue-600);font-weight:500;margin-bottom:4px}
+  .result-big-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:36px;font-weight:800;color:var(--blue-600)}
+  .result-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--gray-100);font-size:14px}
+  .result-row:last-child{border-bottom:none}
+  .result-row .lbl{color:var(--gray-500)}.result-row .val{font-weight:600;color:var(--gray-900)}
+  .green{color:var(--green-600)}.highlight{color:var(--blue-600)}
+  .info-box{background:var(--blue-50);border:1px solid var(--blue-100);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--blue-600);font-weight:500;margin-top:12px}
+  .warn-box{background:var(--orange-100);border:1px solid #fed7aa;border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--orange-600);font-weight:500;margin-top:12px}
+  .full-width{grid-column:1/-1}
+  .guide{grid-column:1/-1;background:#fff;border:1px solid var(--gray-300);border-radius:var(--radius);padding:1.75rem}
+  .guide h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:700;margin-bottom:.75rem}
+  .guide h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;margin:1.25rem 0 .5rem}
+  .guide p{font-size:13.5px;color:var(--gray-700);margin-bottom:.75rem;line-height:1.75}
+  .guide ul{margin:0 0 .75rem 1.1rem;font-size:13.5px;color:var(--gray-700);line-height:1.8}
+  .faq-item{border-bottom:1px solid var(--gray-100);padding:12px 0}.faq-item:last-child{border-bottom:none}
+  .faq-q{font-size:14px;font-weight:600;color:var(--gray-900);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .faq-a{font-size:13.5px;color:var(--gray-700);margin-top:8px;line-height:1.75;display:none}
+  .faq-item.open .faq-a{display:block}
+  .faq-arrow{transition:transform .2s;color:var(--gray-500);flex-shrink:0}
+  .faq-item.open .faq-arrow{transform:rotate(180deg)}
+  .related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:.5rem}
+  .related-link{display:block;background:var(--gray-50);border-radius:var(--radius-sm);padding:.75rem 1rem;text-decoration:none;color:var(--gray-900);font-size:13px;font-weight:600;border:1px solid var(--gray-300);transition:border-color .15s}
+  .related-link:hover{border-color:var(--blue-400)}
+  .related-link span{display:block;font-size:11.5px;color:var(--gray-500);font-weight:400;margin-top:2px}
+  footer a{color:var(--blue-400);text-decoration:none}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "When is the best time to buy life insurance?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The best time is when you're young and healthy — premiums are based primarily on age and health at the time of application. A healthy 30-year-old might pay $25–$35/month for $500,000 in 20-year term coverage. The same coverage purchased at 45 could cost $80–$120/month. Buy when you have dependents who rely on your income, and lock in rates while you're healthy."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need life insurance if I'm single with no dependents?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Probably not for income replacement purposes. The main exceptions: you have significant co-signed debts, aging parents who depend on you financially, or you want to lock in low rates now before potential health changes. If you have no one financially dependent on you, life insurance is largely unnecessary — that money is better invested for retirement."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is employer-provided life insurance enough?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Usually not. Employer group life insurance typically provides 1–2x your annual salary — far less than most families need. It's also tied to your employment, so you lose it if you change jobs. Treat employer-provided coverage as a bonus, not a primary coverage solution."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Life Insurance Needs Calculator",
+  "url": "https://calquto.com/tools/life-insurance-calculator.html",
+  "description": "Free life insurance needs calculator. Find out exactly how much life insurance coverage your family needs based on income, debts, and dependents.",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any (Web Browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Calquto",
+    "url": "https://calquto.com/"
+  }
+}
+</script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Calqu<span>to</span></a>
+  <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">&#9776;</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="../finance.html">Finance</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/mortgage-calculator.html">Mortgage Calculator</a>
+          <a href="../tools/loan-calculator.html">Loan Calculator</a>
+          <a href="../tools/refinance-calculator.html">Mortgage Refinance Calculator</a>
+          <a href="../tools/home-affordability.html">Home Affordability Calculator</a>
+          <a href="../tools/home-equity-heloc.html">Home Equity &amp; HELOC Calculator</a>
+          <a href="../tools/rent-vs-buy.html">Rent vs Buy Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/closing-costs.html">Closing Costs Calculator</a>
+          <a href="../tools/property-tax-estimator.html">Property Tax Estimator</a>
+          <a href="../tools/renovation-roi.html">Home Renovation ROI Calculator</a>
+          <a href="../tools/car-loan-calculator.html">Car Loan Calculator</a>
+          <a href="../tools/car-lease-vs-buy.html">Car Lease vs Buy Calculator</a>
+          <a href="../tools/car-depreciation.html">Car Depreciation Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/compound-interest.html">Compound Interest Calculator</a>
+          <a href="../tools/retirement-calculator.html">Retirement Calculator</a>
+          <a href="../tools/401k-calculator.html">401(k) Contribution Calculator</a>
+          <a href="../tools/roth-ira-vs-traditional.html">Roth IRA vs Traditional IRA</a>
+          <a href="../tools/social-security-calculator.html">Social Security Benefits Estimator</a>
+          <a href="../tools/credit-card-payoff.html">Credit Card Payoff Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/savings-goal-calculator.html">Savings Goal Calculator</a>
+          <a href="../tools/break-even-calculator.html">Break-Even Calculator</a>
+          <a href="../tools/discount-calculator.html">Discount Calculator</a>
+          <a href="../tools/percentage-calculator.html">Percentage Calculator</a>
+          <a href="../tools/tip-calculator.html">Tip Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../finance.html">View all Finance tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../tax.html">Tax</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/federal-tax-bracket.html">Federal Tax Bracket Calculator</a>
+          <a href="../tools/capital-gains-tax.html">Capital Gains Tax Calculator</a>
+          <a href="../tools/child-tax-credit.html">Child Tax Credit Calculator</a>
+          <a href="../tools/w2-vs-1099-calculator.html">W-2 vs 1099 Tax Comparison</a>
+          <a href="../tools/llc-vs-scorp.html">LLC vs S-Corp Tax Savings</a>
+          <a href="../tools/freelancer-tax-estimator.html">Freelancer Tax Estimator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../tax.html">View all Tax tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../work-career.html">Work &amp; Career</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/salary-calculator.html">Salary &amp; Paycheck Calculator</a>
+          <a href="../tools/job-offer-comparison.html">Job Offer Comparison Calculator</a>
+          <a href="../tools/freelance-rate-calculator.html">Freelance Rate Calculator</a>
+          <a href="../tools/severance-pay-estimator.html">Severance Pay Estimator</a>
+          <a href="../tools/employee-cost.html">Employee Cost Calculator</a>
+          <a href="../tools/work-hours-calculator.html">Work Hours Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/wfh-savings-calculator.html">Work From Home Savings Calculator</a>
+          <a href="../tools/invoice-generator.html">Invoice Generator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../work-career.html">View all Work &amp; Career tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../benefits-insurance.html">Benefits</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/hsa-calculator.html">HSA Contribution Calculator</a>
+          <a href="../tools/fsa-vs-hsa.html">FSA vs HSA Comparison Tool</a>
+          <a href="../tools/cobra-calculator.html">COBRA Insurance Cost Estimator</a>
+          <a href="../tools/life-insurance-calculator.html" class="cur">Life Insurance Needs Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../benefits-insurance.html">View all Benefits tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../education.html">Education</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/college-529-calculator.html">529 College Savings Calculator</a>
+          <a href="../tools/fafsa-efc.html">FAFSA EFC / SAI Estimator</a>
+          <a href="../tools/student-loan-payoff.html">Student Loan Payoff Calculator</a>
+          <a href="../tools/gpa-calculator.html">GPA to 4.0 Scale Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../education.html">View all Education tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../converters.html">Converters</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/length-converter.html">Unit Converter (Length/Weight/Temp/Speed/Area)</a>
+          <a href="../tools/timezone-converter.html">Time Zone Converter</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../converters.html">View all Converters tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../date-time-tools.html">Date/Time</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/countdown-timer.html">Countdown Timer</a>
+          <a href="../tools/date-difference.html">Date Difference Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../date-time-tools.html">View all Date/Time tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../developer-tools.html">Developer</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/json-formatter.html">JSON Formatter</a>
+          <a href="../tools/color-picker.html">Color Picker</a>
+          <a href="../tools/base64-tool.html">Base64 Encoder/Decoder</a>
+          <a href="../tools/regex-tester.html">Regex Tester</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../developer-tools.html">View all Developer tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../seo-text-tools.html">SEO/Text</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/word-counter.html">Word Counter</a>
+          <a href="../tools/character-counter.html">Character Counter</a>
+          <a href="../tools/case-converter.html">Case Converter</a>
+          <a href="../tools/lorem-ipsum.html">Lorem Ipsum Generator</a>
+          <a href="../tools/meta-tag-generator.html">Meta Tag Generator</a>
+          <a href="../tools/slug-generator.html">Slug Generator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/readability-checker.html">Readability Checker</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../seo-text-tools.html">View all SEO/Text tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../health.html">Health</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/bmi-calculator.html">BMI Calculator</a>
+          <a href="../tools/calorie-calculator.html">Calorie Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../health.html">View all Health tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../everyday-tools.html">Everyday</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/qr-generator.html">QR Code Generator</a>
+          <a href="../tools/password-generator.html">Password Generator</a>
+          <a href="../tools/age-calculator.html">Age Calculator</a>
+          <a href="../tools/gas-cost-calculator.html">Gas Cost Calculator</a>
+          <a href="../tools/moving-cost-calculator.html">True Cost of Moving Calculator</a>
+          <a href="../tools/solar-savings-calculator.html">Solar Panel Savings Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../everyday-tools.html">View all Everyday tools &rarr;</a>
+      </div>
+    </li>
+    <li class="nav-all"><a href="../index.html">All Tools</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <div class="breadcrumb"><a href="../index.html">Calquto</a><span class="bc-sep">›</span><a href="../benefits-insurance.html">Benefits & Insurance</a><span class="bc-sep">›</span><span class="bc-current">Life Insurance Needs Calculator</span></div><h1>🛡️ Life Insurance Needs Calculator</h1><p>Calculate how much life insurance coverage your family actually needs</p></div>
+<main><div class="card">
+  <h2>Your Financial Details</h2>
+  <div class="field"><label>Annual Income (to replace)</label><div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="income" value="80000" oninput="calculate()"></div></div>
+  <div class="field"><label>Years of Income to Replace</label><div class="input-wrap"><input type="number" id="incomeYears" class="no-prefix" value="20" oninput="calculate()"></div></div>
+  <div class="field"><label>Mortgage / Home Loan Balance</label><div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="mortgage" value="250000" oninput="calculate()"></div></div>
+  <div class="field"><label>Other Debts (car, student loans, etc.)</label><div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="otherDebts" value="20000" oninput="calculate()"></div></div>
+  <div class="field"><label>Children's College Fund Needed</label><div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="college" value="100000" oninput="calculate()"></div></div>
+  <div class="field"><label>Final Expenses (funeral, estate)</label><div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="funeral" value="15000" oninput="calculate()"></div></div>
+  <div class="field"><label>Existing Savings / Assets</label><div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="savings" value="30000" oninput="calculate()"></div></div>
+  <div class="field"><label>Existing Life Insurance</label><div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="existing" value="0" oninput="calculate()"></div></div>
+</div>
+<div class="card">
+  <h2>Coverage Recommendation</h2>
+  <div class="result-big"><div class="result-big-label">Recommended Coverage</div><div class="result-big-num" id="coverage">—</div></div>
+  <div class="result-row"><span class="lbl">Income Replacement Needed</span><span class="val" id="incomeNeed">—</span></div>
+  <div class="result-row"><span class="lbl">Debt Payoff</span><span class="val" id="debtNeed">—</span></div>
+  <div class="result-row"><span class="lbl">College Fund</span><span class="val" id="collegeNeed">—</span></div>
+  <div class="result-row"><span class="lbl">Final Expenses</span><span class="val" id="funeralNeed">—</span></div>
+  <div class="result-row"><span class="lbl">Less: Existing Assets</span><span class="val" id="offset">—</span></div>
+  <div class="result-row"><span class="lbl">Monthly Premium Estimate (term)</span><span class="val highlight" id="premium">—</span></div>
+  <div class="info-box">Estimates based on DIME method. Premium estimate for healthy 35-year-old — actual rates vary by age, health, and insurer. Get quotes from multiple providers.</div>
+</div>
+<div class="guide">
+  <h2>How Much Life Insurance Do You Actually Need?</h2>
+  <p>Life insurance is one of the most important financial decisions for anyone with dependents, yet most people are either significantly under-insured or pay for coverage they don't need. The goal is simple: if you die, your family should be able to maintain their standard of living without financial hardship.</p>
+  <h3>The DIME Method</h3>
+  <p>The DIME method is a simple framework for calculating coverage needs: <strong>D</strong>ebt (all outstanding debts including mortgage), <strong>I</strong>ncome (years of income your family needs replaced), <strong>M</strong>ortgage (remaining mortgage balance — often the biggest item), and <strong>E</strong>ducation (college costs for your children). Add these together and subtract existing savings and insurance to get your coverage gap.</p>
+  <h3>Term vs Whole Life Insurance</h3>
+  <ul>
+    <li><strong>Term life:</strong> Pure insurance for a set period (10, 20, 30 years). Cheapest cost per dollar of coverage. Best for most people — covers the years when dependents rely on you most.</li>
+    <li><strong>Whole life / Universal life:</strong> Permanent coverage with a cash value component. Far more expensive — often 10–15x the premium of equivalent term coverage. Rarely the best choice for pure insurance needs.</li>
+  </ul>
+  <h3>Frequently Asked Questions</h3>
+  <div class="faq-item open"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">When is the best time to buy life insurance? <span class="faq-arrow">▼</span></div><div class="faq-a">The best time is when you're young and healthy — premiums are based primarily on age and health at the time of application. A healthy 30-year-old might pay $25–$35/month for $500,000 in 20-year term coverage. The same coverage purchased at 45 could cost $80–$120/month. Buy when you have dependents who rely on your income, and lock in rates while you're healthy.</div></div>
+  <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Do I need life insurance if I'm single with no dependents? <span class="faq-arrow">▼</span></div><div class="faq-a">Probably not for income replacement purposes. The main exceptions: you have significant co-signed debts, aging parents who depend on you financially, or you want to lock in low rates now before potential health changes. If you have no one financially dependent on you, life insurance is largely unnecessary — that money is better invested for retirement.</div></div>
+  <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is employer-provided life insurance enough? <span class="faq-arrow">▼</span></div><div class="faq-a">Usually not. Employer group life insurance typically provides 1–2x your annual salary — far less than most families need. It's also tied to your employment, so you lose it if you change jobs. Treat employer-provided coverage as a bonus, not a primary coverage solution.</div></div>
+  <h3>Related Calculators</h3>
+  <div class="related-grid">
+    <a class="related-link" href="mortgage-calculator.html">Mortgage Calculator<span>Understand your biggest debt</span></a>
+    <a class="related-link" href="retirement-calculator.html">Retirement Calculator<span>Long-term savings planning</span></a>
+    <a class="related-link" href="savings-goal-calculator.html">Savings Goal<span>Build your financial safety net</span></a>
+    <a class="related-link" href="college-529-calculator.html">529 College Savings<span>Plan for education costs</span></a>
+  </div>
+</div>
+<script>
+const fmt=n=>'$'+Math.round(n).toLocaleString();
+function calculate(){
+  const income=parseFloat(document.getElementById('income').value)||0;
+  const years=parseFloat(document.getElementById('incomeYears').value)||0;
+  const mortgage=parseFloat(document.getElementById('mortgage').value)||0;
+  const debts=parseFloat(document.getElementById('otherDebts').value)||0;
+  const college=parseFloat(document.getElementById('college').value)||0;
+  const funeral=parseFloat(document.getElementById('funeral').value)||0;
+  const savings=parseFloat(document.getElementById('savings').value)||0;
+  const existing=parseFloat(document.getElementById('existing').value)||0;
+  const incomeNeed=income*years;
+  const debtNeed=mortgage+debts;
+  const total=incomeNeed+debtNeed+college+funeral;
+  const coverage=Math.max(0,total-savings-existing);
+  // Rough term premium estimate: $500k 20yr ~$30/mo for 35yo healthy. Scale linearly.
+  const premiumEst=(coverage/500000)*30;
+  document.getElementById('coverage').textContent=fmt(coverage);
+  document.getElementById('incomeNeed').textContent=fmt(incomeNeed);
+  document.getElementById('debtNeed').textContent=fmt(debtNeed);
+  document.getElementById('collegeNeed').textContent=fmt(college);
+  document.getElementById('funeralNeed').textContent=fmt(funeral);
+  document.getElementById('offset').textContent='−'+fmt(savings+existing);
+  document.getElementById('premium').textContent='~'+fmt(premiumEst)+'/mo (term, est.)';
+}
+calculate();
+</script></main>
+<footer class="site-footer">
+  <div class="footer-top">
+    <a class="footer-logo" href="../index.html">Calqu<span>to</span></a>
+    <p class="footer-tagline">Free, fast, browser-based calculators and tools. No signup, nothing stored.</p>
+  </div>
+  <div class="footer-cols">
+    <div class="footer-col">
+      <h4>Finance &amp; Tax</h4>
+      <a href="../tools/mortgage-calculator.html">Mortgage Calculator</a>
+      <a href="../tools/loan-calculator.html">Loan Calculator</a>
+      <a href="../tools/refinance-calculator.html">Mortgage Refinance Calculator</a>
+      <a href="../tools/home-affordability.html">Home Affordability Calculator</a>
+      <a href="../tools/home-equity-heloc.html">Home Equity &amp; HELOC Calculator</a>
+      <a href="../tools/rent-vs-buy.html">Rent vs Buy Calculator</a>
+      <a href="../tools/closing-costs.html">Closing Costs Calculator</a>
+      <a href="../tools/property-tax-estimator.html">Property Tax Estimator</a>
+      <a href="../tools/renovation-roi.html">Home Renovation ROI Calculator</a>
+      <a href="../tools/car-loan-calculator.html">Car Loan Calculator</a>
+      <a href="../tools/car-lease-vs-buy.html">Car Lease vs Buy Calculator</a>
+      <a href="../tools/car-depreciation.html">Car Depreciation Calculator</a>
+      <a href="../tools/compound-interest.html">Compound Interest Calculator</a>
+      <a href="../tools/retirement-calculator.html">Retirement Calculator</a>
+      <a href="../tools/401k-calculator.html">401(k) Contribution Calculator</a>
+      <a href="../tools/roth-ira-vs-traditional.html">Roth IRA vs Traditional IRA</a>
+      <a href="../tools/social-security-calculator.html">Social Security Benefits Estimator</a>
+      <a href="../tools/credit-card-payoff.html">Credit Card Payoff Calculator</a>
+      <a href="../tools/savings-goal-calculator.html">Savings Goal Calculator</a>
+      <a href="../tools/break-even-calculator.html">Break-Even Calculator</a>
+      <a href="../tools/discount-calculator.html">Discount Calculator</a>
+      <a href="../tools/percentage-calculator.html">Percentage Calculator</a>
+      <a href="../tools/tip-calculator.html">Tip Calculator</a>
+      <a href="../tools/federal-tax-bracket.html">Federal Tax Bracket Calculator</a>
+      <a href="../tools/capital-gains-tax.html">Capital Gains Tax Calculator</a>
+      <a href="../tools/child-tax-credit.html">Child Tax Credit Calculator</a>
+      <a href="../tools/w2-vs-1099-calculator.html">W-2 vs 1099 Tax Comparison</a>
+      <a href="../tools/llc-vs-scorp.html">LLC vs S-Corp Tax Savings</a>
+      <a href="../tools/freelancer-tax-estimator.html">Freelancer Tax Estimator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Work, Benefits &amp; Education</h4>
+      <a href="../tools/salary-calculator.html">Salary &amp; Paycheck Calculator</a>
+      <a href="../tools/job-offer-comparison.html">Job Offer Comparison Calculator</a>
+      <a href="../tools/freelance-rate-calculator.html">Freelance Rate Calculator</a>
+      <a href="../tools/severance-pay-estimator.html">Severance Pay Estimator</a>
+      <a href="../tools/employee-cost.html">Employee Cost Calculator</a>
+      <a href="../tools/work-hours-calculator.html">Work Hours Calculator</a>
+      <a href="../tools/wfh-savings-calculator.html">Work From Home Savings Calculator</a>
+      <a href="../tools/invoice-generator.html">Invoice Generator</a>
+      <a href="../tools/hsa-calculator.html">HSA Contribution Calculator</a>
+      <a href="../tools/fsa-vs-hsa.html">FSA vs HSA Comparison Tool</a>
+      <a href="../tools/cobra-calculator.html">COBRA Insurance Cost Estimator</a>
+      <a href="../tools/life-insurance-calculator.html">Life Insurance Needs Calculator</a>
+      <a href="../tools/college-529-calculator.html">529 College Savings Calculator</a>
+      <a href="../tools/fafsa-efc.html">FAFSA EFC / SAI Estimator</a>
+      <a href="../tools/student-loan-payoff.html">Student Loan Payoff Calculator</a>
+      <a href="../tools/gpa-calculator.html">GPA to 4.0 Scale Calculator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Converters &amp; Everyday</h4>
+      <a href="../tools/length-converter.html">Unit Converter (Length/Weight/Temp/Speed/Area)</a>
+      <a href="../tools/timezone-converter.html">Time Zone Converter</a>
+      <a href="../tools/countdown-timer.html">Countdown Timer</a>
+      <a href="../tools/date-difference.html">Date Difference Calculator</a>
+      <a href="../tools/json-formatter.html">JSON Formatter</a>
+      <a href="../tools/color-picker.html">Color Picker</a>
+      <a href="../tools/base64-tool.html">Base64 Encoder/Decoder</a>
+      <a href="../tools/regex-tester.html">Regex Tester</a>
+      <a href="../tools/word-counter.html">Word Counter</a>
+      <a href="../tools/character-counter.html">Character Counter</a>
+      <a href="../tools/case-converter.html">Case Converter</a>
+      <a href="../tools/lorem-ipsum.html">Lorem Ipsum Generator</a>
+      <a href="../tools/meta-tag-generator.html">Meta Tag Generator</a>
+      <a href="../tools/slug-generator.html">Slug Generator</a>
+      <a href="../tools/readability-checker.html">Readability Checker</a>
+      <a href="../tools/bmi-calculator.html">BMI Calculator</a>
+      <a href="../tools/calorie-calculator.html">Calorie Calculator</a>
+      <a href="../tools/qr-generator.html">QR Code Generator</a>
+      <a href="../tools/password-generator.html">Password Generator</a>
+      <a href="../tools/age-calculator.html">Age Calculator</a>
+      <a href="../tools/gas-cost-calculator.html">Gas Cost Calculator</a>
+      <a href="../tools/moving-cost-calculator.html">True Cost of Moving Calculator</a>
+      <a href="../tools/solar-savings-calculator.html">Solar Panel Savings Calculator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="../index.html">All Tools</a>
+      <a href="../about.html">About</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../privacy-policy.html">Privacy Policy</a>
+      <a href="../terms.html">Terms of Service</a>
+      <a href="../disclaimer.html">Disclaimer</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Calquto &middot; Free life insurance needs calculator · No signup required</span>
+  </div>
+</footer>
+</body></html>

@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+
+<meta name="description" content="Compare W-2 employee vs 1099 contractor take-home pay. See exactly how self-employment tax, benefits, and deductions affect your real income.">
+<link rel="canonical" href="https://calquto.com/tools/w2-vs-1099-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="W-2 vs 1099 Tax Comparison Calculator — Calquto">
+<meta property="og:description" content="Compare W-2 employee vs 1099 contractor take-home pay. See exactly how self-employment tax, benefits, and deductions affect your real income.">
+<meta property="og:url" content="https://calquto.com/tools/w2-vs-1099-calculator.html">
+<meta property="og:site_name" content="Calquto">
+<meta property="og:image" content="https://calquto.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="W-2 vs 1099 Tax Comparison Calculator — Calquto">
+<meta name="twitter:description" content="Compare W-2 employee vs 1099 contractor take-home pay. See exactly how self-employment tax, benefits, and deductions affect your real income.">
+<meta name="twitter:image" content="https://calquto.com/og-image.png">
+<title>W-2 vs 1099 Tax Comparison Calculator — Calquto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/shared-tools.css">
+<style>
+  :root {
+    --blue-900:#0a1628;--blue-800:#0f2346;--blue-600:#1e4fa3;--blue-500:#2563eb;--blue-400:#3b82f6;--blue-300:#93c5fd;--blue-100:#dbeafe;--blue-50:#eff6ff;
+    --green-600:#16a34a;--green-100:#dcfce7;--green-50:#f0fdf4;
+    --orange-600:#ea580c;--orange-100:#ffedd5;--orange-50:#fff7ed;
+    --gray-900:#0f172a;--gray-700:#334155;--gray-500:#64748b;--gray-300:#cbd5e1;--gray-100:#f1f5f9;--gray-50:#f8fafc;--white:#ffffff;
+    --radius:12px;--radius-sm:8px;--gray-200:#e2e8f0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-900);line-height:1.6;display:flex;flex-direction:column;min-height:100vh}}
+  .page-hero{background:var(--blue-900);padding:0 0 2rem;text-align:center}
+  .page-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(24px,4vw,36px);font-weight:800;color:#fff;letter-spacing:-0.5px}
+  .page-hero p{color:var(--blue-300);font-size:15px;margin-top:6px}
+  main{max-width:960px;margin:0 auto;padding:2rem 1.5rem 4rem}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media(max-width:640px){.grid-2{grid-template-columns:1fr}}
+  .card{background:#fff;border:1px solid var(--gray-300);border-radius:var(--radius);padding:1.5rem;margin-bottom:0}
+  .card h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:700;color:var(--gray-900);margin-bottom:1.25rem}
+  .field{margin-bottom:1rem}
+  label{display:block;font-size:13px;font-weight:500;color:var(--gray-700);margin-bottom:5px}
+  .input-wrap{position:relative}
+  .input-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--gray-500);font-weight:500}
+  .input-suffix{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--gray-500)}
+  input[type=number]{width:100%;border:1px solid var(--gray-300);border-radius:var(--radius-sm);padding:10px 12px 10px 28px;font-size:15px;font-family:'Inter',sans-serif;color:var(--gray-900);outline:none;transition:border-color 0.15s}
+  input[type=number]:focus{border-color:var(--blue-400)}
+  input.no-prefix{padding-left:12px}
+  .calc-btn{width:100%;background:var(--blue-500);color:#fff;border:none;border-radius:var(--radius-sm);padding:13px;font-size:15px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;margin-top:0.5rem;transition:background 0.15s}
+  .calc-btn:hover{background:var(--blue-600)}
+  .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+  @media(max-width:640px){.compare-grid{grid-template-columns:1fr}}
+  .compare-card{border-radius:var(--radius);padding:1.25rem;text-align:center}
+  .compare-card.w2{background:var(--blue-50);border:2px solid var(--blue-400)}
+  .compare-card.c1099{background:var(--orange-50);border:2px solid var(--orange-600)}
+  .compare-card .label{font-size:13px;font-weight:600;margin-bottom:4px}
+  .compare-card.w2 .label{color:var(--blue-600)}
+  .compare-card.c1099 .label{color:var(--orange-600)}
+  .compare-card .amount{font-family:'Plus Jakarta Sans',sans-serif;font-size:32px;font-weight:800}
+  .compare-card.w2 .amount{color:var(--blue-600)}
+  .compare-card.c1099 .amount{color:var(--orange-600)}
+  .compare-card .sub{font-size:12px;color:var(--gray-500);margin-top:2px}
+  .winner-banner{background:var(--green-50);border:1px solid var(--green-100);border-radius:var(--radius-sm);padding:1rem 1.25rem;text-align:center;margin-bottom:20px;font-size:14px;font-weight:600;color:var(--green-600)}
+  .breakdown-table{width:100%;border-collapse:collapse;font-size:13.5px}
+  .breakdown-table th{text-align:left;padding:8px 10px;font-size:12px;font-weight:600;color:var(--gray-500);text-transform:uppercase;letter-spacing:.04em;background:var(--gray-50);border-bottom:1px solid var(--gray-200)}
+  .breakdown-table td{padding:9px 10px;border-bottom:1px solid var(--gray-100)}
+  .breakdown-table tr:last-child td{border-bottom:none;font-weight:700}
+  .breakdown-table .neg{color:var(--orange-600)}
+  .breakdown-table .pos{color:var(--green-600)}
+  .section-gap{margin-top:24px}
+  .guide{background:#fff;border:1px solid var(--gray-300);border-radius:var(--radius);padding:1.75rem;margin-top:24px}
+  .guide h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:700;color:var(--gray-900);margin-bottom:.75rem}
+  .guide h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:var(--gray-900);margin:1.25rem 0 .5rem}
+  .guide p{font-size:13.5px;color:var(--gray-700);margin-bottom:.75rem;line-height:1.75}
+  .guide ul{margin:0 0 .75rem 1.1rem;font-size:13.5px;color:var(--gray-700);line-height:1.8}
+  .formula-box{background:var(--gray-50);border:1px solid var(--gray-300);border-radius:var(--radius-sm);padding:1rem 1.25rem;margin:.75rem 0;font-family:monospace;font-size:13px;color:var(--blue-600);overflow-x:auto}
+  .example-box{background:var(--blue-50);border:1px solid var(--blue-100);border-radius:var(--radius-sm);padding:1rem 1.25rem;margin:.75rem 0}
+  .example-box .ex-label{font-size:11px;font-weight:700;color:var(--blue-600);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+  .faq-item{border-bottom:1px solid var(--gray-100);padding:12px 0}
+  .faq-item:last-child{border-bottom:none}
+  .faq-q{font-size:14px;font-weight:600;color:var(--gray-900);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .faq-a{font-size:13.5px;color:var(--gray-700);margin-top:8px;line-height:1.75;display:none}
+  .faq-item.open .faq-a{display:block}
+  .faq-arrow{transition:transform .2s;color:var(--gray-500);flex-shrink:0}
+  .faq-item.open .faq-arrow{transform:rotate(180deg)}
+  .related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:.5rem}
+  .related-link{display:block;background:var(--gray-50);border-radius:var(--radius-sm);padding:.75rem 1rem;text-decoration:none;color:var(--gray-900);font-size:13px;font-weight:600;border:1px solid var(--gray-300);transition:border-color .15s}
+  .related-link:hover{border-color:var(--blue-400)}
+  .related-link span{display:block;font-size:11.5px;color:var(--gray-500);font-weight:400;margin-top:2px}
+  footer a{color:var(--blue-400);text-decoration:none}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much more should I charge as a 1099 contractor vs W-2?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A common rule of thumb is to charge 1.25–1.5× your W-2 salary as a 1099 rate. The multiplier depends on your benefits situation — if you're getting health insurance from a spouse, your required rate is lower. Use this calculator with your specific numbers for a precise answer rather than relying on the rule of thumb."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I pay taxes quarterly as a 1099 contractor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Unlike W-2 employees who have taxes withheld automatically each paycheck, 1099 contractors are required to make quarterly estimated tax payments to the IRS — typically in April, June, September, and January. If you underpay, you may owe penalties at tax time. A good rule is to set aside 25–30% of every payment you receive for taxes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I be both a W-2 employee and a 1099 contractor?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Many people have a primary W-2 job and also do freelance work on the side that generates 1099 income. In this case, the 1099 income is added to your total income and taxed at your marginal rate, plus the 15.3% self-employment tax. You'd still benefit from all the same 1099 deductions on your Schedule C."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the QBI deduction and do I qualify?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Qualified Business Income (QBI) deduction allows many self-employed individuals and pass-through business owners to deduct up to 20% of their qualified business income. Eligibility is subject to income thresholds ($182,050 for single, $364,200 for married in 2023) and profession type. Some service professions like law and consulting phase out at higher incomes. Consult a tax professional for your specific situation."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens if a company misclassifies me as 1099 when I should be W-2?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Worker misclassification is illegal and common. If a company controls how, when, and where you work, you are likely an employee under IRS rules, regardless of what they call you. Misclassified workers are denied benefits, unemployment insurance, and workers' compensation, and end up paying both halves of FICA. You can file IRS Form SS-8 to have the IRS determine your proper classification."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "W-2 vs 1099 Tax Comparison Calculator",
+  "url": "https://calquto.com/tools/w2-vs-1099-calculator.html",
+  "description": "Compare W-2 employee vs 1099 contractor take-home pay. See exactly how self-employment tax, benefits, and deductions affect your real income.",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Any (Web Browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Calquto",
+    "url": "https://calquto.com/"
+  }
+}
+</script>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">Calqu<span>to</span></a>
+  <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">&#9776;</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="../finance.html">Finance</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/mortgage-calculator.html">Mortgage Calculator</a>
+          <a href="../tools/loan-calculator.html">Loan Calculator</a>
+          <a href="../tools/refinance-calculator.html">Mortgage Refinance Calculator</a>
+          <a href="../tools/home-affordability.html">Home Affordability Calculator</a>
+          <a href="../tools/home-equity-heloc.html">Home Equity &amp; HELOC Calculator</a>
+          <a href="../tools/rent-vs-buy.html">Rent vs Buy Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/closing-costs.html">Closing Costs Calculator</a>
+          <a href="../tools/property-tax-estimator.html">Property Tax Estimator</a>
+          <a href="../tools/renovation-roi.html">Home Renovation ROI Calculator</a>
+          <a href="../tools/car-loan-calculator.html">Car Loan Calculator</a>
+          <a href="../tools/car-lease-vs-buy.html">Car Lease vs Buy Calculator</a>
+          <a href="../tools/car-depreciation.html">Car Depreciation Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/compound-interest.html">Compound Interest Calculator</a>
+          <a href="../tools/retirement-calculator.html">Retirement Calculator</a>
+          <a href="../tools/401k-calculator.html">401(k) Contribution Calculator</a>
+          <a href="../tools/roth-ira-vs-traditional.html">Roth IRA vs Traditional IRA</a>
+          <a href="../tools/social-security-calculator.html">Social Security Benefits Estimator</a>
+          <a href="../tools/credit-card-payoff.html">Credit Card Payoff Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/savings-goal-calculator.html">Savings Goal Calculator</a>
+          <a href="../tools/break-even-calculator.html">Break-Even Calculator</a>
+          <a href="../tools/discount-calculator.html">Discount Calculator</a>
+          <a href="../tools/percentage-calculator.html">Percentage Calculator</a>
+          <a href="../tools/tip-calculator.html">Tip Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../finance.html">View all Finance tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../tax.html">Tax</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/federal-tax-bracket.html">Federal Tax Bracket Calculator</a>
+          <a href="../tools/capital-gains-tax.html">Capital Gains Tax Calculator</a>
+          <a href="../tools/child-tax-credit.html">Child Tax Credit Calculator</a>
+          <a href="../tools/w2-vs-1099-calculator.html" class="cur">W-2 vs 1099 Tax Comparison</a>
+          <a href="../tools/llc-vs-scorp.html">LLC vs S-Corp Tax Savings</a>
+          <a href="../tools/freelancer-tax-estimator.html">Freelancer Tax Estimator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../tax.html">View all Tax tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../work-career.html">Work &amp; Career</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/salary-calculator.html">Salary &amp; Paycheck Calculator</a>
+          <a href="../tools/job-offer-comparison.html">Job Offer Comparison Calculator</a>
+          <a href="../tools/freelance-rate-calculator.html">Freelance Rate Calculator</a>
+          <a href="../tools/severance-pay-estimator.html">Severance Pay Estimator</a>
+          <a href="../tools/employee-cost.html">Employee Cost Calculator</a>
+          <a href="../tools/work-hours-calculator.html">Work Hours Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/wfh-savings-calculator.html">Work From Home Savings Calculator</a>
+          <a href="../tools/invoice-generator.html">Invoice Generator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../work-career.html">View all Work &amp; Career tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../benefits-insurance.html">Benefits</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/hsa-calculator.html">HSA Contribution Calculator</a>
+          <a href="../tools/fsa-vs-hsa.html">FSA vs HSA Comparison Tool</a>
+          <a href="../tools/cobra-calculator.html">COBRA Insurance Cost Estimator</a>
+          <a href="../tools/life-insurance-calculator.html">Life Insurance Needs Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../benefits-insurance.html">View all Benefits tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../education.html">Education</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/college-529-calculator.html">529 College Savings Calculator</a>
+          <a href="../tools/fafsa-efc.html">FAFSA EFC / SAI Estimator</a>
+          <a href="../tools/student-loan-payoff.html">Student Loan Payoff Calculator</a>
+          <a href="../tools/gpa-calculator.html">GPA to 4.0 Scale Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../education.html">View all Education tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../converters.html">Converters</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/length-converter.html">Unit Converter (Length/Weight/Temp/Speed/Area)</a>
+          <a href="../tools/timezone-converter.html">Time Zone Converter</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../converters.html">View all Converters tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../date-time-tools.html">Date/Time</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/countdown-timer.html">Countdown Timer</a>
+          <a href="../tools/date-difference.html">Date Difference Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../date-time-tools.html">View all Date/Time tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../developer-tools.html">Developer</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/json-formatter.html">JSON Formatter</a>
+          <a href="../tools/color-picker.html">Color Picker</a>
+          <a href="../tools/base64-tool.html">Base64 Encoder/Decoder</a>
+          <a href="../tools/regex-tester.html">Regex Tester</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../developer-tools.html">View all Developer tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../seo-text-tools.html">SEO/Text</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/word-counter.html">Word Counter</a>
+          <a href="../tools/character-counter.html">Character Counter</a>
+          <a href="../tools/case-converter.html">Case Converter</a>
+          <a href="../tools/lorem-ipsum.html">Lorem Ipsum Generator</a>
+          <a href="../tools/meta-tag-generator.html">Meta Tag Generator</a>
+          <a href="../tools/slug-generator.html">Slug Generator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/readability-checker.html">Readability Checker</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../seo-text-tools.html">View all SEO/Text tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../health.html">Health</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/bmi-calculator.html">BMI Calculator</a>
+          <a href="../tools/calorie-calculator.html">Calorie Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../health.html">View all Health tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../everyday-tools.html">Everyday</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/qr-generator.html">QR Code Generator</a>
+          <a href="../tools/password-generator.html">Password Generator</a>
+          <a href="../tools/age-calculator.html">Age Calculator</a>
+          <a href="../tools/gas-cost-calculator.html">Gas Cost Calculator</a>
+          <a href="../tools/moving-cost-calculator.html">True Cost of Moving Calculator</a>
+          <a href="../tools/solar-savings-calculator.html">Solar Panel Savings Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../everyday-tools.html">View all Everyday tools &rarr;</a>
+      </div>
+    </li>
+    <li class="nav-all"><a href="../index.html">All Tools</a></li>
+  </ul>
+</nav>
+
+
+<div class="page-hero">
+  <h1>⚖️ W-2 vs 1099 Tax Comparison</h1>
+  <p>See your true take-home pay as an employee vs independent contractor</p>
+  <div class="year-badge">✓ Updated for 2026 tax brackets</div>
+</div>
+
+<main>
+  <div class="grid-2" style="margin-bottom:24px">
+    <!-- W-2 INPUTS -->
+    <div class="card">
+      <h2>🏢 W-2 Employee</h2>
+      <div class="field">
+        <label>Annual Salary (W-2)</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="w2Salary" value="80000" oninput="calculate()"></div>
+      </div>
+      <div class="field">
+        <label>Employer Health Insurance (Annual)</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="w2Health" value="6000" oninput="calculate()"></div>
+      </div>
+      <div class="field">
+        <label>Employer 401(k) Match (Annual)</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="w2Match" value="2400" oninput="calculate()"></div>
+      </div>
+      <div class="field">
+        <label>Your 401(k) Contribution (Annual)</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="w2Contrib" value="4000" oninput="calculate()"></div>
+      </div>
+      <div class="field">
+        <label>Filing Status</label>
+        <select id="filingStatus" onchange="calculate()" style="width:100%;border:1px solid var(--gray-300);border-radius:var(--radius-sm);padding:10px 12px;font-size:15px;font-family:'Inter',sans-serif;color:var(--gray-900);outline:none;background:#fff">
+          <option value="single">Single</option>
+          <option value="married">Married Filing Jointly</option>
+          <option value="hoh">Head of Household</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 1099 INPUTS -->
+    <div class="card">
+      <h2>💼 1099 Contractor</h2>
+      <div class="field">
+        <label>Annual Contract Income (1099)</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="c1099Income" value="95000" oninput="calculate()"></div>
+      </div>
+      <div class="field">
+        <label>Business Expenses (Annual)</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="c1099Expenses" value="8000" oninput="calculate()"></div>
+      </div>
+      <div class="field">
+        <label>Health Insurance Premiums (Annual)</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="c1099Health" value="7200" oninput="calculate()"></div>
+      </div>
+      <div class="field">
+        <label>SEP-IRA / Solo 401(k) Contribution</label>
+        <div class="input-wrap"><span class="input-prefix">$</span><input type="number" id="c1099Retire" value="6000" oninput="calculate()"></div>
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label>State Income Tax Rate</label>
+        <div class="input-wrap"><input type="number" id="stateRate" class="no-prefix" value="5" step="0.1" oninput="calculate()"><span class="input-suffix">%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="compare-grid">
+    <div class="compare-card w2">
+      <div class="label">W-2 Take-Home Pay</div>
+      <div class="amount" id="w2TakeHome">—</div>
+      <div class="sub" id="w2Sub">after federal, state & FICA</div>
+    </div>
+    <div class="compare-card c1099">
+      <div class="label">1099 Take-Home Pay</div>
+      <div class="amount" id="c1099TakeHome">—</div>
+      <div class="sub" id="c1099Sub">after all taxes & deductions</div>
+    </div>
+  </div>
+
+  <div class="winner-banner" id="winnerBanner">—</div>
+
+  <!-- SIDE BY SIDE BREAKDOWN -->
+  <div class="card">
+    <h2>Side-by-Side Breakdown</h2>
+    <table class="breakdown-table">
+      <thead>
+        <tr><th>Item</th><th>W-2 Employee</th><th>1099 Contractor</th></tr>
+      </thead>
+      <tbody id="breakdownBody"></tbody>
+    </table>
+  </div>
+
+  <!-- GUIDE -->
+  <div class="guide">
+    <h2>W-2 vs 1099: What's the Real Difference?</h2>
+    <p>When comparing a W-2 salary to a 1099 contractor rate, the headline numbers are deceiving. A contractor earning $95,000 may actually take home less than a W-2 employee earning $80,000 once self-employment taxes, health insurance, and retirement contributions are factored in. This calculator gives you the full picture.</p>
+
+    <h3>The Self-Employment Tax Trap</h3>
+    <p>As a W-2 employee, your employer pays half of your FICA taxes — 7.65% of your salary covers Social Security (6.2%) and Medicare (1.45%). As a 1099 contractor, you pay both halves — 15.3% — on your net self-employment income. On $80,000, that's a $6,120 difference that many people overlook when negotiating contractor rates.</p>
+    <div class="formula-box">Self-Employment Tax = Net SE Income × 0.9235 × 15.3%<br>(The 0.9235 factor = 1 − 0.0765, accounting for the deductible portion)<br><br>SE Tax Deduction = Self-Employment Tax ÷ 2<br>(You can deduct half of SE tax from gross income)</div>
+
+    <h3>The Benefits Gap</h3>
+    <p>Employer-sponsored benefits are a form of hidden compensation. A typical US employer contributes $500–700/month toward health insurance premiums, offers a 401(k) match of 3–6% of salary, and provides paid time off worth 2–4 weeks of pay. As a contractor, you replace all of these costs out of pocket, which dramatically raises the contractor rate you need to match a given W-2 salary.</p>
+
+    <div class="example-box">
+      <div class="ex-label">Rule of Thumb</div>
+      <p style="margin-bottom:0">To match a $80,000 W-2 salary, a 1099 contractor typically needs to earn <strong>$105,000–$120,000</strong> to account for self-employment tax, benefits, and unpaid time off. Use this calculator to find your exact crossover point.</p>
+    </div>
+
+    <h3>Key Tax Deductions for 1099 Contractors</h3>
+    <ul>
+      <li><strong>SE Tax Deduction:</strong> Deduct 50% of your self-employment tax from gross income (above-the-line deduction).</li>
+      <li><strong>Health Insurance Premiums:</strong> Self-employed individuals can deduct 100% of health insurance premiums for themselves and their family.</li>
+      <li><strong>Home Office Deduction:</strong> If you use part of your home exclusively for business, you can deduct a proportional share of rent/mortgage and utilities.</li>
+      <li><strong>Business Expenses:</strong> Equipment, software, subscriptions, professional development, and mileage are all deductible.</li>
+      <li><strong>Retirement Contributions:</strong> SEP-IRA contributions up to 25% of net SE income (max $72,000 in 2026) are fully deductible.</li>
+    </ul>
+
+    <h3>Frequently Asked Questions</h3>
+    <div class="faq-item open">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How much more should I charge as a 1099 contractor vs W-2? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">A common rule of thumb is to charge 1.25–1.5× your W-2 salary as a 1099 rate. The multiplier depends on your benefits situation — if you're getting health insurance from a spouse, your required rate is lower. Use this calculator with your specific numbers for a precise answer rather than relying on the rule of thumb.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Do I pay taxes quarterly as a 1099 contractor? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Yes. Unlike W-2 employees who have taxes withheld automatically each paycheck, 1099 contractors are required to make quarterly estimated tax payments to the IRS — typically in April, June, September, and January. If you underpay, you may owe penalties at tax time. A good rule is to set aside 25–30% of every payment you receive for taxes.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Can I be both a W-2 employee and a 1099 contractor? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Yes. Many people have a primary W-2 job and also do freelance work on the side that generates 1099 income. In this case, the 1099 income is added to your total income and taxed at your marginal rate, plus the 15.3% self-employment tax. You'd still benefit from all the same 1099 deductions on your Schedule C.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What is the QBI deduction and do I qualify? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">The Qualified Business Income (QBI) deduction allows many self-employed individuals and pass-through business owners to deduct up to 20% of their qualified business income. Under the One Big Beautiful Bill Act (OBBBA), the 2026 phase-out begins at $201,775 (single) / $403,550 (married), with full phase-out by $276,775 (single) / $553,550 (married). Some service professions like law and consulting phase out completely at the upper threshold. Consult a tax professional for your specific situation.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What happens if a company misclassifies me as 1099 when I should be W-2? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Worker misclassification is illegal and common. If a company controls how, when, and where you work, you are likely an employee under IRS rules, regardless of what they call you. Misclassified workers are denied benefits, unemployment insurance, and workers' compensation, and end up paying both halves of FICA. You can file IRS Form SS-8 to have the IRS determine your proper classification.</div>
+    </div>
+
+    <h3>Related Calculators</h3>
+    <div class="related-grid">
+      <a class="related-link" href="federal-tax-bracket.html">Federal Tax Bracket<span>See your marginal & effective tax rate</span></a>
+      <a class="related-link" href="freelancer-tax-estimator.html">Freelancer Tax Estimator<span>Quarterly estimated tax planner</span></a>
+      <a class="related-link" href="salary-calculator.html">Salary Calculator<span>W-2 take-home pay by state</span></a>
+      <a class="related-link" href="401k-calculator.html">401(k) Calculator<span>Optimize your retirement contributions</span></a>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-top">
+    <a class="footer-logo" href="../index.html">Calqu<span>to</span></a>
+    <p class="footer-tagline">Free, fast, browser-based calculators and tools. No signup, nothing stored.</p>
+  </div>
+  <div class="footer-cols">
+    <div class="footer-col">
+      <h4>Finance &amp; Tax</h4>
+      <a href="../tools/mortgage-calculator.html">Mortgage Calculator</a>
+      <a href="../tools/loan-calculator.html">Loan Calculator</a>
+      <a href="../tools/refinance-calculator.html">Mortgage Refinance Calculator</a>
+      <a href="../tools/home-affordability.html">Home Affordability Calculator</a>
+      <a href="../tools/home-equity-heloc.html">Home Equity &amp; HELOC Calculator</a>
+      <a href="../tools/rent-vs-buy.html">Rent vs Buy Calculator</a>
+      <a href="../tools/closing-costs.html">Closing Costs Calculator</a>
+      <a href="../tools/property-tax-estimator.html">Property Tax Estimator</a>
+      <a href="../tools/renovation-roi.html">Home Renovation ROI Calculator</a>
+      <a href="../tools/car-loan-calculator.html">Car Loan Calculator</a>
+      <a href="../tools/car-lease-vs-buy.html">Car Lease vs Buy Calculator</a>
+      <a href="../tools/car-depreciation.html">Car Depreciation Calculator</a>
+      <a href="../tools/compound-interest.html">Compound Interest Calculator</a>
+      <a href="../tools/retirement-calculator.html">Retirement Calculator</a>
+      <a href="../tools/401k-calculator.html">401(k) Contribution Calculator</a>
+      <a href="../tools/roth-ira-vs-traditional.html">Roth IRA vs Traditional IRA</a>
+      <a href="../tools/social-security-calculator.html">Social Security Benefits Estimator</a>
+      <a href="../tools/credit-card-payoff.html">Credit Card Payoff Calculator</a>
+      <a href="../tools/savings-goal-calculator.html">Savings Goal Calculator</a>
+      <a href="../tools/break-even-calculator.html">Break-Even Calculator</a>
+      <a href="../tools/discount-calculator.html">Discount Calculator</a>
+      <a href="../tools/percentage-calculator.html">Percentage Calculator</a>
+      <a href="../tools/tip-calculator.html">Tip Calculator</a>
+      <a href="../tools/federal-tax-bracket.html">Federal Tax Bracket Calculator</a>
+      <a href="../tools/capital-gains-tax.html">Capital Gains Tax Calculator</a>
+      <a href="../tools/child-tax-credit.html">Child Tax Credit Calculator</a>
+      <a href="../tools/w2-vs-1099-calculator.html">W-2 vs 1099 Tax Comparison</a>
+      <a href="../tools/llc-vs-scorp.html">LLC vs S-Corp Tax Savings</a>
+      <a href="../tools/freelancer-tax-estimator.html">Freelancer Tax Estimator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Work, Benefits &amp; Education</h4>
+      <a href="../tools/salary-calculator.html">Salary &amp; Paycheck Calculator</a>
+      <a href="../tools/job-offer-comparison.html">Job Offer Comparison Calculator</a>
+      <a href="../tools/freelance-rate-calculator.html">Freelance Rate Calculator</a>
+      <a href="../tools/severance-pay-estimator.html">Severance Pay Estimator</a>
+      <a href="../tools/employee-cost.html">Employee Cost Calculator</a>
+      <a href="../tools/work-hours-calculator.html">Work Hours Calculator</a>
+      <a href="../tools/wfh-savings-calculator.html">Work From Home Savings Calculator</a>
+      <a href="../tools/invoice-generator.html">Invoice Generator</a>
+      <a href="../tools/hsa-calculator.html">HSA Contribution Calculator</a>
+      <a href="../tools/fsa-vs-hsa.html">FSA vs HSA Comparison Tool</a>
+      <a href="../tools/cobra-calculator.html">COBRA Insurance Cost Estimator</a>
+      <a href="../tools/life-insurance-calculator.html">Life Insurance Needs Calculator</a>
+      <a href="../tools/college-529-calculator.html">529 College Savings Calculator</a>
+      <a href="../tools/fafsa-efc.html">FAFSA EFC / SAI Estimator</a>
+      <a href="../tools/student-loan-payoff.html">Student Loan Payoff Calculator</a>
+      <a href="../tools/gpa-calculator.html">GPA to 4.0 Scale Calculator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Converters &amp; Everyday</h4>
+      <a href="../tools/length-converter.html">Unit Converter (Length/Weight/Temp/Speed/Area)</a>
+      <a href="../tools/timezone-converter.html">Time Zone Converter</a>
+      <a href="../tools/countdown-timer.html">Countdown Timer</a>
+      <a href="../tools/date-difference.html">Date Difference Calculator</a>
+      <a href="../tools/json-formatter.html">JSON Formatter</a>
+      <a href="../tools/color-picker.html">Color Picker</a>
+      <a href="../tools/base64-tool.html">Base64 Encoder/Decoder</a>
+      <a href="../tools/regex-tester.html">Regex Tester</a>
+      <a href="../tools/word-counter.html">Word Counter</a>
+      <a href="../tools/character-counter.html">Character Counter</a>
+      <a href="../tools/case-converter.html">Case Converter</a>
+      <a href="../tools/lorem-ipsum.html">Lorem Ipsum Generator</a>
+      <a href="../tools/meta-tag-generator.html">Meta Tag Generator</a>
+      <a href="../tools/slug-generator.html">Slug Generator</a>
+      <a href="../tools/readability-checker.html">Readability Checker</a>
+      <a href="../tools/bmi-calculator.html">BMI Calculator</a>
+      <a href="../tools/calorie-calculator.html">Calorie Calculator</a>
+      <a href="../tools/qr-generator.html">QR Code Generator</a>
+      <a href="../tools/password-generator.html">Password Generator</a>
+      <a href="../tools/age-calculator.html">Age Calculator</a>
+      <a href="../tools/gas-cost-calculator.html">Gas Cost Calculator</a>
+      <a href="../tools/moving-cost-calculator.html">True Cost of Moving Calculator</a>
+      <a href="../tools/solar-savings-calculator.html">Solar Panel Savings Calculator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="../index.html">All Tools</a>
+      <a href="../about.html">About</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../privacy-policy.html">Privacy Policy</a>
+      <a href="../terms.html">Terms of Service</a>
+      <a href="../disclaimer.html">Disclaimer</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Calquto &middot; Free W-2 vs 1099 calculator · No signup required</span>
+  </div>
+</footer>
+
+<script>
+const fmt = n => '$' + Math.round(n).toLocaleString();
+
+// 2026 Federal Tax Brackets
+const brackets = {
+  single: [[12400,0.10],[50400,0.12],[105700,0.22],[201775,0.24],[256225,0.32],[640600,0.35],[Infinity,0.37]],
+  married: [[24800,0.10],[100800,0.12],[211400,0.22],[403550,0.24],[512450,0.32],[768700,0.35],[Infinity,0.37]],
+  hoh: [[17700,0.10],[67450,0.12],[105700,0.22],[201775,0.24],[256200,0.32],[640600,0.35],[Infinity,0.37]]
+};
+const standardDeduction = {single:16100, married:32200, hoh:24150};
+
+function federalTax(taxableIncome, status) {
+  const bkts = brackets[status];
+  let tax = 0, prev = 0;
+  for (const [cap, rate] of bkts) {
+    if (taxableIncome <= prev) break;
+    tax += (Math.min(taxableIncome, cap) - prev) * rate;
+    prev = cap;
+  }
+  return Math.max(0, tax);
+}
+
+function calculate() {
+  const status = document.getElementById('filingStatus').value;
+  const stateRate = (parseFloat(document.getElementById('stateRate').value) || 0) / 100;
+
+  // W-2 Calculations
+  const w2Gross = parseFloat(document.getElementById('w2Salary').value) || 0;
+  const w2Health = parseFloat(document.getElementById('w2Health').value) || 0;
+  const w2Match = parseFloat(document.getElementById('w2Match').value) || 0;
+  const w2Contrib = parseFloat(document.getElementById('w2Contrib').value) || 0;
+
+  const w2FICA = w2Gross * 0.0765; // employee share only
+  const w2FedTaxable = Math.max(0, w2Gross - w2Contrib - standardDeduction[status]);
+  const w2FedTax = federalTax(w2FedTaxable, status);
+  const w2StateTax = w2Gross * stateRate;
+  const w2TakeHome = w2Gross - w2FICA - w2FedTax - w2StateTax - w2Contrib;
+  const w2TotalComp = w2Gross + w2Health + w2Match;
+
+  // 1099 Calculations
+  const c1099Gross = parseFloat(document.getElementById('c1099Income').value) || 0;
+  const c1099Expenses = parseFloat(document.getElementById('c1099Expenses').value) || 0;
+  const c1099Health = parseFloat(document.getElementById('c1099Health').value) || 0;
+  const c1099Retire = parseFloat(document.getElementById('c1099Retire').value) || 0;
+
+  const netSE = Math.max(0, c1099Gross - c1099Expenses);
+  const seTax = netSE * 0.9235 * 0.153;
+  const seTaxDeduction = seTax / 2;
+  const c1099FedTaxable = Math.max(0, netSE - seTaxDeduction - c1099Health - c1099Retire - standardDeduction[status]);
+  const c1099FedTax = federalTax(c1099FedTaxable, status);
+  const c1099StateTax = netSE * stateRate;
+  const c1099TakeHome = c1099Gross - c1099Expenses - seTax - c1099FedTax - c1099StateTax - c1099Health - c1099Retire;
+
+  // Display
+  document.getElementById('w2TakeHome').textContent = fmt(w2TakeHome);
+  document.getElementById('c1099TakeHome').textContent = fmt(c1099TakeHome);
+
+  const diff = c1099TakeHome - w2TakeHome;
+  const winner = diff > 0
+    ? `✅ 1099 wins by ${fmt(Math.abs(diff))}/year — but the W-2 total comp is ${fmt(w2TotalComp)} with benefits`
+    : diff < 0
+    ? `✅ W-2 wins by ${fmt(Math.abs(diff))}/year in take-home pay`
+    : `🟡 Both options result in equal take-home pay`;
+  document.getElementById('winnerBanner').textContent = winner;
+
+  // Breakdown table
+  const rows = [
+    ['Gross / Contract Income', fmt(w2Gross), fmt(c1099Gross)],
+    ['Business Expenses', '—', `−${fmt(c1099Expenses)}`],
+    ['Net Income', fmt(w2Gross), fmt(netSE)],
+    ['FICA / Self-Employment Tax', `−${fmt(w2FICA)}`, `−${fmt(seTax)}`],
+    ['Federal Income Tax', `−${fmt(w2FedTax)}`, `−${fmt(c1099FedTax)}`],
+    ['State Income Tax', `−${fmt(w2StateTax)}`, `−${fmt(c1099StateTax)}`],
+    ['401(k) / Retirement Contribution', `−${fmt(w2Contrib)}`, `−${fmt(c1099Retire)}`],
+    ['Health Insurance', '(employer pays)', `−${fmt(c1099Health)}`],
+    ['Take-Home Pay', fmt(w2TakeHome), fmt(c1099TakeHome)],
+    ['+ Employer Benefits Value', fmt(w2Health + w2Match), '—'],
+    ['Total Compensation Value', fmt(w2TakeHome + w2Health + w2Match + w2Contrib), fmt(c1099TakeHome + c1099Retire)],
+  ];
+
+  document.getElementById('breakdownBody').innerHTML = rows.map((r, i) => {
+    const isLast = i >= rows.length - 1;
+    const isTotal = i === rows.length - 1;
+    return `<tr style="${isTotal ? 'background:var(--gray-50)' : ''}">
+      <td style="font-weight:${isLast ? 700 : 400}">${r[0]}</td>
+      <td style="font-weight:${isLast ? 700 : 400};color:var(--blue-600)">${r[1]}</td>
+      <td style="font-weight:${isLast ? 700 : 400};color:var(--orange-600)">${r[2]}</td>
+    </tr>`;
+  }).join('');
+}
+
+calculate();
+</script>
+</body>
+</html>

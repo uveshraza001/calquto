@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+
+<meta name="description" content="Free word counter — count words, characters, sentences, and reading time instantly. Great for essays, Twitter, SEO content.">
+<link rel="canonical" href="https://calquto.com/tools/word-counter.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Word Counter — Calquto">
+<meta property="og:description" content="Free word counter — count words, characters, sentences, and reading time instantly. Great for essays, Twitter, SEO content.">
+<meta property="og:url" content="https://calquto.com/tools/word-counter.html">
+<meta property="og:site_name" content="Calquto">
+<meta property="og:image" content="https://calquto.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Word Counter — Calquto">
+<meta name="twitter:description" content="Free word counter — count words, characters, sentences, and reading time instantly. Great for essays, Twitter, SEO content.">
+<meta name="twitter:image" content="https://calquto.com/og-image.png">
+<title>Word Counter — Calquto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/shared-tools.css">
+<style>
+  :root{--blue-900:#0a1628;--blue-500:#2563eb;--blue-400:#3b82f6;--blue-300:#93c5fd;--blue-100:#dbeafe;--blue-50:#eff6ff;--blue-600:#1e4fa3;--gray-900:#0f172a;--gray-700:#334155;--gray-500:#64748b;--gray-300:#cbd5e1;--gray-200:#e2e8f0;--gray-100:#f1f5f9;--gray-50:#f8fafc;--white:#ffffff;--radius:12px;--radius-sm:8px--b9:#0a1628;--b6:#1e4fa3;--b4:#3b82f6;--b1:#dbeafe;--b0:#eff6ff;--g9:#0f172a;--g7:#334155;--g5:#64748b;--g3:#cbd5e1;--g1:#f1f5f9;--g0:#f8fafc;--r:12px;--rs:8px;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{{font-family:'Inter',sans-serif;background:var(--gray-50);color:var(--gray-900);line-height:1.6;display:flex;flex-direction:column;min-height:100vh}}
+  .page-hero{background:var(--blue-900);padding:0 0 2rem;text-align:center}
+  .page-hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(24px,4vw,36px);font-weight:800;color:#fff;letter-spacing:-0.5px}
+  .page-hero p{color:var(--blue-300);font-size:15px;margin-top:6px}
+  main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 4rem}
+  .stats-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:1.25rem}
+  .stat-box{background:#fff;border:1px solid var(--gray-300);border-radius:var(--radius);padding:1rem;text-align:center}
+  .stat-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;font-weight:800;color:var(--blue-600)}
+  .stat-lbl{font-size:12px;color:var(--gray-500);margin-top:2px;font-weight:500}
+  .editor-card{background:#fff;border:1px solid var(--gray-300);border-radius:var(--radius);overflow:hidden;margin-bottom:1.25rem}
+  .editor-toolbar{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--gray-200);background:var(--gray-50)}
+  .toolbar-label{font-size:13px;font-weight:500;color:var(--gray-700)}
+  .clear-btn{font-size:12px;font-weight:500;color:var(--gray-500);background:none;border:1px solid var(--gray-300);border-radius:6px;padding:4px 10px;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s}
+  .clear-btn:hover{color:var(--gray-900);border-color:var(--gray-500)}
+  textarea{width:100%;min-height:260px;border:none;outline:none;padding:1.25rem;font-size:15px;font-family:'Inter',sans-serif;color:var(--gray-900);line-height:1.75;resize:vertical;background:#fff}
+  .limits-card{background:#fff;border:1px solid var(--gray-300);border-radius:var(--radius);padding:1.25rem}
+  .limits-card h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;margin-bottom:1rem;color:var(--gray-900)}
+  .limit-row{margin-bottom:1rem}
+  .limit-meta{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px}
+  .limit-name{color:var(--gray-700);font-weight:500}
+  .limit-count{color:var(--gray-500)}
+  .limit-bar{height:6px;background:var(--gray-100);border-radius:99px;overflow:hidden}
+  .limit-fill{height:100%;border-radius:99px;transition:width 0.3s,background 0.3s}
+  .green{background:#22c55e}
+  .amber{background:#f59e0b}
+  .red{background:#ef4444}
+  footer a{color:var(--blue-400);text-decoration:none}
+.guide{background:#fff;border:1px solid var(--g3);border-radius:var(--r);padding:1.75rem;margin-top:1.25rem}
+.guide h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:700;color:var(--g9);margin-bottom:.75rem}
+.guide h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:var(--g9);margin:1.25rem 0 .5rem}
+.guide p{font-size:13.5px;color:var(--g7);margin-bottom:.75rem;line-height:1.75}
+.guide ul{margin:0 0 .75rem 1.1rem;font-size:13.5px;color:var(--g7);line-height:1.8}
+.formula-box{background:var(--g0);border:1px solid var(--g3);border-radius:var(--rs);padding:1rem 1.25rem;margin:.75rem 0;font-family:monospace;font-size:13px;color:var(--b6);overflow-x:auto}
+.example-box{background:var(--b0);border:1px solid var(--b1);border-radius:var(--rs);padding:1rem 1.25rem;margin:.75rem 0}
+.example-box .ex-label{font-size:11px;font-weight:700;color:var(--b6);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.faq-item{border-bottom:1px solid var(--g1);padding:12px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:14px;font-weight:600;color:var(--g9);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.faq-a{font-size:13.5px;color:var(--g7);margin-top:8px;line-height:1.75;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-arrow{transition:transform .2s;color:var(--g5);flex-shrink:0}
+.faq-item.open .faq-arrow{transform:rotate(180deg)}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:.5rem}
+.related-link{display:block;background:var(--g0);border-radius:var(--rs);padding:.75rem 1rem;text-decoration:none;color:var(--g9);font-size:13px;font-weight:600;border:1px solid var(--g3);transition:border-color .15s}
+.related-link:hover{border-color:var(--b4)}
+.related-link span{display:block;font-size:11.5px;color:var(--g5);font-weight:400;margin-top:2px}
+.guide-wrap{max-width:900px;margin:0 auto;padding:0 1.5rem 1rem}
+.guide{background:#fff;border:1px solid var(--gray-300);border-radius:var(--radius);padding:1.75rem;margin-top:1.25rem}
+.guide h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:700;color:var(--gray-900);margin-bottom:.75rem}
+.guide h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:var(--gray-900);margin:1.25rem 0 .5rem}
+.guide p{font-size:13.5px;color:var(--gray-700);margin-bottom:.75rem;line-height:1.75}
+.guide ul{margin:0 0 .75rem 1.1rem;font-size:13.5px;color:var(--gray-700);line-height:1.8}
+.formula-box{background:var(--gray-50);border:1px solid var(--gray-300);border-radius:var(--radius-sm);padding:1rem 1.25rem;margin:.75rem 0;font-family:monospace;font-size:13px;color:var(--blue-600);overflow-x:auto}
+.example-box{background:var(--blue-50);border:1px solid var(--blue-100);border-radius:var(--radius-sm);padding:1rem 1.25rem;margin:.75rem 0}
+.example-box .ex-label{font-size:11px;font-weight:700;color:var(--blue-600);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.faq-item{border-bottom:1px solid var(--gray-100);padding:12px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:14px;font-weight:600;color:var(--gray-900);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.faq-a{font-size:13.5px;color:var(--gray-700);margin-top:8px;line-height:1.75;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-arrow{transition:transform .2s;color:var(--gray-500);flex-shrink:0}
+.faq-item.open .faq-arrow{transform:rotate(180deg)}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:.5rem}
+.related-link{display:block;background:var(--gray-50);border-radius:var(--radius-sm);padding:.75rem 1rem;text-decoration:none;color:var(--gray-900);font-size:13px;font-weight:600;border:1px solid var(--gray-300);transition:border-color .15s}
+.related-link:hover{border-color:var(--blue-400)}
+.related-link span{display:block;font-size:11.5px;color:var(--gray-500);font-weight:400;margin-top:2px}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does this count hyphenated words as one or two?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hyphenated words (like \"well-known\") are typically counted as a single word by most word counters, including this one, since they're separated by whitespace as one unit rather than a space."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is my reading time different from what I expected?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Reading time estimates use an average reading speed (200 words/minute here), but actual reading speed varies significantly by individual, content complexity, and familiarity with the subject matter. Technical or unfamiliar content is typically read 20-30% slower than this average."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's an ideal word count for SEO blog posts?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There's no single magic number, but content that thoroughly covers a topic — often 1,500+ words for competitive keywords — tends to rank better than thin content, simply because it can address more related subtopics and search intent variations within the same page."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Word Counter",
+  "url": "https://calquto.com/tools/word-counter.html",
+  "description": "Free word counter — count words, characters, sentences, and reading time instantly. Great for essays, Twitter, SEO content.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (Web Browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Calquto",
+    "url": "https://calquto.com/"
+  }
+}
+</script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="../index.html">Calqu<span>to</span></a>
+  <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">&#9776;</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="../finance.html">Finance</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/mortgage-calculator.html">Mortgage Calculator</a>
+          <a href="../tools/loan-calculator.html">Loan Calculator</a>
+          <a href="../tools/refinance-calculator.html">Mortgage Refinance Calculator</a>
+          <a href="../tools/home-affordability.html">Home Affordability Calculator</a>
+          <a href="../tools/home-equity-heloc.html">Home Equity &amp; HELOC Calculator</a>
+          <a href="../tools/rent-vs-buy.html">Rent vs Buy Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/closing-costs.html">Closing Costs Calculator</a>
+          <a href="../tools/property-tax-estimator.html">Property Tax Estimator</a>
+          <a href="../tools/renovation-roi.html">Home Renovation ROI Calculator</a>
+          <a href="../tools/car-loan-calculator.html">Car Loan Calculator</a>
+          <a href="../tools/car-lease-vs-buy.html">Car Lease vs Buy Calculator</a>
+          <a href="../tools/car-depreciation.html">Car Depreciation Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/compound-interest.html">Compound Interest Calculator</a>
+          <a href="../tools/retirement-calculator.html">Retirement Calculator</a>
+          <a href="../tools/401k-calculator.html">401(k) Contribution Calculator</a>
+          <a href="../tools/roth-ira-vs-traditional.html">Roth IRA vs Traditional IRA</a>
+          <a href="../tools/social-security-calculator.html">Social Security Benefits Estimator</a>
+          <a href="../tools/credit-card-payoff.html">Credit Card Payoff Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/savings-goal-calculator.html">Savings Goal Calculator</a>
+          <a href="../tools/break-even-calculator.html">Break-Even Calculator</a>
+          <a href="../tools/discount-calculator.html">Discount Calculator</a>
+          <a href="../tools/percentage-calculator.html">Percentage Calculator</a>
+          <a href="../tools/tip-calculator.html">Tip Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../finance.html">View all Finance tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../tax.html">Tax</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/federal-tax-bracket.html">Federal Tax Bracket Calculator</a>
+          <a href="../tools/capital-gains-tax.html">Capital Gains Tax Calculator</a>
+          <a href="../tools/child-tax-credit.html">Child Tax Credit Calculator</a>
+          <a href="../tools/w2-vs-1099-calculator.html">W-2 vs 1099 Tax Comparison</a>
+          <a href="../tools/llc-vs-scorp.html">LLC vs S-Corp Tax Savings</a>
+          <a href="../tools/freelancer-tax-estimator.html">Freelancer Tax Estimator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../tax.html">View all Tax tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../work-career.html">Work &amp; Career</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/salary-calculator.html">Salary &amp; Paycheck Calculator</a>
+          <a href="../tools/job-offer-comparison.html">Job Offer Comparison Calculator</a>
+          <a href="../tools/freelance-rate-calculator.html">Freelance Rate Calculator</a>
+          <a href="../tools/severance-pay-estimator.html">Severance Pay Estimator</a>
+          <a href="../tools/employee-cost.html">Employee Cost Calculator</a>
+          <a href="../tools/work-hours-calculator.html">Work Hours Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/wfh-savings-calculator.html">Work From Home Savings Calculator</a>
+          <a href="../tools/invoice-generator.html">Invoice Generator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../work-career.html">View all Work &amp; Career tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../benefits-insurance.html">Benefits</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/hsa-calculator.html">HSA Contribution Calculator</a>
+          <a href="../tools/fsa-vs-hsa.html">FSA vs HSA Comparison Tool</a>
+          <a href="../tools/cobra-calculator.html">COBRA Insurance Cost Estimator</a>
+          <a href="../tools/life-insurance-calculator.html">Life Insurance Needs Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../benefits-insurance.html">View all Benefits tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../education.html">Education</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/college-529-calculator.html">529 College Savings Calculator</a>
+          <a href="../tools/fafsa-efc.html">FAFSA EFC / SAI Estimator</a>
+          <a href="../tools/student-loan-payoff.html">Student Loan Payoff Calculator</a>
+          <a href="../tools/gpa-calculator.html">GPA to 4.0 Scale Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../education.html">View all Education tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../converters.html">Converters</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/length-converter.html">Unit Converter (Length/Weight/Temp/Speed/Area)</a>
+          <a href="../tools/timezone-converter.html">Time Zone Converter</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../converters.html">View all Converters tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../date-time-tools.html">Date/Time</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/countdown-timer.html">Countdown Timer</a>
+          <a href="../tools/date-difference.html">Date Difference Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../date-time-tools.html">View all Date/Time tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../developer-tools.html">Developer</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/json-formatter.html">JSON Formatter</a>
+          <a href="../tools/color-picker.html">Color Picker</a>
+          <a href="../tools/base64-tool.html">Base64 Encoder/Decoder</a>
+          <a href="../tools/regex-tester.html">Regex Tester</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../developer-tools.html">View all Developer tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../seo-text-tools.html">SEO/Text</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/word-counter.html" class="cur">Word Counter</a>
+          <a href="../tools/character-counter.html">Character Counter</a>
+          <a href="../tools/case-converter.html">Case Converter</a>
+          <a href="../tools/lorem-ipsum.html">Lorem Ipsum Generator</a>
+          <a href="../tools/meta-tag-generator.html">Meta Tag Generator</a>
+          <a href="../tools/slug-generator.html">Slug Generator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/readability-checker.html">Readability Checker</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../seo-text-tools.html">View all SEO/Text tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../health.html">Health</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/bmi-calculator.html">BMI Calculator</a>
+          <a href="../tools/calorie-calculator.html">Calorie Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../health.html">View all Health tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../everyday-tools.html">Everyday</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/qr-generator.html">QR Code Generator</a>
+          <a href="../tools/password-generator.html">Password Generator</a>
+          <a href="../tools/age-calculator.html">Age Calculator</a>
+          <a href="../tools/gas-cost-calculator.html">Gas Cost Calculator</a>
+          <a href="../tools/moving-cost-calculator.html">True Cost of Moving Calculator</a>
+          <a href="../tools/solar-savings-calculator.html">Solar Panel Savings Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../everyday-tools.html">View all Everyday tools &rarr;</a>
+      </div>
+    </li>
+    <li class="nav-all"><a href="../index.html">All Tools</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <div class="breadcrumb"><a href="../index.html">Calquto</a><span class="bc-sep">›</span><a href="../seo-text-tools.html">SEO & Text Tools</a><span class="bc-sep">›</span><span class="bc-current">Word Counter</span></div>
+  <h1>📝 Word Counter</h1>
+  <p>Count words, characters, sentences and reading time — type or paste your text below</p>
+</div>
+<main>
+  <div class="stats-bar">
+    <div class="stat-box"><div class="stat-num" id="wordCount">0</div><div class="stat-lbl">Words</div></div>
+    <div class="stat-box"><div class="stat-num" id="charCount">0</div><div class="stat-lbl">Characters</div></div>
+    <div class="stat-box"><div class="stat-num" id="charNoSpace">0</div><div class="stat-lbl">No spaces</div></div>
+    <div class="stat-box"><div class="stat-num" id="sentenceCount">0</div><div class="stat-lbl">Sentences</div></div>
+    <div class="stat-box"><div class="stat-num" id="paraCount">0</div><div class="stat-lbl">Paragraphs</div></div>
+    <div class="stat-box"><div class="stat-num" id="readTime">0 sec</div><div class="stat-lbl">Read time</div></div>
+  </div>
+
+  <div class="editor-card">
+    <div class="editor-toolbar">
+      <span class="toolbar-label">Type or paste your text here</span>
+      <button class="clear-btn" onclick="clearText()">Clear</button>
+    </div>
+    <textarea id="textInput" placeholder="Start typing or paste your text here to see word count, character count, and more..." oninput="analyze()"></textarea>
+  </div>
+
+  <div class="limits-card">
+    <h3>Platform limits tracker</h3>
+    <div class="limit-row">
+      <div class="limit-meta"><span class="limit-name">Twitter / X post</span><span class="limit-count" id="twCount">0 / 280</span></div>
+      <div class="limit-bar"><div class="limit-fill" id="twBar" style="width:0%"></div></div>
+    </div>
+    <div class="limit-row">
+      <div class="limit-meta"><span class="limit-name">Instagram bio</span><span class="limit-count" id="igCount">0 / 150</span></div>
+      <div class="limit-bar"><div class="limit-fill" id="igBar" style="width:0%"></div></div>
+    </div>
+    <div class="limit-row">
+      <div class="limit-meta"><span class="limit-name">Meta description (SEO)</span><span class="limit-count" id="metaCount">0 / 160</span></div>
+      <div class="limit-bar"><div class="limit-fill" id="metaBar" style="width:0%"></div></div>
+    </div>
+    <div class="limit-row" style="margin-bottom:0">
+      <div class="limit-meta"><span class="limit-name">SMS message</span><span class="limit-count" id="smsCount">0 / 160</span></div>
+      <div class="limit-bar"><div class="limit-fill" id="smsBar" style="width:0%"></div></div>
+    </div>
+  </div>
+</main>
+
+<div class="guide-wrap" style="max-width:820px;margin:0 auto;padding:0 1.5rem 1rem">
+  <div class="guide">
+    <h2>Why Word Count Still Matters</h2>
+    <p>Word count remains a key metric across writing contexts — academic papers have strict minimums and maximums, SEO content performs better within certain length ranges, and social platforms enforce hard character limits. Beyond formal requirements, tracking word count helps writers pace themselves and estimate how long a piece will take to read.</p>
+    <p>Reading time estimates (like the one this tool provides) are typically based on an average adult reading speed of 200-250 words per minute for general content, though technical or dense material is usually read more slowly.</p>
+
+    <h3>How Reading Time Is Calculated</h3>
+    <div class="formula-box">Reading Time (minutes) = Word Count ÷ 200</div>
+
+    <h3>Word Count Guidelines by Content Type</h3>
+    <ul>
+      <li><strong>Blog posts (SEO-focused)</strong> — typically 1,000-2,500 words perform best for ranking on competitive topics, though shorter posts work fine for simple, low-competition queries.</li>
+      <li><strong>Social media captions</strong> — shorter is often better for engagement; Instagram and Facebook posts under 125 words tend to see higher engagement rates.</li>
+      <li><strong>Academic essays</strong> — word counts are usually specified by the assignment; going significantly over or under suggests a need to revise scope or depth.</li>
+      <li><strong>Email outreach</strong> — cold emails under 200 words generally see better response rates than longer ones.</li>
+    </ul>
+
+    <h3>Frequently Asked Questions</h3>
+    <div class="faq-item open">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Does this count hyphenated words as one or two? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Hyphenated words (like "well-known") are typically counted as a single word by most word counters, including this one, since they're separated by whitespace as one unit rather than a space.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Why is my reading time different from what I expected? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Reading time estimates use an average reading speed (200 words/minute here), but actual reading speed varies significantly by individual, content complexity, and familiarity with the subject matter. Technical or unfamiliar content is typically read 20-30% slower than this average.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What's an ideal word count for SEO blog posts? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">There's no single magic number, but content that thoroughly covers a topic — often 1,500+ words for competitive keywords — tends to rank better than thin content, simply because it can address more related subtopics and search intent variations within the same page.</div>
+    </div>
+
+    <h3>Related Calculators</h3>
+    <div class="related-grid">
+      <a class="related-link" href="character-counter.html">Character Counter<span>Platform-specific limits</span></a>
+      <a class="related-link" href="readability-checker.html">Readability Checker<span>Analyze reading ease</span></a>
+    </div>
+  </div>
+</div>
+<footer class="site-footer">
+  <div class="footer-top">
+    <a class="footer-logo" href="../index.html">Calqu<span>to</span></a>
+    <p class="footer-tagline">Free, fast, browser-based calculators and tools. No signup, nothing stored.</p>
+  </div>
+  <div class="footer-cols">
+    <div class="footer-col">
+      <h4>Finance &amp; Tax</h4>
+      <a href="../tools/mortgage-calculator.html">Mortgage Calculator</a>
+      <a href="../tools/loan-calculator.html">Loan Calculator</a>
+      <a href="../tools/refinance-calculator.html">Mortgage Refinance Calculator</a>
+      <a href="../tools/home-affordability.html">Home Affordability Calculator</a>
+      <a href="../tools/home-equity-heloc.html">Home Equity &amp; HELOC Calculator</a>
+      <a href="../tools/rent-vs-buy.html">Rent vs Buy Calculator</a>
+      <a href="../tools/closing-costs.html">Closing Costs Calculator</a>
+      <a href="../tools/property-tax-estimator.html">Property Tax Estimator</a>
+      <a href="../tools/renovation-roi.html">Home Renovation ROI Calculator</a>
+      <a href="../tools/car-loan-calculator.html">Car Loan Calculator</a>
+      <a href="../tools/car-lease-vs-buy.html">Car Lease vs Buy Calculator</a>
+      <a href="../tools/car-depreciation.html">Car Depreciation Calculator</a>
+      <a href="../tools/compound-interest.html">Compound Interest Calculator</a>
+      <a href="../tools/retirement-calculator.html">Retirement Calculator</a>
+      <a href="../tools/401k-calculator.html">401(k) Contribution Calculator</a>
+      <a href="../tools/roth-ira-vs-traditional.html">Roth IRA vs Traditional IRA</a>
+      <a href="../tools/social-security-calculator.html">Social Security Benefits Estimator</a>
+      <a href="../tools/credit-card-payoff.html">Credit Card Payoff Calculator</a>
+      <a href="../tools/savings-goal-calculator.html">Savings Goal Calculator</a>
+      <a href="../tools/break-even-calculator.html">Break-Even Calculator</a>
+      <a href="../tools/discount-calculator.html">Discount Calculator</a>
+      <a href="../tools/percentage-calculator.html">Percentage Calculator</a>
+      <a href="../tools/tip-calculator.html">Tip Calculator</a>
+      <a href="../tools/federal-tax-bracket.html">Federal Tax Bracket Calculator</a>
+      <a href="../tools/capital-gains-tax.html">Capital Gains Tax Calculator</a>
+      <a href="../tools/child-tax-credit.html">Child Tax Credit Calculator</a>
+      <a href="../tools/w2-vs-1099-calculator.html">W-2 vs 1099 Tax Comparison</a>
+      <a href="../tools/llc-vs-scorp.html">LLC vs S-Corp Tax Savings</a>
+      <a href="../tools/freelancer-tax-estimator.html">Freelancer Tax Estimator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Work, Benefits &amp; Education</h4>
+      <a href="../tools/salary-calculator.html">Salary &amp; Paycheck Calculator</a>
+      <a href="../tools/job-offer-comparison.html">Job Offer Comparison Calculator</a>
+      <a href="../tools/freelance-rate-calculator.html">Freelance Rate Calculator</a>
+      <a href="../tools/severance-pay-estimator.html">Severance Pay Estimator</a>
+      <a href="../tools/employee-cost.html">Employee Cost Calculator</a>
+      <a href="../tools/work-hours-calculator.html">Work Hours Calculator</a>
+      <a href="../tools/wfh-savings-calculator.html">Work From Home Savings Calculator</a>
+      <a href="../tools/invoice-generator.html">Invoice Generator</a>
+      <a href="../tools/hsa-calculator.html">HSA Contribution Calculator</a>
+      <a href="../tools/fsa-vs-hsa.html">FSA vs HSA Comparison Tool</a>
+      <a href="../tools/cobra-calculator.html">COBRA Insurance Cost Estimator</a>
+      <a href="../tools/life-insurance-calculator.html">Life Insurance Needs Calculator</a>
+      <a href="../tools/college-529-calculator.html">529 College Savings Calculator</a>
+      <a href="../tools/fafsa-efc.html">FAFSA EFC / SAI Estimator</a>
+      <a href="../tools/student-loan-payoff.html">Student Loan Payoff Calculator</a>
+      <a href="../tools/gpa-calculator.html">GPA to 4.0 Scale Calculator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Converters &amp; Everyday</h4>
+      <a href="../tools/length-converter.html">Unit Converter (Length/Weight/Temp/Speed/Area)</a>
+      <a href="../tools/timezone-converter.html">Time Zone Converter</a>
+      <a href="../tools/countdown-timer.html">Countdown Timer</a>
+      <a href="../tools/date-difference.html">Date Difference Calculator</a>
+      <a href="../tools/json-formatter.html">JSON Formatter</a>
+      <a href="../tools/color-picker.html">Color Picker</a>
+      <a href="../tools/base64-tool.html">Base64 Encoder/Decoder</a>
+      <a href="../tools/regex-tester.html">Regex Tester</a>
+      <a href="../tools/word-counter.html">Word Counter</a>
+      <a href="../tools/character-counter.html">Character Counter</a>
+      <a href="../tools/case-converter.html">Case Converter</a>
+      <a href="../tools/lorem-ipsum.html">Lorem Ipsum Generator</a>
+      <a href="../tools/meta-tag-generator.html">Meta Tag Generator</a>
+      <a href="../tools/slug-generator.html">Slug Generator</a>
+      <a href="../tools/readability-checker.html">Readability Checker</a>
+      <a href="../tools/bmi-calculator.html">BMI Calculator</a>
+      <a href="../tools/calorie-calculator.html">Calorie Calculator</a>
+      <a href="../tools/qr-generator.html">QR Code Generator</a>
+      <a href="../tools/password-generator.html">Password Generator</a>
+      <a href="../tools/age-calculator.html">Age Calculator</a>
+      <a href="../tools/gas-cost-calculator.html">Gas Cost Calculator</a>
+      <a href="../tools/moving-cost-calculator.html">True Cost of Moving Calculator</a>
+      <a href="../tools/solar-savings-calculator.html">Solar Panel Savings Calculator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="../index.html">All Tools</a>
+      <a href="../about.html">About</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../privacy-policy.html">Privacy Policy</a>
+      <a href="../terms.html">Terms of Service</a>
+      <a href="../disclaimer.html">Disclaimer</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Calquto &middot; Free word counter · No signup required</span>
+  </div>
+</footer>
+<script>
+function barColor(pct) { return pct >= 100 ? 'red' : pct >= 80 ? 'amber' : 'green'; }
+
+function setBar(barId, countId, chars, limit) {
+  const pct = Math.min(100, chars / limit * 100);
+  const el = document.getElementById(barId);
+  el.style.width = pct + '%';
+  el.className = 'limit-fill ' + barColor(pct);
+  document.getElementById(countId).textContent = chars + ' / ' + limit;
+}
+
+function analyze() {
+  const text = document.getElementById('textInput').value;
+  const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+  const chars = text.length;
+  const charsNoSpace = text.replace(/\s/g, '').length;
+  const sentences = text.trim() === '' ? 0 : (text.match(/[.!?]+/g) || []).length;
+  const paras = text.trim() === '' ? 0 : text.split(/\n\s*\n/).filter(p => p.trim()).length || (text.trim() ? 1 : 0);
+  const readSec = Math.ceil(words / 200 * 60);
+  const readStr = readSec < 60 ? readSec + ' sec' : Math.ceil(readSec/60) + ' min';
+
+  document.getElementById('wordCount').textContent = words.toLocaleString();
+  document.getElementById('charCount').textContent = chars.toLocaleString();
+  document.getElementById('charNoSpace').textContent = charsNoSpace.toLocaleString();
+  document.getElementById('sentenceCount').textContent = sentences.toLocaleString();
+  document.getElementById('paraCount').textContent = paras.toLocaleString();
+  document.getElementById('readTime').textContent = readStr;
+
+  setBar('twBar','twCount', chars, 280);
+  setBar('igBar','igCount', chars, 150);
+  setBar('metaBar','metaCount', chars, 160);
+  setBar('smsBar','smsCount', chars, 160);
+}
+
+function clearText() {
+  document.getElementById('textInput').value = '';
+  analyze();
+}
+</script>
+</body>
+</html>

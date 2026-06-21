@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+
+<meta name="description" content="Free case converter — convert text to UPPERCASE, lowercase, Title Case, camelCase, snake_case and more instantly.">
+<link rel="canonical" href="https://calquto.com/tools/case-converter.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Case Converter — Calquto">
+<meta property="og:description" content="Free case converter — convert text to UPPERCASE, lowercase, Title Case, camelCase, snake_case and more instantly.">
+<meta property="og:url" content="https://calquto.com/tools/case-converter.html">
+<meta property="og:site_name" content="Calquto">
+<meta property="og:image" content="https://calquto.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Case Converter — Calquto">
+<meta name="twitter:description" content="Free case converter — convert text to UPPERCASE, lowercase, Title Case, camelCase, snake_case and more instantly.">
+<meta name="twitter:image" content="https://calquto.com/og-image.png">
+<title>Case Converter — Calquto</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--b9:#0a1628;--b5:#2563eb;--b4:#3b82f6;--b3:#93c5fd;--b1:#dbeafe;--b0:#eff6ff;--b6:#1e4fa3;--g9:#0f172a;--g7:#334155;--g5:#64748b;--g3:#cbd5e1;--g2:#e2e8f0;--g1:#f1f5f9;--g0:#f8fafc;--r:12px;--rs:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{{font-family:'Inter',sans-serif;background:var(--g0);color:var(--g9);line-height:1.6;display:flex;flex-direction:column;min-height:100vh}}
+.hero{background:var(--b9);padding:0 0 2rem;text-align:center}
+.hero h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(24px,4vw,36px);font-weight:800;color:#fff;letter-spacing:-0.5px}
+.hero p{color:var(--b3);font-size:15px;margin-top:6px}
+main{max-width:800px;margin:0 auto;padding:2rem 1.5rem 4rem}
+.card{background:#fff;border:1px solid var(--g3);border-radius:var(--r);padding:1.5rem;margin-bottom:1.25rem}
+.card h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:17px;font-weight:700;margin-bottom:1rem}
+textarea{width:100%;min-height:130px;border:1px solid var(--g3);border-radius:var(--rs);padding:12px;font-size:15px;font-family:'Inter',sans-serif;color:var(--g9);outline:none;resize:vertical;transition:border-color .15s}
+textarea:focus{border-color:var(--b4)}
+.case-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:1rem 0}
+.case-btn{border:1.5px solid var(--g3);border-radius:var(--rs);background:#fff;padding:10px 8px;font-size:12px;font-weight:600;color:var(--g7);cursor:pointer;text-align:center;font-family:'Inter',sans-serif;transition:all .15s;line-height:1.4}
+.case-btn:hover{border-color:var(--b4);color:var(--b5);background:var(--b0)}
+.case-btn.active{background:var(--b5);border-color:var(--b5);color:#fff}
+.case-example{font-size:10px;font-weight:400;opacity:.7;display:block;margin-top:2px}
+.output-section{margin-top:.5rem}
+.output-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.output-label{font-size:13px;font-weight:500;color:var(--g7)}
+.copy-btn{background:var(--b5);color:#fff;border:none;border-radius:6px;padding:5px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s}
+.copy-btn:hover{background:var(--b6)}
+.copy-btn.copied{background:#22c55e}
+.output-box{background:var(--g0);border:1px solid var(--g2);border-radius:var(--rs);padding:12px;font-size:15px;min-height:80px;color:var(--g9);word-break:break-all;line-height:1.6}
+footer a{color:var(--b4);text-decoration:none}
+.guide{background:#fff;border:1px solid var(--g3);border-radius:var(--r);padding:1.75rem;margin-top:1.25rem}
+.guide h2{font-family:'Plus Jakarta Sans',sans-serif;font-size:19px;font-weight:700;color:var(--g9);margin-bottom:.75rem}
+.guide h3{font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:var(--g9);margin:1.25rem 0 .5rem}
+.guide p{font-size:13.5px;color:var(--g7);margin-bottom:.75rem;line-height:1.75}
+.guide ul{margin:0 0 .75rem 1.1rem;font-size:13.5px;color:var(--g7);line-height:1.8}
+.formula-box{background:var(--g0);border:1px solid var(--g3);border-radius:var(--rs);padding:1rem 1.25rem;margin:.75rem 0;font-family:monospace;font-size:13px;color:var(--b6);overflow-x:auto}
+.example-box{background:var(--b0);border:1px solid var(--b1);border-radius:var(--rs);padding:1rem 1.25rem;margin:.75rem 0}
+.example-box .ex-label{font-size:11px;font-weight:700;color:var(--b6);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.faq-item{border-bottom:1px solid var(--g1);padding:12px 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:14px;font-weight:600;color:var(--g9);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.faq-a{font-size:13.5px;color:var(--g7);margin-top:8px;line-height:1.75;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-arrow{transition:transform .2s;color:var(--g5);flex-shrink:0}
+.faq-item.open .faq-arrow{transform:rotate(180deg)}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:.5rem}
+.related-link{display:block;background:var(--g0);border-radius:var(--rs);padding:.75rem 1rem;text-decoration:none;color:var(--g9);font-size:13px;font-weight:600;border:1px solid var(--g3);transition:border-color .15s}
+.related-link:hover{border-color:var(--b4)}
+.related-link span{display:block;font-size:11.5px;color:var(--g5);font-weight:400;margin-top:2px}
+.guide-wrap{max-width:900px;margin:0 auto;padding:0 1.5rem 1rem}
+nav{background:var(--b9);padding:0 1.25rem 0 2rem;height:60px;display:flex;align-items:center;gap:1.5rem;position:sticky;top:0;z-index:300;border-bottom:1px solid rgba(255,255,255,.06)}
+.logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:22px;font-weight:800;color:#fff;text-decoration:none;flex-shrink:0}.logo span{color:var(--b4)}
+.nav-toggle{display:none;margin-left:auto;background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:4px 6px;line-height:1}
+.nav-links{display:flex;align-items:center;gap:.25rem;list-style:none;flex:1;min-width:0}
+.nav-links li{position:relative}
+.nav-links>li>a{display:block;color:var(--b3);text-decoration:none;font-size:13.5px;font-weight:500;padding:10px;border-radius:6px;transition:color .15s,background .15s;white-space:nowrap}
+.nav-links>li>a:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-links li.nav-all{margin-left:auto}
+.nav-links li.nav-all>a{color:#fff;background:var(--b5);font-weight:600}
+.nav-links li.nav-all>a:hover{background:var(--b6)}
+
+/* mega-menu panel */
+.nav-dd{display:none;position:absolute;top:100%;left:0;margin-top:0;background:#fff;border:1px solid var(--g3);border-radius:var(--rs);box-shadow:0 12px 32px rgba(10,22,40,.18);padding:1.1rem;z-index:300}
+.nav-links li:hover .nav-dd,.nav-links li:focus-within .nav-dd{display:block}
+.mega-grid{display:flex;gap:1.75rem}
+.mega-col{display:flex;flex-direction:column;gap:2px;min-width:200px}
+.mega-col a{display:block;padding:6px 8px;border-radius:6px;font-size:13px;font-weight:500;color:var(--g7);text-decoration:none;white-space:nowrap}
+.mega-col a:hover{background:var(--g0);color:var(--b5)}
+.mega-col a.cur{color:var(--b5);background:var(--b0)}
+.mega-viewall{display:block;margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--g1);font-size:12.5px;font-weight:600;color:var(--b5);text-decoration:none}
+.mega-viewall:hover{color:var(--b6)}
+
+@media (max-width:980px){
+  .nav-links{display:none;position:fixed;top:60px;left:0;right:0;bottom:0;background:var(--b9);flex-direction:column;align-items:stretch;overflow-y:auto;padding:.5rem 1rem 2rem;gap:0}
+  .nav-links.open{display:flex}
+  .nav-links>li>a{color:#fff;padding:13px 6px;border-bottom:1px solid rgba(255,255,255,.06)}
+  .nav-links li.nav-all{margin-left:0;order:-1}
+  .nav-links li.nav-all>a{text-align:center;margin:.5rem 0 .75rem;border-bottom:none}
+  .nav-dd{position:static;display:block;box-shadow:none;border:none;border-radius:0;background:rgba(255,255,255,.03);padding:.25rem .5rem .75rem}
+  .mega-grid{flex-direction:column;gap:0}
+  .mega-col{min-width:0}
+  .mega-col a{color:var(--b3);padding:9px 10px}
+  .mega-col a:hover{background:rgba(255,255,255,.08);color:#fff}
+  .mega-viewall{color:var(--b4);border-top-color:rgba(255,255,255,.1)}
+  .nav-toggle{display:block}
+}
+
+/* footer */
+.site-footer{background:var(--b9);color:var(--b3);padding:3rem 1.5rem 1.5rem;margin-top:auto}
+.footer-top{max-width:1100px;margin:0 auto;padding-bottom:1.75rem;border-bottom:1px solid rgba(255,255,255,.08)}
+.footer-logo{font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:800;color:#fff;text-decoration:none}
+.footer-logo span{color:var(--b4)}
+.footer-tagline{font-size:13px;color:var(--b3);margin-top:.5rem;max-width:420px;line-height:1.6}
+.footer-cols{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;padding:1.75rem 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.footer-col h4{font-family:'Plus Jakarta Sans',sans-serif;color:#fff;font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.85rem}
+.footer-col a{display:block;color:var(--b3);text-decoration:none;font-size:13px;margin-bottom:.55rem;line-height:1.4}
+.footer-col a:hover{color:#fff}
+.footer-bottom{max-width:1100px;margin:0 auto;padding-top:1.25rem;font-size:12.5px;color:var(--b3)}
+
+@media (max-width:860px){
+  .footer-cols{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:560px){
+  .footer-cols{grid-template-columns:1fr;gap:1.75rem}
+}
+.breadcrumb{max-width:1000px;margin:0 auto;padding:1.1rem 1.5rem 0;font-size:12px}
+.breadcrumb a{color:#60a5fa;text-decoration:none;transition:color .15s}
+.breadcrumb a:hover{color:#93c5fd}
+.breadcrumb .bc-sep{color:rgba(147,197,253,0.35);margin:0 5px}
+.breadcrumb .bc-current{color:rgba(255,255,255,0.55)}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What's the difference between camelCase and PascalCase?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "camelCase starts with a lowercase letter (helloWorld), commonly used for variables and functions. PascalCase starts with an uppercase letter (HelloWorld), commonly used for class names and component names in many programming languages and frameworks."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my CMS or URL require kebab-case?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hyphens (kebab-case) are preferred in URLs because search engines, including Google, treat them as word separators, while underscores in snake_case are sometimes treated as part of a single word. This makes kebab-case slightly better for SEO-friendly URLs."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Title Case capitalize every word?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Standard Title Case conventions typically don't capitalize minor words like \"a,\" \"the,\" \"and,\" or \"of\" unless they're the first or last word of the title — though style guides vary (AP, Chicago, MLA all have slightly different rules). This tool's Title Case mode capitalizes all words for simplicity."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Case Converter",
+  "url": "https://calquto.com/tools/case-converter.html",
+  "description": "Free case converter — convert text to UPPERCASE, lowercase, Title Case, camelCase, snake_case and more instantly.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (Web Browser)",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Calquto",
+    "url": "https://calquto.com/"
+  }
+}
+</script>
+</head>
+<body>
+<nav>
+  <a class="logo" href="../index.html">Calqu<span>to</span></a>
+  <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">&#9776;</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="../finance.html">Finance</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/mortgage-calculator.html">Mortgage Calculator</a>
+          <a href="../tools/loan-calculator.html">Loan Calculator</a>
+          <a href="../tools/refinance-calculator.html">Mortgage Refinance Calculator</a>
+          <a href="../tools/home-affordability.html">Home Affordability Calculator</a>
+          <a href="../tools/home-equity-heloc.html">Home Equity &amp; HELOC Calculator</a>
+          <a href="../tools/rent-vs-buy.html">Rent vs Buy Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/closing-costs.html">Closing Costs Calculator</a>
+          <a href="../tools/property-tax-estimator.html">Property Tax Estimator</a>
+          <a href="../tools/renovation-roi.html">Home Renovation ROI Calculator</a>
+          <a href="../tools/car-loan-calculator.html">Car Loan Calculator</a>
+          <a href="../tools/car-lease-vs-buy.html">Car Lease vs Buy Calculator</a>
+          <a href="../tools/car-depreciation.html">Car Depreciation Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/compound-interest.html">Compound Interest Calculator</a>
+          <a href="../tools/retirement-calculator.html">Retirement Calculator</a>
+          <a href="../tools/401k-calculator.html">401(k) Contribution Calculator</a>
+          <a href="../tools/roth-ira-vs-traditional.html">Roth IRA vs Traditional IRA</a>
+          <a href="../tools/social-security-calculator.html">Social Security Benefits Estimator</a>
+          <a href="../tools/credit-card-payoff.html">Credit Card Payoff Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/savings-goal-calculator.html">Savings Goal Calculator</a>
+          <a href="../tools/break-even-calculator.html">Break-Even Calculator</a>
+          <a href="../tools/discount-calculator.html">Discount Calculator</a>
+          <a href="../tools/percentage-calculator.html">Percentage Calculator</a>
+          <a href="../tools/tip-calculator.html">Tip Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../finance.html">View all Finance tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../tax.html">Tax</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/federal-tax-bracket.html">Federal Tax Bracket Calculator</a>
+          <a href="../tools/capital-gains-tax.html">Capital Gains Tax Calculator</a>
+          <a href="../tools/child-tax-credit.html">Child Tax Credit Calculator</a>
+          <a href="../tools/w2-vs-1099-calculator.html">W-2 vs 1099 Tax Comparison</a>
+          <a href="../tools/llc-vs-scorp.html">LLC vs S-Corp Tax Savings</a>
+          <a href="../tools/freelancer-tax-estimator.html">Freelancer Tax Estimator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../tax.html">View all Tax tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../work-career.html">Work &amp; Career</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/salary-calculator.html">Salary &amp; Paycheck Calculator</a>
+          <a href="../tools/job-offer-comparison.html">Job Offer Comparison Calculator</a>
+          <a href="../tools/freelance-rate-calculator.html">Freelance Rate Calculator</a>
+          <a href="../tools/severance-pay-estimator.html">Severance Pay Estimator</a>
+          <a href="../tools/employee-cost.html">Employee Cost Calculator</a>
+          <a href="../tools/work-hours-calculator.html">Work Hours Calculator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/wfh-savings-calculator.html">Work From Home Savings Calculator</a>
+          <a href="../tools/invoice-generator.html">Invoice Generator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../work-career.html">View all Work &amp; Career tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../benefits-insurance.html">Benefits</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/hsa-calculator.html">HSA Contribution Calculator</a>
+          <a href="../tools/fsa-vs-hsa.html">FSA vs HSA Comparison Tool</a>
+          <a href="../tools/cobra-calculator.html">COBRA Insurance Cost Estimator</a>
+          <a href="../tools/life-insurance-calculator.html">Life Insurance Needs Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../benefits-insurance.html">View all Benefits tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../education.html">Education</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/college-529-calculator.html">529 College Savings Calculator</a>
+          <a href="../tools/fafsa-efc.html">FAFSA EFC / SAI Estimator</a>
+          <a href="../tools/student-loan-payoff.html">Student Loan Payoff Calculator</a>
+          <a href="../tools/gpa-calculator.html">GPA to 4.0 Scale Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../education.html">View all Education tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../converters.html">Converters</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/length-converter.html">Unit Converter (Length/Weight/Temp/Speed/Area)</a>
+          <a href="../tools/timezone-converter.html">Time Zone Converter</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../converters.html">View all Converters tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../date-time-tools.html">Date/Time</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/countdown-timer.html">Countdown Timer</a>
+          <a href="../tools/date-difference.html">Date Difference Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../date-time-tools.html">View all Date/Time tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../developer-tools.html">Developer</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/json-formatter.html">JSON Formatter</a>
+          <a href="../tools/color-picker.html">Color Picker</a>
+          <a href="../tools/base64-tool.html">Base64 Encoder/Decoder</a>
+          <a href="../tools/regex-tester.html">Regex Tester</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../developer-tools.html">View all Developer tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../seo-text-tools.html">SEO/Text</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/word-counter.html">Word Counter</a>
+          <a href="../tools/character-counter.html">Character Counter</a>
+          <a href="../tools/case-converter.html" class="cur">Case Converter</a>
+          <a href="../tools/lorem-ipsum.html">Lorem Ipsum Generator</a>
+          <a href="../tools/meta-tag-generator.html">Meta Tag Generator</a>
+          <a href="../tools/slug-generator.html">Slug Generator</a>
+        </div>
+        <div class="mega-col">
+          <a href="../tools/readability-checker.html">Readability Checker</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../seo-text-tools.html">View all SEO/Text tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../health.html">Health</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/bmi-calculator.html">BMI Calculator</a>
+          <a href="../tools/calorie-calculator.html">Calorie Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../health.html">View all Health tools &rarr;</a>
+      </div>
+    </li>
+    <li><a href="../everyday-tools.html">Everyday</a>
+      <div class="nav-dd">
+        <div class="mega-grid">
+        <div class="mega-col">
+          <a href="../tools/qr-generator.html">QR Code Generator</a>
+          <a href="../tools/password-generator.html">Password Generator</a>
+          <a href="../tools/age-calculator.html">Age Calculator</a>
+          <a href="../tools/gas-cost-calculator.html">Gas Cost Calculator</a>
+          <a href="../tools/moving-cost-calculator.html">True Cost of Moving Calculator</a>
+          <a href="../tools/solar-savings-calculator.html">Solar Panel Savings Calculator</a>
+        </div>
+        </div>
+        <a class="mega-viewall" href="../everyday-tools.html">View all Everyday tools &rarr;</a>
+      </div>
+    </li>
+    <li class="nav-all"><a href="../index.html">All Tools</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="breadcrumb"><a href="../index.html">Calquto</a><span class="bc-sep">›</span><a href="../seo-text-tools.html">SEO & Text Tools</a><span class="bc-sep">›</span><span class="bc-current">Case Converter</span></div><h1>🔤 Case Converter</h1><p>Convert text to any case — UPPER, lower, Title, camelCase, snake_case and more</p></div>
+<main>
+<div class="card">
+  <h2>Input Text</h2>
+  <textarea id="inputText" placeholder="Type or paste your text here..." oninput="convert()">The quick brown fox jumps over the lazy dog</textarea>
+  <div class="case-grid">
+    <button class="case-btn active" onclick="setCase('upper',this)">UPPERCASE<span class="case-example">HELLO WORLD</span></button>
+    <button class="case-btn" onclick="setCase('lower',this)">lowercase<span class="case-example">hello world</span></button>
+    <button class="case-btn" onclick="setCase('title',this)">Title Case<span class="case-example">Hello World</span></button>
+    <button class="case-btn" onclick="setCase('sentence',this)">Sentence case<span class="case-example">Hello world</span></button>
+    <button class="case-btn" onclick="setCase('camel',this)">camelCase<span class="case-example">helloWorld</span></button>
+    <button class="case-btn" onclick="setCase('pascal',this)">PascalCase<span class="case-example">HelloWorld</span></button>
+    <button class="case-btn" onclick="setCase('snake',this)">snake_case<span class="case-example">hello_world</span></button>
+    <button class="case-btn" onclick="setCase('kebab',this)">kebab-case<span class="case-example">hello-world</span></button>
+    <button class="case-btn" onclick="setCase('constant',this)">CONSTANT_CASE<span class="case-example">HELLO_WORLD</span></button>
+    <button class="case-btn" onclick="setCase('toggle',this)">tOGGLE cASE<span class="case-example">hELLO wORLD</span></button>
+    <button class="case-btn" onclick="setCase('alternate',this)">AlTeRnAtE<span class="case-example">hElLo WoRlD</span></button>
+    <button class="case-btn" onclick="setCase('reverse',this)">esreveR<span class="case-example">dlrow olleh</span></button>
+  </div>
+  <div class="output-section">
+    <div class="output-header"><span class="output-label" id="outputLabel">UPPERCASE result</span><button class="copy-btn" id="copyBtn" onclick="copyOutput()">Copy</button></div>
+    <div class="output-box" id="outputBox">THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG</div>
+  </div>
+</div>
+</main>
+
+<div class="guide-wrap">
+  <div class="guide">
+    <h2>When to Use Each Text Case</h2>
+    <p>Different writing and coding contexts call for different text casing conventions. Title Case is standard for headlines and titles, while programming languages each have their own conventions — camelCase for JavaScript variables, snake_case for Python, and CONSTANT_CASE for constants across most languages.</p>
+    <p>Getting case conventions right matters for readability and, in programming contexts, for following established style guides that other developers expect.</p>
+
+    <h3>Common Case Types Explained</h3>
+    <ul>
+      <li><strong>UPPERCASE</strong> — used for emphasis, acronyms, or warning text; overuse can come across as shouting in casual writing.</li>
+      <li><strong>Title Case</strong> — standard for headlines, book titles, and article headings, typically capitalizing all major words.</li>
+      <li><strong>camelCase</strong> — the standard for variable and function names in JavaScript, Java, and many other languages.</li>
+      <li><strong>snake_case</strong> — preferred in Python, Ruby, and many database column naming conventions.</li>
+      <li><strong>kebab-case</strong> — commonly used in URLs, CSS class names, and HTML attributes.</li>
+      <li><strong>CONSTANT_CASE</strong> — the convention for constants and environment variables across most programming languages.</li>
+    </ul>
+
+    <h3>Frequently Asked Questions</h3>
+    <div class="faq-item open">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What's the difference between camelCase and PascalCase? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">camelCase starts with a lowercase letter (helloWorld), commonly used for variables and functions. PascalCase starts with an uppercase letter (HelloWorld), commonly used for class names and component names in many programming languages and frameworks.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Why does my CMS or URL require kebab-case? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Hyphens (kebab-case) are preferred in URLs because search engines, including Google, treat them as word separators, while underscores in snake_case are sometimes treated as part of a single word. This makes kebab-case slightly better for SEO-friendly URLs.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Does Title Case capitalize every word? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Standard Title Case conventions typically don't capitalize minor words like "a," "the," "and," or "of" unless they're the first or last word of the title — though style guides vary (AP, Chicago, MLA all have slightly different rules). This tool's Title Case mode capitalizes all words for simplicity.</div>
+    </div>
+
+    <h3>Related Calculators</h3>
+    <div class="related-grid">
+      <a class="related-link" href="slug-generator.html">Slug Generator<span>Create SEO-friendly URLs</span></a>
+      <a class="related-link" href="word-counter.html">Word Counter<span>Count words & characters</span></a>
+    </div>
+  </div>
+</div>
+<footer class="site-footer">
+  <div class="footer-top">
+    <a class="footer-logo" href="../index.html">Calqu<span>to</span></a>
+    <p class="footer-tagline">Free, fast, browser-based calculators and tools. No signup, nothing stored.</p>
+  </div>
+  <div class="footer-cols">
+    <div class="footer-col">
+      <h4>Finance &amp; Tax</h4>
+      <a href="../tools/mortgage-calculator.html">Mortgage Calculator</a>
+      <a href="../tools/loan-calculator.html">Loan Calculator</a>
+      <a href="../tools/refinance-calculator.html">Mortgage Refinance Calculator</a>
+      <a href="../tools/home-affordability.html">Home Affordability Calculator</a>
+      <a href="../tools/home-equity-heloc.html">Home Equity &amp; HELOC Calculator</a>
+      <a href="../tools/rent-vs-buy.html">Rent vs Buy Calculator</a>
+      <a href="../tools/closing-costs.html">Closing Costs Calculator</a>
+      <a href="../tools/property-tax-estimator.html">Property Tax Estimator</a>
+      <a href="../tools/renovation-roi.html">Home Renovation ROI Calculator</a>
+      <a href="../tools/car-loan-calculator.html">Car Loan Calculator</a>
+      <a href="../tools/car-lease-vs-buy.html">Car Lease vs Buy Calculator</a>
+      <a href="../tools/car-depreciation.html">Car Depreciation Calculator</a>
+      <a href="../tools/compound-interest.html">Compound Interest Calculator</a>
+      <a href="../tools/retirement-calculator.html">Retirement Calculator</a>
+      <a href="../tools/401k-calculator.html">401(k) Contribution Calculator</a>
+      <a href="../tools/roth-ira-vs-traditional.html">Roth IRA vs Traditional IRA</a>
+      <a href="../tools/social-security-calculator.html">Social Security Benefits Estimator</a>
+      <a href="../tools/credit-card-payoff.html">Credit Card Payoff Calculator</a>
+      <a href="../tools/savings-goal-calculator.html">Savings Goal Calculator</a>
+      <a href="../tools/break-even-calculator.html">Break-Even Calculator</a>
+      <a href="../tools/discount-calculator.html">Discount Calculator</a>
+      <a href="../tools/percentage-calculator.html">Percentage Calculator</a>
+      <a href="../tools/tip-calculator.html">Tip Calculator</a>
+      <a href="../tools/federal-tax-bracket.html">Federal Tax Bracket Calculator</a>
+      <a href="../tools/capital-gains-tax.html">Capital Gains Tax Calculator</a>
+      <a href="../tools/child-tax-credit.html">Child Tax Credit Calculator</a>
+      <a href="../tools/w2-vs-1099-calculator.html">W-2 vs 1099 Tax Comparison</a>
+      <a href="../tools/llc-vs-scorp.html">LLC vs S-Corp Tax Savings</a>
+      <a href="../tools/freelancer-tax-estimator.html">Freelancer Tax Estimator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Work, Benefits &amp; Education</h4>
+      <a href="../tools/salary-calculator.html">Salary &amp; Paycheck Calculator</a>
+      <a href="../tools/job-offer-comparison.html">Job Offer Comparison Calculator</a>
+      <a href="../tools/freelance-rate-calculator.html">Freelance Rate Calculator</a>
+      <a href="../tools/severance-pay-estimator.html">Severance Pay Estimator</a>
+      <a href="../tools/employee-cost.html">Employee Cost Calculator</a>
+      <a href="../tools/work-hours-calculator.html">Work Hours Calculator</a>
+      <a href="../tools/wfh-savings-calculator.html">Work From Home Savings Calculator</a>
+      <a href="../tools/invoice-generator.html">Invoice Generator</a>
+      <a href="../tools/hsa-calculator.html">HSA Contribution Calculator</a>
+      <a href="../tools/fsa-vs-hsa.html">FSA vs HSA Comparison Tool</a>
+      <a href="../tools/cobra-calculator.html">COBRA Insurance Cost Estimator</a>
+      <a href="../tools/life-insurance-calculator.html">Life Insurance Needs Calculator</a>
+      <a href="../tools/college-529-calculator.html">529 College Savings Calculator</a>
+      <a href="../tools/fafsa-efc.html">FAFSA EFC / SAI Estimator</a>
+      <a href="../tools/student-loan-payoff.html">Student Loan Payoff Calculator</a>
+      <a href="../tools/gpa-calculator.html">GPA to 4.0 Scale Calculator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Converters &amp; Everyday</h4>
+      <a href="../tools/length-converter.html">Unit Converter (Length/Weight/Temp/Speed/Area)</a>
+      <a href="../tools/timezone-converter.html">Time Zone Converter</a>
+      <a href="../tools/countdown-timer.html">Countdown Timer</a>
+      <a href="../tools/date-difference.html">Date Difference Calculator</a>
+      <a href="../tools/json-formatter.html">JSON Formatter</a>
+      <a href="../tools/color-picker.html">Color Picker</a>
+      <a href="../tools/base64-tool.html">Base64 Encoder/Decoder</a>
+      <a href="../tools/regex-tester.html">Regex Tester</a>
+      <a href="../tools/word-counter.html">Word Counter</a>
+      <a href="../tools/character-counter.html">Character Counter</a>
+      <a href="../tools/case-converter.html">Case Converter</a>
+      <a href="../tools/lorem-ipsum.html">Lorem Ipsum Generator</a>
+      <a href="../tools/meta-tag-generator.html">Meta Tag Generator</a>
+      <a href="../tools/slug-generator.html">Slug Generator</a>
+      <a href="../tools/readability-checker.html">Readability Checker</a>
+      <a href="../tools/bmi-calculator.html">BMI Calculator</a>
+      <a href="../tools/calorie-calculator.html">Calorie Calculator</a>
+      <a href="../tools/qr-generator.html">QR Code Generator</a>
+      <a href="../tools/password-generator.html">Password Generator</a>
+      <a href="../tools/age-calculator.html">Age Calculator</a>
+      <a href="../tools/gas-cost-calculator.html">Gas Cost Calculator</a>
+      <a href="../tools/moving-cost-calculator.html">True Cost of Moving Calculator</a>
+      <a href="../tools/solar-savings-calculator.html">Solar Panel Savings Calculator</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="../index.html">All Tools</a>
+      <a href="../about.html">About</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../privacy-policy.html">Privacy Policy</a>
+      <a href="../terms.html">Terms of Service</a>
+      <a href="../disclaimer.html">Disclaimer</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Calquto &middot; Free case converter</span>
+  </div>
+</footer>
+<script>
+let currentCase='upper';
+const labels={upper:'UPPERCASE',lower:'lowercase',title:'Title Case',sentence:'Sentence case',camel:'camelCase',pascal:'PascalCase',snake:'snake_case',kebab:'kebab-case',constant:'CONSTANT_CASE',toggle:'tOGGLE cASE',alternate:'AlTeRnAtE',reverse:'Reversed text'};
+function setCase(c,btn){currentCase=c;document.querySelectorAll('.case-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('outputLabel').textContent=labels[c]+' result';convert();}
+function convert(){
+  const txt=document.getElementById('inputText').value;
+  let out='';
+  switch(currentCase){
+    case 'upper':out=txt.toUpperCase();break;
+    case 'lower':out=txt.toLowerCase();break;
+    case 'title':out=txt.toLowerCase().replace(/\b\w/g,c=>c.toUpperCase());break;
+    case 'sentence':out=txt.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g,c=>c.toUpperCase());break;
+    case 'camel':out=txt.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g,(_,c)=>c.toUpperCase());break;
+    case 'pascal':out=txt.toLowerCase().replace(/(?:^|[^a-zA-Z0-9]+)(.)/g,(_,c)=>c.toUpperCase());break;
+    case 'snake':out=txt.toLowerCase().replace(/[^a-zA-Z0-9]+/g,'_').replace(/^_|_$/g,'');break;
+    case 'kebab':out=txt.toLowerCase().replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-|-$/g,'');break;
+    case 'constant':out=txt.toUpperCase().replace(/[^A-Z0-9]+/g,'_').replace(/^_|_$/g,'');break;
+    case 'toggle':out=[...txt].map(c=>c===c.toUpperCase()?c.toLowerCase():c.toUpperCase()).join('');break;
+    case 'alternate':out=[...txt].map((c,i)=>i%2===0?c.toUpperCase():c.toLowerCase()).join('');break;
+    case 'reverse':out=[...txt].reverse().join('');break;
+  }
+  document.getElementById('outputBox').textContent=out;
+  document.getElementById('copyBtn').textContent='Copy';document.getElementById('copyBtn').classList.remove('copied');
+}
+function copyOutput(){const txt=document.getElementById('outputBox').textContent;navigator.clipboard.writeText(txt).then(()=>{const btn=document.getElementById('copyBtn');btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},2000);});}
+convert();
+</script>
+</body></html>
