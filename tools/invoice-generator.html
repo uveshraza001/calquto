@@ -646,7 +646,8 @@ function printInvoice(){
   .inv-total-row{display:flex;justify-content:space-between;padding:5px 0;font-size:13.5px;border-bottom:1px solid #f1f5f9}
   .inv-total-row:last-child{border-bottom:none;font-size:15px;font-weight:800;color:#0a1628;padding-top:8px}
   .inv-notes{margin-top:1.5rem;padding-top:1rem;border-top:1px solid #e2e8f0;font-size:12.5px;color:#64748b}
-  </style></head><body>${content}</body></html>`);
+  </style></head><body>${content}<script src="/cookie-consent.js"></script>
+</body></html>`);
   win.document.close();
   setTimeout(()=>win.print(),500);
 }
@@ -669,5 +670,6 @@ function clearForm(){
 renderItems();
 updatePreview();
 </script>
+<script src="/cookie-consent.js"></script>
 </body>
 </html>
