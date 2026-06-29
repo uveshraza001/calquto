@@ -23,7 +23,7 @@
     const s = document.createElement('script');
     s.async = true;
     s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
-    s.setAttribute('data-ad-client', 'ca-pub-XXXXXXXXXXXXXXXX'); // ← Replace with your AdSense ID
+    s.setAttribute('data-ad-client', 'ca-pub-4670357470720216'); // ← Replace with your AdSense ID
     document.head.appendChild(s);
   }
 
